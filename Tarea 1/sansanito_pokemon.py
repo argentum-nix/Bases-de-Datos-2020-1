@@ -1,97 +1,64 @@
 import cx_Oracle
 import pandas
 from tabulate import tabulate
+import time
+from simple_term_menu import TerminalMenu
 
 def print_table(hdrs, fmt='psql'):
 	res = cur.fetchall()
 	print(tabulate(res, headers=hdrs, tablefmt=fmt))
 
-#=========================================================================
-# CONEXION AL SERVIDOR (nota: se ocupa ORACLE_CX y no ODBC por problemas de
-# sistema y falta maquian que cumpla requisitos y tenga sistema WIN instalado.)
-
-# connection string de tipo ("id","pwd","db")
-connection = cx_Oracle.connect("argentum", "1234", "XE")
-cur = connection.cursor()
-
-#=========================================================================
-
-#CREACION DE POYO
-#quito espacios y no agrego _ por convencion (_ para relaciones y no atributos)
-cur.execute("DROP TABLE poyo")
-cur.execute("CREATE TABLE poyo (\
-            pokedex INT,\
-            nombre VARCHAR(40) NOT NULL PRIMARY KEY,\
-            type1 VARCHAR(20),\
-            type2 VARCHAR(20),\
-            hptotal INT,\
-            legendary NUMBER(1))"
-            )
-connection.commit()
-# uso NUMBER(1) en vez de BOOLEAN para representar los booleanos
-# uso usecols que guarda solo algunas columnas
-pkmn = pandas.read_csv('pokemon.csv',sep=",",usecols=(0, 1, 2, 3 , 4, 12))
-# leer fila por fila para pillar True/False y NaN
-
-
-add_row_pkmn = ("INSERT INTO poyo "
-           "(pokedex, nombre, type1, type2, hptotal, legendary) "
-           "VALUES (:1,:2,:3,:4,:5,:6)")
-for d in pkmn.values:
-    t2 = d[3]
-    bln = 0
-    if not isinstance(t2, str):
-        #caso nan
-        t2 = ""
-    if d[-1] == True:
-        bln = 1
-    row_pkmn = [int(d[0]), d[1], d[2], t2, int(d[4]), bln]
-    cur.execute(add_row_pkmn, row_pkmn)
-    connection.commit()
-
-
-# IMPRIME LA poyo COMO TABLA CON FORMATO psql
-cur.execute("SELECT * FROM poyo")
-connection.commit()
-hdrs_poyo = ['pokedex', 'nombre', 'type1', 'type2', 'hptotal', 'legendary']
-print_table(hdrs_poyo)
-
-
-#=========================================================================
-#CREACION DE SANSANITO POKEMON
-cur.execute("DROP TABLE sansanito")
-cur.execute("CREATE TABLE sansanito (\
-			id INT NOT NULL PRIMARY KEY,\
-			pokedex INT,\
-			nombre VARCHAR(40),\
-			type1 VARCHAR(20),\
-            type2 VARCHAR(20),\
-          	hpactual INT,\
-          	hpmax INT,\
-          	legendary  NUMBER(1),\
-          	estado VARCHAR(30),\
-          	ingreso DATE,\
-          	prioridad INT)"
-          	)
-connection.commit()
-
-# IMPRIME LA sansanito COMO TABLA CON FORMATO psql
-cur.execute("SELECT * FROM sansanito")
-connection.commit()
-res = cur.fetchall()
-hdrs_sansanito = ['id', 'pokedex', 'type1',\
-				'type2', 'hpactual', 'hptotal',\
-				'legendary', 'ingreso', 'prioridad']
-#=========================================================================
-
 #CRUD
 #CREATE - hace insercion de registro
-#READ - lee registros con PK u otro parametro
-#UPDATE - cambia el registro usando su PK con un WHERE
-#DELETE - borra la fila con WHERE especifico
+def create():
+	print("hola")
 
+#READ - lee registros con PK u otro parametro
+def read():
+	# leer todo
+	# leer que columnas
+	# leer de que tabla
+	# ordenar por cual valor
+	# de que modo ordeno
+	print("hola")
+#UPDATE - cambia el registro usando su PK con un WHERE
+def update():
+	print("hola")
+#DELETE - borra la fila con WHERE especifico
+def delete(nombre):
+	delete_query = "DELETE FROM sansanito\
+					WHERE nombre={}".format(nombre)
+	cur.execute(maxprio10)
+	connection.commit()
+	res = cur.fetchall()
+	print_table(hdrs_sansanito)
 
 #Query
+
+#sin terminar
+#https://www.w3schools.com/sql/sql_insert_into_select.asp
+def insertar_pokemon(n, hpactual, estado):
+	#hptotal = SELECT hptotal FROM sansanito WHERE nombre=n"
+	#prioridad = hptotal - hpactual + bool(estado)*10
+	# buscar hptotal, calcular prioridad
+	# si estado no es vacio, sumar 10
+
+	#normales = "SELECT COUNT(*) FROM sansanito WHERE legendary=0"
+	#legendarios = "SELECT COUNT(*) FROM sansanito WHERE legendary=1" 
+	#total_registros =  normales + 5 * legendarios
+	#tenemos que revisar el tipo de pokemon a insertar y ver si quepa primero
+	# si quepa, copiamos datos de poyo
+	# insert = "INSERT INTO sansanito (valores) SELECT (valores) FROM poyo WHERE nombre='nombre' 
+	# y despues hacemos insert de prioridad, estado y hpactual adicional 
+
+	#si no quepa y queremos insertar legendario
+	# se busca el min prio legendario y si el que queremos meter es mayor, update, si no, chao
+	# si no quepa y queremos insertar normie boy, misma wea pero comparamos con min prio normie
+	#algo asi:
+	#minprionormie = "SELECT nombre, prioridad FROM sansanito WHERE legendary=0 ORDER BY prioridad ASC LIMIT 1"
+	print("hola")
+
+
 # Los 10 pokemon con mayor prioridad
 def maxprio_sansanito():
 	maxprio10 = "SELECT nombre, prioridad\
@@ -145,23 +112,9 @@ def antiguedad_sansanito():
 	res = cur.fetchall()
 	print_table(hdrs_sansanito)
 
-'''
-SELECT       `column`,
-
-             COUNT(`column`) AS `value_occurrence` 
-
-    FROM     `my_table`
-
-    GROUP BY `column`
-
-    ORDER BY `value_occurrence` DESC
-
-    LIMIT    1;
-    '''
-
 #el mas repetido
 def repetido_sansanito():
-	select_repeat = "SELECT nombre\
+	select_repetido = "SELECT nombre\
 					COUNT(nombre) AS repetido_sansanito\
 					FROM sansanito\
 					ORDER BY repetido_sansanito DESC\
@@ -171,13 +124,189 @@ def repetido_sansanito():
 	res = cur.fetchall()
 	print_table(hdrs_sansanito)
 
-def ordenado_sansanito():
+def ordenado_sansanito(orden):
 	select_orderby = "SELECT nombre, hpactual, hpmax, prioridad\
 					FROM sansanito\
-					ORDER BY prioridad DESC"
+					ORDER BY prioridad {}".format(orden)
 	cur.execute(select_orderby)
 	connection.commit()
 	res = cur.fetchall()
 	print_table(hdrs_sansanito)
+
+
+
+#=========================================================================
+def ctable_poyos(archive="pokemon."):
+	#quito espacios y no agrego _ por convencion (_ para relaciones y no atributos)
+	cur.execute("DROP TABLE poyo")
+	cur.execute("CREATE TABLE poyo (\
+			pokedex INT,\
+			nombre VARCHAR(40) NOT NULL PRIMARY KEY,\
+			type1 VARCHAR(20),\
+			type2 VARCHAR(20),\
+			hptotal INT,\
+			legendary NUMBER(1))"
+			)
+	connection.commit()
+	# uso NUMBER(1) en vez de BOOLEAN para representar los booleanos
+	# uso usecols que guarda solo algunas columnas
+	pkmn = pandas.read_csv('pokemon.csv',sep=",",usecols=(0, 1, 2, 3 , 4, 12))
+	# leer fila por fila para pillar True/False y NaN
+	add_row_pkmn = ("INSERT INTO poyo "
+		   "(pokedex, nombre, type1, type2, hptotal, legendary) "
+		   "VALUES (:1,:2,:3,:4,:5,:6)")
+	for d in pkmn.values:
+		t2 = d[3]
+		bln = 0
+		if not isinstance(t2, str):
+			#caso nan
+			t2 = ""
+		if d[-1] == True:
+			bln = 1
+		row_pkmn = [int(d[0]), d[1], d[2], t2, int(d[4]), bln]
+		cur.execute(add_row_pkmn, row_pkmn)
+		connection.commit()
+
+#=========================================================================
+def ctable_sansanito():
+	cur.execute("DROP TABLE sansanito")
+	cur.execute("CREATE TABLE sansanito (\
+				id NUMBER GENERATED BY DEFAULT AS identity PRIMARY KEY,\
+				pokedex INT,\
+				nombre VARCHAR(40),\
+				type1 VARCHAR(20),\
+				type2 VARCHAR(20),\
+				hpactual INT,\
+				hpmax INT,\
+				legendary  NUMBER(1),\
+				estado VARCHAR(30),\
+				ingreso DATE,\
+				prioridad INT)"
+				)
+	connection.commit()
+
+#=========================================================================
+
+# MENU
+#=========================================================================
+
+#Headers globales
+hdrs_poyo = ['pokedex', 'nombre', 'type1', 'type2', 'hptotal', 'legendary']
+hdrs_sansanito = ['id', 'pokedex', 'type1',\
+				'type2', 'hpactual', 'hptotal',\
+				'legendary', 'ingreso', 'prioridad']
+
+def main():
+	main_menu_title = "  BIENVENIDO AL SANSANITO POKEMON. QUE DESEA HACER?\n"
+	main_menu_items = ["Ingresar un pokemon (create)", "Buscar en tabla (read)", "Opciones especiales de busqueda"\
+						, "Cambiar datos de pokemon ingresado (update)","Salir"]
+	main_menu_cursor = "> "
+	main_menu_cursor_style = ("fg_red", "bold")
+	main_menu_style = ("bg_purple", "fg_yellow")
+	main_menu_exit = False
+
+	main_menu = TerminalMenu(menu_entries=main_menu_items,
+							 title=main_menu_title,
+							 menu_cursor=main_menu_cursor,
+							 menu_cursor_style=main_menu_cursor_style,
+							 menu_highlight_style=main_menu_style,
+							 cycle_cursor=True,
+							 clear_screen=True)
+
+	while not main_menu_exit:
+		main_sel = main_menu.show()
+		submenu_flag = True
+		if main_sel == 0:
+			nombre = input("Ingrese el nombre de pokemon: ")
+			hp_actual = int(input("Ingrese HP actual de pokemon: "))
+			estado = input("Ingrese el estado. Si el pokemon no tiene estado, ingrese X")
+			if estado == "X":
+				estado = ""
+			submenu_flag = False
+
+		elif main_sel == 1:
+			menu1_title = "BUSQUEDA EN SANSANITO POKEMON. ELIGA UNA OPCION.\n"
+			menu1_items = ["Busqueda por un campo", "Salir"]
+			menu1 = TerminalMenu(menu_entries=menu1_items,
+							 title=menu1_title,
+							 menu_cursor=main_menu_cursor,
+							 menu_cursor_style=main_menu_cursor_style,
+							 menu_highlight_style=main_menu_style,
+							 cycle_cursor=True,
+							 clear_screen=True)
+
+			time.sleep(5)
+		elif main_sel == 2:
+			#total de opciones: 8
+			menu2_title = "BUSQUEDA ESPECIAL EN SANSANITO POKEMON. ELIGA UNA OPCION.\n"
+			menu2_items = ["10 pokemon con mayor prioridad", "10 pokemon con menor prioridad",\
+			"Pokemon con estado especifico", "Pokemon legendarios ingresados",\
+			"Pokemon que lleva mas tiempo ingresado", "Pokemon mas repetido",\
+			"Pokemon ingresados, ordenados por su prioridad", "Salir"]
+			menu2 = TerminalMenu(menu_entries=menu2_items,
+								title=menu2_title,
+								menu_cursor=main_menu_cursor,
+								menu_cursor_style=main_menu_cursor_style,
+								menu_highlight_style=main_menu_style,
+								cycle_cursor=True,
+								clear_screen=True)
+			while submenu_flag:
+				menu2_sel = menu2.show()
+				if menu2_sel == 0:
+					maxprio_sansanito()
+				# 10 con menor prioidad
+				elif menu2_sel == 1:
+					minprio_sansanito()
+				# filtrado por estado
+				elif menu2_sel == 2:
+					estado = input("Ingrese un estado para filtrar los datos:")
+					estado_sansanito(estado)
+				# los legendarios ingresados
+				elif menu2_sel == 3:
+					legendarios_sansanito()
+				# el mas antiguo
+				elif menu2_sel == 4:
+					antiguedad_sansanito()
+				# pokemon mas repetido
+				elif menu2_sel == 5:
+					repetido_sansanito()
+				# ordenados por prioidad
+				elif menu2_sel == 6:
+					orden = int(input("Ingrese 1 si desea el orden DESCENDIENTE, 0 en caso contrario:"))
+					if orden:
+						ordenado_sansanito("DESC")
+					else:
+						ordenado_sansanito("ASC")
+				elif menu2_sel == 7:
+					submenu_flag = False
+		elif main_sel == 3:
+			menu3_title = "CAMBIAR DATOS DE UN POKEMON INGRESADO. ELIGA UNA OPCION.\n"
+			menu3_items = ["Cambiar un solo campo", "Cambiar varios campos", "Salir"]
+			menu3 = TerminalMenu(menu_entries=menu3_items,
+							title=menu3_title,
+							menu_cursor=main_menu_cursor,
+							menu_cursor_style=main_menu_cursor_style,
+							menu_highlight_style=main_menu_style,
+							cycle_cursor=True,
+							clear_screen=True)
+		elif main_sel == 4:
+			main_menu_exit = True
+
+
+if __name__ == "__main__":
+	print("Conectando al Oracle...")
+	connection = cx_Oracle.connect("argentum", "1234", "XE")
+	cur = connection.cursor()
+	print(">>>OK")
+	print("Rellenando la Base de Datos...")
+	ctable_poyos()
+	print(">>>OK")
+	print("Montando el edificio de Sansanito Pokemon...")
+	ctable_sansanito()
+	print(">>>OK")
+	print("Entrando al Sansanito Pokemon...")
+	time.sleep(3)
+	print(">>>OK")
+	main()
 
 connection.close()
