@@ -58,7 +58,7 @@ def insert_notpoyo(n, hpactual, estado, fecha):
 def insert_poyodata(n):
 	insert_legend = "INSERT INTO sansanito (pokedex, nombre, tipo1, tipo2, hpmax, legendary)\
 							SELECT () FROM poyo\
-							WHERE nombre=n"
+							WHERE nombre={}".format(n)
 	cur.execute(insert_legend)
 	connection.commit()
 
@@ -69,7 +69,7 @@ def calculate_priority(n, hpactual, estado):
 
 
 def insertar_pokemon(n, hpactual, estado, fecha):
-	tipo = "SELECT legendary FROM sansanito WHERE nombre=n"
+	tipo = "SELECT legendary FROM sansanito WHERE nombre={}".format(n)
 	cur.execute(tipo)
 	lowest = "SELECT nombre, prioridad\
 			FROM sansanito\
