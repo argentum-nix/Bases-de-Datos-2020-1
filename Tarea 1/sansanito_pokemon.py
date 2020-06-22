@@ -41,7 +41,7 @@ def update():
 def delete(nombre):
 	delete_query = "DELETE FROM sansanito\
 					WHERE nombre={}".format(nombre)
-	cur.execute(maxprio10)
+	cur.execute(delete_query)
 	connection.commit()
 	
 #Query
@@ -63,18 +63,19 @@ def insert_poyodata(n):
 	connection.commit()
 
 def calculate_priority(n, hpactual, estado):
-	hptotal = "SELECT hptotal FROM sansanito WHERE nombre=n"
+	hptotal = "SELECT hptotal FROM sansanito WHERE nombre={}".format(n)
 	prioridad = hptotal - hpactual + bool(estado) * 10
 	return prioridad
 
 
 def insertar_pokemon(n, hpactual, estado, fecha):
-	tipo = "SELECT legendary FROM sansanito WHERE nombre={}".format(n)
+	print(n)
+	tipo = "SELECT legendary FROM sansanito WHERE nombre = {}".format(n)
 	cur.execute(tipo)
 	lowest = "SELECT nombre, prioridad\
 			FROM sansanito\
 			WHERE legendary={}\
-			ORDER BY ASC LIMIT 1".format(tipo)
+			ORDER BY ASC WHERE ROWNUM <= 1".format(tipo)
 
 	normales = "SELECT COUNT(*) FROM sansanito WHERE legendary=0"
 	legendarios = "SELECT COUNT(*) FROM sansanito WHERE legendary=1" 
@@ -108,84 +109,84 @@ def insertar_pokemon(n, hpactual, estado, fecha):
 				nombre = res[0]
 				delete(nombre)
 
-
+#==================================================QUERIES================================================================
+#LIMIT X no funciona en 11g, asi que se uso WHERE ROWNUM <=  / = X
 # Los 10 pokemon con mayor prioridad
 def maxprio_sansanito():
-	maxprio10 = "SELECT nombre, prioridad\
-				FROM sansanito\
-				ORDER BY prioridad DESC\
-				LIMIT 10" 
-	cur.execute(maxprio10)
-	connection.commit()
+	cur.execute("""
+				SELECT nombre, prioridad
+				FROM sansanito
+				WHERE ROWNUM <= 10
+				ORDER BY prioridad DESC
+				"""
+				)
 	res = cur.fetchall()
 	print_table(hdrs_sansanito)
 
 # Los 10 pokemon con menor prioridad
 def minprio_sansanito():
-	minprio10 = "SELECT nombre, prioridad\
-				FROM sansanito\
-				ORDER BY prioridad ASC\
-				LIMIT 10"
-	cur.execute(minprio10)
-	connection.commit()
+	cur.execute("""
+				SELECT nombre, prioridad
+				FROM sansanito
+				WHERE ROWNUM <= 10
+				ORDER BY prioridad ASC
+				""")
 	res = cur.fetchall()
 	print_table(hdrs_sansanito)
 
 #los de estado especifico
 def estado_sansanito(estado):
-	select_estado = "SELECT nombre\
-					FROM sansanito\
-					WHERE estado={}".format(estado)
-	cur.execute(select_estado)
-	connection.commit()
+	cur.execute("""SELECT nombre
+				FROM sansanito
+				WHERE estado = %s""" % (estado))
 	res = cur.fetchall()
 	print_table(hdrs_sansanito)
 
 #los legendarios
 def legendarios_sansanito():
-	select_legend = "SELECT nombre\
-					FROM sansanito\
-					WHERE legendary=1"
-	cur.execute(select_legend)
-	connection.commit()
+	cur.execute("""
+				SELECT nombre
+				FROM sansanito
+				WHERE legendary = 1
+				""")
 	res = cur.fetchall()
 	print_table(hdrs_sansanito)
 
 #el mas antiguo
 def antiguedad_sansanito():
-	select_antiguo = "SELECT nombre\
-					FROM sansanito\
-					ORDER BY ingreso DESC\
-					LIMIT 1"
-	cur.execute(select_antiguo)
-	connection.commit()
+	cur.execute("""
+				SELECT nombre
+				FROM sansanito
+				WHERE ROWNUM <= 1
+				ORDER BY ingreso DESC
+				""")
 	res = cur.fetchall()
 	print_table(hdrs_sansanito)
 
 #el mas repetido
 def repetido_sansanito():
-	select_repetido = "SELECT nombre\
-					COUNT(nombre) AS repetido_sansanito\
-					FROM sansanito\
-					ORDER BY repetido_sansanito DESC\
-					LIMIT 1"
-	cur.execute(select_repetido)
-	connection.commit()
+	cur.execute("""
+				SELECT nombre
+				COUNT(nombre) AS repetido_sansanito
+				FROM sansanito
+				WHERE ROWNUM <= 1
+				ORDER BY repetido_sansanito DESC
+				""")
 	res = cur.fetchall()
 	print_table(hdrs_sansanito)
 
 def ordenado_sansanito(orden):
-	select_orderby = "SELECT nombre, hpactual, hpmax, prioridad\
-					FROM sansanito\
-					ORDER BY prioridad {}".format(orden)
-	cur.execute(select_orderby)
-	connection.commit()
+	cur.execute("""
+				SELECT nombre, hpactual, hpmax, prioridad
+				FROM sansanito
+				ORDER BY prioridad {}""".format(orden)
+				)
 	res = cur.fetchall()
 	print_table(hdrs_sansanito)
 
+#==================================================QUERIES================================================================
 
-
-#=========================================================================
+#===================================================CREAR TABLA POYO======================================================
 def ctable_poyos(archive="pokemon."):
 	#quito espacios y no agrego _ por convencion (_ para relaciones y no atributos)
 	cur.execute("DROP TABLE poyo")
@@ -218,7 +219,10 @@ def ctable_poyos(archive="pokemon."):
 		connection.commit()
 	#print_poyo()
 
-#=========================================================================
+#===================================================CREAR TABLA POYO======================================================
+
+
+#===================================================CREAR TABLA SANSANITO=================================================
 def ctable_sansanito():
 	cur.execute("DROP TABLE sansanito")
 
@@ -235,7 +239,7 @@ def ctable_sansanito():
 				ingreso DATE,\
 				prioridad INT)"
 				)
-
+	#cur.execute("DROP SEQUENCE SANS_SEQ")
 	cur.execute("CREATE SEQUENCE SANS_SEQ")
 	cur.execute("CREATE OR REPLACE TRIGGER SANS_TRG\
 				BEFORE INSERT ON sansanito\
@@ -250,7 +254,8 @@ def ctable_sansanito():
 	print_sansanito()
 
 
-#=========================================================================
+#===================================================CREAR TABLA SANSANITO=================================================
+
 
 # MENU
 #=========================================================================
@@ -259,7 +264,7 @@ def ctable_sansanito():
 hdrs_poyo = ['pokedex', 'nombre', 'type1', 'type2', 'hptotal', 'legendary']
 hdrs_sansanito = ['id', 'pokedex', 'nombre', 'type1',\
 				'type2', 'hpactual', 'hptotal',\
-				'legendary', 'ingreso', 'prioridad']
+				'legendary', 'estado', 'ingreso', 'prioridad']
 
 def main():
 	main_menu_title = "  BIENVENIDO AL SANSANITO POKEMON. QUE DESEA HACER?\n"
@@ -288,7 +293,7 @@ def main():
 			estado = input("Ingrese el estado. Si el pokemon no tiene estado, ingrese X: ")
 			if estado == "X":
 				estado = ""
-			fecha = input("Ingrese la fecha en formato dd-mm-yy hh:mm:ss XM (ej 06:09:2020 4:20:11 AM): ")
+			fecha = input("Ingrese la fecha en formato DD-MM-YYYY HH:MM:SS XM (ej 06-09-2020 4:20:11 AM): ")
 			submenu_flag = False
 			insertar_pokemon(nombre, hp_actual, estado, fecha)
 
@@ -322,29 +327,62 @@ def main():
 				menu2_sel = menu2.show()
 				if menu2_sel == 0:
 					maxprio_sansanito()
+					print("Ingrese X para volver al MENU PRINCIPAL.")
+					condicion = input()
+					while(condicion != "X" and condicion != "x"):
+						condicion = input()
 				# 10 con menor prioidad
 				elif menu2_sel == 1:
 					minprio_sansanito()
+					print("Ingrese X para volver al MENU PRINCIPAL.")
+					condicion = input()
+					while(condicion != "X" and condicion != "x"):
+						condicion = input()
 				# filtrado por estado
 				elif menu2_sel == 2:
-					estado = input("Ingrese un estado para filtrar los datos:")
+					print("NOTA: Estados disponibles son: Envenenado, Paralizado, Quemado, Dormido, Congelado\n")
+					estado = input("Ingrese un estado para filtrar los datos: ")
 					estado_sansanito(estado)
+					print("Ingrese X para volver al MENU PRINCIPAL.")
+					condicion = input()
+					while(condicion != "X" and condicion != "x"):
+						condicion = input()
 				# los legendarios ingresados
 				elif menu2_sel == 3:
 					legendarios_sansanito()
+					print("Ingrese X para volver al MENU PRINCIPAL.")
+					condicion = input()
+					while(condicion != "X" and condicion != "x"):
+						condicion = input()
 				# el mas antiguo
 				elif menu2_sel == 4:
 					antiguedad_sansanito()
+					print("Ingrese X para volver al MENU PRINCIPAL.")
+					condicion = input()
+					while(condicion != "X" and condicion != "x"):
+						condicion = input()
 				# pokemon mas repetido
 				elif menu2_sel == 5:
 					repetido_sansanito()
+					print("Ingrese X para volver al MENU PRINCIPAL.")
+					condicion = input()
+					while(condicion != "X" and condicion != "x"):
+						condicion = input()
 				# ordenados por prioidad
 				elif menu2_sel == 6:
 					orden = int(input("Ingrese 1 si desea el orden DESCENDIENTE, 0 en caso contrario:"))
 					if orden:
 						ordenado_sansanito("DESC")
+						print("Ingrese X para volver al MENU PRINCIPAL.")
+						condicion = input()
+						while(condicion != "X" and condicion != "x"):
+							condicion = input()
 					else:
 						ordenado_sansanito("ASC")
+						print("Ingrese X para volver al MENU PRINCIPAL.")
+						condicion = input()
+						while(condicion != "X" and condicion != "x"):
+							condicion = input()
 				elif menu2_sel == 7:
 					submenu_flag = False
 		elif main_sel == 3:
