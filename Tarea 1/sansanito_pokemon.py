@@ -4,6 +4,14 @@ from tabulate import tabulate
 import time
 from simple_term_menu import TerminalMenu
 
+'''TO DO:
+INSERT no funciona, especialmente el notpoyo que inserta datos que no estan en poyo
+creo que hay que insertar todo en 1 sola secuencia, asi que no puede haber 2 funciones
+hay problema con el trigger para el id, no funciona el self-increment
+falta el delete, read, update, create
+create debe ser una opcion en menu de terminal (pero es la misma wea)
+poblar la tabla una vez que funcione el insert'''
+
 def print_table(hdrs, fmt='psql'):
 	res = cur.fetchall()
 	print(tabulate(res, headers=hdrs, tablefmt=fmt))
@@ -49,19 +57,21 @@ def delete(nombre):
 
 #sin terminar
 #https://www.w3schools.com/sql/sql_insert_into_select.asp
-def insert_notpoyo(n, hpactual, estado, fecha):
-	prioridad = calculate_priority(n, hpactual, estado)
-	insert_notinpoyo = "INSERT INTO sansanito (hpactual, estado, ingreso, prioridad)\
-						VALUES (:0,:1,convert(DATETIME,:2, 5),:3)"
-	cur.execute([hpactual, estado, fecha, prioridad])
-	connection.commit()
+def insert_notpoyo(n, actual, e, f, prio):
+	cur.execute("""
+				INSERT INTO sansanito (hpactual, estado, prioridad)
+				VALUES (%d, '%s', %d)""" 
+				% (actual, e, prio)
+				)
+#convert(DATETIME, '%s', 5)
 
 def insert_poyodata(n):
-	insert_legend = "INSERT INTO sansanito (pokedex, nombre, tipo1, tipo2, hpmax, legendary)\
-							SELECT () FROM poyo\
-							WHERE nombre={}".format(n)
-	cur.execute(insert_legend)
-	connection.commit()
+	cur.execute("""
+				INSERT INTO sansanito (pokedex, nombre, tipo1, tipo2, hpmax, legendary)
+				SELECT pokedex,  FROM poyo
+				WHERE nombre='%s'""" % (n))
+
+#hdrs_poyo = ['pokedex', 'nombre', 'type1', 'type2', 'hptotal', 'legendary']
 
 def calculate_priority(n, hpactual, estado):
 	cur.execute("""SELECT hptotal FROM poyo WHERE nombre='%s'""" % (n))
@@ -81,17 +91,32 @@ def insertar_pokemon(n, hpactual, estado, fecha):
 			WHERE ROWNUM <= 1
 			ORDER BY ASC """ % (tipo[0][0])
 
-	normales = "SELECT COUNT(*) FROM sansanito WHERE legendary=0"
-	legendarios = "SELECT COUNT(*) FROM sansanito WHERE legendary=1" 
-	total_registros =  normales + 5 * legendarios
+	cur.execute("""SELECT COUNT(*) FROM sansanito WHERE legendary=0""")
+	normales = cur.fetchall()
+
+	print("Cantidad de normales en la tabla sansanito es:", normales)
+
+	cur.execute("""SELECT COUNT(*) FROM sansanito WHERE legendary=1""")
+	legendarios = cur.fetchall()
+
+	print("Cantidad de legendarios en la tabla sansanito es:", legendarios)
+
+	total_registros =  normales[0][0] + 5 * legendarios[0][0]
+
+	print("total de registros en la tabla sansanito es:", total_registros)
+
 	prioridad = calculate_priority(n, hpactual, estado)
 
+	print("prioridad de", n, "es", prioridad)
+
 	#legenadrio
-	if tipo:
+	if tipo[0][0]:
 		#caso 1 - quepa 
+		print("Es un legenadrio y quepa!")
 		if total_registros + 5 <= 50:
-			insert_notpoyo(n, hpactual, estado, fecha)
-			insert_poyodata(n)		
+			insert_notpoyo(n, hpactual, estado, fecha, prioridad)
+			#insert_poyodata(n)
+			print_sansanito(hdrs_sansanito)		
 		else:
 			#no quepa
 			cur.execute(lowest)
@@ -244,6 +269,7 @@ def ctable_sansanito():
 				ingreso DATE,\
 				prioridad INT)"
 				)
+	
 	cur.execute("DROP SEQUENCE SANS_SEQ")
 	cur.execute("CREATE SEQUENCE SANS_SEQ")
 	cur.execute("CREATE OR REPLACE TRIGGER SANS_TRG\
