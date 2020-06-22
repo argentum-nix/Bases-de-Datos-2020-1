@@ -17,6 +17,7 @@ def print_sansanito():
 	ssn = "SELECT * FROM sansanito"
 	cur.execute(ssn)
 	print_table(hdrs_sansanito)
+
 #CRUD
 #CREATE - hace insercion de registro
 def create():
@@ -39,10 +40,10 @@ def update():
 
 #DELETE - borra la fila con WHERE especifico
 def delete(nombre):
-	delete_query = "DELETE FROM sansanito\
-					WHERE nombre={}".format(nombre)
-	cur.execute(delete_query)
-	connection.commit()
+	cur.execute("""
+				DELETE FROM sansanito\
+				WHERE nombre='%s'""" % (nombre)
+				)
 	
 #Query
 
@@ -63,19 +64,22 @@ def insert_poyodata(n):
 	connection.commit()
 
 def calculate_priority(n, hpactual, estado):
-	hptotal = "SELECT hptotal FROM sansanito WHERE nombre={}".format(n)
-	prioridad = hptotal - hpactual + bool(estado) * 10
+	cur.execute("""SELECT hptotal FROM poyo WHERE nombre='%s'""" % (n))
+	hptotal = cur.fetchall()
+	prioridad = hptotal[0][0] - hpactual + bool(estado) * 10
+	#print(n, "tiene hptotal = ", hptotal[0][0], "y actual", hpactual, "con estado", estado, "y prioridad", prioridad)
 	return prioridad
 
-
+#se asume que nunca se ingresara hpactual mayor que el hptotal
 def insertar_pokemon(n, hpactual, estado, fecha):
-	print(n)
-	tipo = "SELECT legendary FROM sansanito WHERE nombre = {}".format(n)
-	cur.execute(tipo)
-	lowest = "SELECT nombre, prioridad\
-			FROM sansanito\
-			WHERE legendary={}\
-			ORDER BY ASC WHERE ROWNUM <= 1".format(tipo)
+	cur.execute("""SELECT legendary FROM poyo WHERE nombre = '%s'""" % (n))
+	tipo = cur.fetchall()
+	print("Fecthall da", tipo)
+	lowest = """SELECT nombre, prioridad
+			FROM sansanito
+			WHERE legendary=%d
+			WHERE ROWNUM <= 1
+			ORDER BY ASC """ % (tipo[0][0])
 
 	normales = "SELECT COUNT(*) FROM sansanito WHERE legendary=0"
 	legendarios = "SELECT COUNT(*) FROM sansanito WHERE legendary=1" 
@@ -121,7 +125,7 @@ def maxprio_sansanito():
 				"""
 				)
 	res = cur.fetchall()
-	print_table(hdrs_sansanito)
+	print_table([hdrs_sansanito[2],hdrs_sansanito[-1]])
 
 # Los 10 pokemon con menor prioridad
 def minprio_sansanito():
@@ -132,15 +136,16 @@ def minprio_sansanito():
 				ORDER BY prioridad ASC
 				""")
 	res = cur.fetchall()
-	print_table(hdrs_sansanito)
+	print_table([hdrs_sansanito[2],hdrs_sansanito[-1]])
 
 #los de estado especifico
 def estado_sansanito(estado):
 	cur.execute("""SELECT nombre
 				FROM sansanito
-				WHERE estado = %s""" % (estado))
+				WHERE estado = '%s'""" % (estado)
+				)
 	res = cur.fetchall()
-	print_table(hdrs_sansanito)
+	print_table([hdrs_sansanito[2],hdrs_sansanito[8]])
 
 #los legendarios
 def legendarios_sansanito():
@@ -150,7 +155,7 @@ def legendarios_sansanito():
 				WHERE legendary = 1
 				""")
 	res = cur.fetchall()
-	print_table(hdrs_sansanito)
+	print_table([hdrs_sansanito[2],hdrs_sansanito[-4]])
 
 #el mas antiguo
 def antiguedad_sansanito():
@@ -161,16 +166,16 @@ def antiguedad_sansanito():
 				ORDER BY ingreso DESC
 				""")
 	res = cur.fetchall()
-	print_table(hdrs_sansanito)
+	print_table([hdrs_sansanito[2], hdrs_sansanito[-2]])
 
 #el mas repetido
 def repetido_sansanito():
 	cur.execute("""
 				SELECT nombre
-				COUNT(nombre) AS repetido_sansanito
 				FROM sansanito
 				WHERE ROWNUM <= 1
-				ORDER BY repetido_sansanito DESC
+				GROUP BY nombre
+				ORDER BY COUNT(*) DESC
 				""")
 	res = cur.fetchall()
 	print_table(hdrs_sansanito)
@@ -179,7 +184,7 @@ def ordenado_sansanito(orden):
 	cur.execute("""
 				SELECT nombre, hpactual, hpmax, prioridad
 				FROM sansanito
-				ORDER BY prioridad {}""".format(orden)
+				ORDER BY prioridad %s""" % (orden)
 				)
 	res = cur.fetchall()
 	print_table(hdrs_sansanito)
@@ -239,7 +244,7 @@ def ctable_sansanito():
 				ingreso DATE,\
 				prioridad INT)"
 				)
-	#cur.execute("DROP SEQUENCE SANS_SEQ")
+	cur.execute("DROP SEQUENCE SANS_SEQ")
 	cur.execute("CREATE SEQUENCE SANS_SEQ")
 	cur.execute("CREATE OR REPLACE TRIGGER SANS_TRG\
 				BEFORE INSERT ON sansanito\
@@ -370,7 +375,7 @@ def main():
 						condicion = input()
 				# ordenados por prioidad
 				elif menu2_sel == 6:
-					orden = int(input("Ingrese 1 si desea el orden DESCENDIENTE, 0 en caso contrario:"))
+					orden = int(input("Ingrese 1 si desea el orden DESCENDIENTE, 0 en caso contrario: "))
 					if orden:
 						ordenado_sansanito("DESC")
 						print("Ingrese X para volver al MENU PRINCIPAL.")
@@ -424,6 +429,8 @@ if __name__ == "__main__":
 	ctable_poyos()
 	print(">>>OK")
 	print("Montando el edificio de Sansanito Pokemon...")
+	print(">>>OK")
+	print("Poblando Sansanito Pokemon...")
 	ctable_sansanito()
 	print(">>>OK")
 	print("Entrando al Sansanito Pokemon...")
