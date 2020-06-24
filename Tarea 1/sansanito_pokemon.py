@@ -57,21 +57,29 @@ def delete(nombre):
 
 #sin terminar
 #https://www.w3schools.com/sql/sql_insert_into_select.asp
-def insert_notpoyo(n, actual, e, f, prio):
+def insert_aux(n, actual, e, f, prio):
 	cur.execute("""
-				INSERT INTO sansanito (hpactual, estado, prioridad)
-				VALUES (%d, '%s', %d)""" 
-				% (actual, e, prio)
+				SELECT pokedex, type1, type2, hptotal, legendary 
+				FROM poyo
+				WHERE nombre = '%s'""" % (n)
 				)
+	data_poyo = cur.fetchall() #lista con tupla [(pokedex, tipo1, tipo2, hptotal, legendary)]
+	#saco la primera tupla
+	data_poyo = data_poyo[0]
+	#desempaqueto la tupla
+	pokedex, t1, t2, total, l = data_poyo
+	cur.execute("""
+				INSERT INTO sansanito (pokedex, nombre, type1, type2, hpactual, hpmax, legendary, estado, prioridad)
+				VALUES (%d, '%s', '%s', '%s', %d, %d, %d, '%s', %d)""" 
+				% (pokedex, n, t1, t2, actual, total, l, e, prio)
+				)
+				
+
 #convert(DATETIME, '%s', 5)
 
-def insert_poyodata(n):
-	cur.execute("""
-				INSERT INTO sansanito (pokedex, nombre, tipo1, tipo2, hpmax, legendary)
-				SELECT pokedex,  FROM poyo
-				WHERE nombre='%s'""" % (n))
 
 #hdrs_poyo = ['pokedex', 'nombre', 'type1', 'type2', 'hptotal', 'legendary']
+#hdrs_sansanito = ['id', 'pokedex', 'nombre', 'type1','type2', 'hpactual', 'hptotal','legendary', 'estado', 'ingreso', 'prioridad']
 
 def calculate_priority(n, hpactual, estado):
 	cur.execute("""SELECT hptotal FROM poyo WHERE nombre='%s'""" % (n))
@@ -114,9 +122,8 @@ def insertar_pokemon(n, hpactual, estado, fecha):
 		#caso 1 - quepa 
 		print("Es un legenadrio y quepa!")
 		if total_registros + 5 <= 50:
-			insert_notpoyo(n, hpactual, estado, fecha, prioridad)
-			#insert_poyodata(n)
-			print_sansanito(hdrs_sansanito)		
+			insert_aux(n, hpactual, estado, fecha, prioridad)
+			print_sansanito()		
 		else:
 			#no quepa
 			cur.execute(lowest)
@@ -128,8 +135,8 @@ def insertar_pokemon(n, hpactual, estado, fecha):
 	else:
 		#caso 1 - quepa 
 		if total_registros + 1 <= 50:
-			insert_notpoyo(n, hpactual, estado, fecha)
-			insert_poyodata(n)	
+			insert_aux(n, hpactual, estado, fecha, prioridad)
+			print_sansanito()	
 		else:
 			# no quepa
 			cur.execute(lowest)
@@ -256,8 +263,9 @@ def ctable_poyos(archive="pokemon."):
 def ctable_sansanito():
 	cur.execute("DROP TABLE sansanito")
 
+	#ID debe ser NOT NULL PRIMARY KEY
 	cur.execute("CREATE TABLE sansanito (\
-				id NUMBER NOT NULL PRIMARY KEY,\
+				id NUMBER,\
 				pokedex INT,\
 				nombre VARCHAR(40),\
 				type1 VARCHAR(20),\
@@ -269,7 +277,7 @@ def ctable_sansanito():
 				ingreso DATE,\
 				prioridad INT)"
 				)
-	
+	'''
 	cur.execute("DROP SEQUENCE SANS_SEQ")
 	cur.execute("CREATE SEQUENCE SANS_SEQ")
 	cur.execute("CREATE OR REPLACE TRIGGER SANS_TRG\
@@ -281,6 +289,7 @@ def ctable_sansanito():
 				FROM dual\
 				END"
 				)
+	'''
 	connection.commit()
 	print_sansanito()
 
@@ -294,7 +303,7 @@ def ctable_sansanito():
 #Headers globales
 hdrs_poyo = ['pokedex', 'nombre', 'type1', 'type2', 'hptotal', 'legendary']
 hdrs_sansanito = ['id', 'pokedex', 'nombre', 'type1',\
-				'type2', 'hpactual', 'hptotal',\
+				'type2', 'hpactual', 'hpmax',\
 				'legendary', 'estado', 'ingreso', 'prioridad']
 
 def main():
@@ -323,7 +332,7 @@ def main():
 			hp_actual = int(input("Ingrese HP actual de pokemon: "))
 			estado = input("Ingrese el estado. Si el pokemon no tiene estado, ingrese X: ")
 			if estado == "X":
-				estado = ""
+				estado = None
 			fecha = input("Ingrese la fecha en formato DD-MM-YYYY HH:MM:SS XM (ej 06-09-2020 4:20:11 AM): ")
 			submenu_flag = False
 			insertar_pokemon(nombre, hp_actual, estado, fecha)
