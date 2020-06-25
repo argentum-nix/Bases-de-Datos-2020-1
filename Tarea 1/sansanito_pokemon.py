@@ -5,12 +5,17 @@ import time
 from simple_term_menu import TerminalMenu
 
 '''TO DO:
-INSERT no funciona, especialmente el notpoyo que inserta datos que no estan en poyo
-creo que hay que insertar todo en 1 sola secuencia, asi que no puede haber 2 funciones
-hay problema con el trigger para el id, no funciona el self-increment
-falta el delete, read, update, create
-create debe ser una opcion en menu de terminal (pero es la misma wea)
-poblar la tabla una vez que funcione el insert'''
+Insertar el ID (secuencia con trigger)
+agregar create al menu, que sea lo mismo que el insert (literal if option ==1 or 2...)
+poblar la tabla una vez que funcione el insert con random
+la query de conteo no parece funcionar
+la de fecha de ingreso tampoco
+en update tengo que re-calcular la prioridad (llamar a la funcion calcular prioridad)
+quiza agregar casos de que estado debe estar en lista de estados para pillar errores?
+1 trigger
+1 view
+comentar todo todillo
+'''
 
 def print_table(hdrs, fmt='psql'):
 	res = cur.fetchall()
@@ -69,7 +74,7 @@ def insert_aux(n, actual, e, f, prio):
 	cur.execute("""
 				INSERT INTO sansanito (pokedex, nombre, type1, type2, hpactual, hpmax, legendary, estado, ingreso, prioridad)
 				VALUES (%d, '%s', '%s', '%s', %d, %d, %d, '%s', to_date('%s', 'DD/MM/YY HH:MI'), %d)""" 
-				% (pokedex, n, t1, t2, actual, total, l, e, f, prio)
+				%  (pokedex, n, t1, t2, actual, total, l, e, f, prio)
 				)
 				
 
@@ -257,7 +262,7 @@ def ctable_sansanito():
 
 	#ID debe ser NOT NULL PRIMARY KEY
 	cur.execute("CREATE TABLE sansanito (\
-				id NUMBER,\
+				id INT,\
 				pokedex INT,\
 				nombre VARCHAR(40),\
 				type1 VARCHAR(20),\
