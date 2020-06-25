@@ -55,8 +55,6 @@ def delete(nombre):
 	
 #Query
 
-#sin terminar
-#https://www.w3schools.com/sql/sql_insert_into_select.asp
 def insert_aux(n, actual, e, f, prio):
 	cur.execute("""
 				SELECT pokedex, type1, type2, hptotal, legendary 
@@ -84,11 +82,16 @@ def insert_aux(n, actual, e, f, prio):
 def calculate_priority(n, hpactual, estado):
 	cur.execute("""SELECT hptotal FROM poyo WHERE nombre='%s'""" % (n))
 	hptotal = cur.fetchall()
+	# a pesar de que se dice que datos que ingresaran seran los correctos
+	# agrego el condicional...
+	if hptotal[0][0] < hpactual:
+		print("Datos de hp actual inconsistentes con el hp maximo. Intente de nuevo.")
+		print("Devolviendo al menu principal...")
+		time.sleep(3)
+		return
 	prioridad = hptotal[0][0] - hpactual + bool(estado) * 10
-	#print(n, "tiene hptotal = ", hptotal[0][0], "y actual", hpactual, "con estado", estado, "y prioridad", prioridad)
 	return prioridad
 
-#se asume que nunca se ingresara hpactual mayor que el hptotal
 def insertar_pokemon(n, hpactual, estado, fecha):
 	cur.execute("""SELECT legendary FROM poyo WHERE nombre = '%s'""" % (n))
 	tipo = cur.fetchall()
@@ -136,6 +139,7 @@ def insertar_pokemon(n, hpactual, estado, fecha):
 			res = cur.fetchall()
 			prio_lowest = res[0][1]
 			nom_lowest = res[0][0]
+			# en caso de que sea igual, ignorar y dejar el que estaba
 			if prioridad > prio_lowest:
 				nombre = nom_lowest
 				delete(nombre)
@@ -163,7 +167,7 @@ def minprio_sansanito():
 				""")
 	print_table([hdrs_sansanito[2],hdrs_sansanito[-1]])
 
-#los de estado especifico
+#los de estado especifico, incluyendo los None 
 def estado_sansanito(estado):
 	cur.execute("""SELECT nombre
 				FROM sansanito
