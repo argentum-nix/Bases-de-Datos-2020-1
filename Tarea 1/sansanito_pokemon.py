@@ -67,9 +67,9 @@ def insert_aux(n, actual, e, f, prio):
 	#desempaqueto la tupla
 	pokedex, t1, t2, total, l = data_poyo
 	cur.execute("""
-				INSERT INTO sansanito (pokedex, nombre, type1, type2, hpactual, hpmax, legendary, estado, prioridad)
-				VALUES (%d, '%s', '%s', '%s', %d, %d, %d, '%s', %d)""" 
-				% (pokedex, n, t1, t2, actual, total, l, e, prio)
+				INSERT INTO sansanito (pokedex, nombre, type1, type2, hpactual, hpmax, legendary, estado, ingreso, prioridad)
+				VALUES (%d, '%s', '%s', '%s', %d, %d, %d, '%s', to_date('%s', 'DD/MM/YY HH:MI'), %d)""" 
+				% (pokedex, n, t1, t2, actual, total, l, e, f, prio)
 				)
 				
 
@@ -325,7 +325,7 @@ def main():
 			estado = input("Ingrese el estado. Si el pokemon no tiene estado, ingrese X: ")
 			if estado.upper() == "X":
 				estado = None
-			fecha = input("Ingrese la fecha en formato DD-MM-YYYY HH:MM:SS XM (ej 06-09-2020 4:20:11 AM): ")
+			fecha = input("Ingrese la fecha en formato DD/MM/YY HH:MM (ej 06/09/20 4:20): ")
 			submenu_flag = False
 			insertar_pokemon(nombre, hp_actual, estado, fecha)
 
