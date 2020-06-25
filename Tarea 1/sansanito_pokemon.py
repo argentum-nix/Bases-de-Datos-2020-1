@@ -92,6 +92,11 @@ def calculate_priority(n, hpactual, estado):
 def insertar_pokemon(n, hpactual, estado, fecha):
 	cur.execute("""SELECT legendary FROM poyo WHERE nombre = '%s'""" % (n))
 	tipo = cur.fetchall()
+	if tipo == []: #no se encontro que es legenadario, ergo el pkm no existe
+		print("Revise su pokedex - el pokemon ingresado no existe.")
+		print("Devolviendo al menu principal...")
+		time.sleep(3)
+		return
 	print("Fecthall da", tipo)
 	lowest = """SELECT nombre, prioridad
 			FROM sansanito
@@ -156,7 +161,6 @@ def maxprio_sansanito():
 				ORDER BY prioridad DESC
 				"""
 				)
-	res = cur.fetchall()
 	print_table([hdrs_sansanito[2],hdrs_sansanito[-1]])
 
 # Los 10 pokemon con menor prioridad
@@ -167,7 +171,6 @@ def minprio_sansanito():
 				WHERE ROWNUM <= 10
 				ORDER BY prioridad ASC
 				""")
-	res = cur.fetchall()
 	print_table([hdrs_sansanito[2],hdrs_sansanito[-1]])
 
 #los de estado especifico
@@ -176,7 +179,6 @@ def estado_sansanito(estado):
 				FROM sansanito
 				WHERE estado = '%s'""" % (estado)
 				)
-	res = cur.fetchall()
 	print_table([hdrs_sansanito[2],hdrs_sansanito[8]])
 
 #los legendarios
@@ -186,7 +188,6 @@ def legendarios_sansanito():
 				FROM sansanito
 				WHERE legendary = 1
 				""")
-	res = cur.fetchall()
 	print_table([hdrs_sansanito[2],hdrs_sansanito[-4]])
 
 #el mas antiguo
@@ -197,7 +198,6 @@ def antiguedad_sansanito():
 				WHERE ROWNUM <= 1
 				ORDER BY ingreso DESC
 				""")
-	res = cur.fetchall()
 	print_table([hdrs_sansanito[2], hdrs_sansanito[-2]])
 
 #el mas repetido
@@ -209,7 +209,6 @@ def repetido_sansanito():
 				GROUP BY nombre
 				ORDER BY COUNT(*) DESC
 				""")
-	res = cur.fetchall()
 	print_table(hdrs_sansanito)
 
 def ordenado_sansanito(orden):
@@ -218,7 +217,6 @@ def ordenado_sansanito(orden):
 				FROM sansanito
 				ORDER BY prioridad %s""" % (orden)
 				)
-	res = cur.fetchall()
 	print_table(hdrs_sansanito)
 
 #==================================================QUERIES================================================================
@@ -331,7 +329,7 @@ def main():
 			nombre = input("Ingrese el nombre de pokemon: ")
 			hp_actual = int(input("Ingrese HP actual de pokemon: "))
 			estado = input("Ingrese el estado. Si el pokemon no tiene estado, ingrese X: ")
-			if estado == "X":
+			if estado.upper() == "X":
 				estado = None
 			fecha = input("Ingrese la fecha en formato DD-MM-YYYY HH:MM:SS XM (ej 06-09-2020 4:20:11 AM): ")
 			submenu_flag = False
@@ -380,8 +378,11 @@ def main():
 						condicion = input()
 				# filtrado por estado
 				elif menu2_sel == 2:
-					print("NOTA: Estados disponibles son: Envenenado, Paralizado, Quemado, Dormido, Congelado\n")
+					print("NOTA: Estados disponibles son: Envenenado, Paralizado, Quemado, Dormido, Congelado")
+					print("Para ver pokemons sin estado, ingrese X.\n")
 					estado = input("Ingrese un estado para filtrar los datos: ")
+					if estado.upper() == "X":
+						estado = None
 					estado_sansanito(estado)
 					print("Ingrese X para volver al MENU PRINCIPAL.")
 					condicion = input()
@@ -440,18 +441,18 @@ def main():
 			print_poyo()
 			print("Ingrese X para volver al MENU PRINCIPAL.")
 			condicion = input()
-			while(condicion != "X" and condicion != "x"):
+			while(condicion.upper() != "X"):
 				condicion = input()
 		#muestra la tabla de sansanito, tanto tiempo como lo quiere el usuario	
 		elif main_sel == 5:
 			print_sansanito()
 			print("Ingrese X para volver al MENU PRINCIPAL.")
 			condicion = input()
-			while(condicion != "X" and condicion != "x"):
+			while(condicion.upper() != "X"):
 				condicion = input()
 		#saliendo, quiero dropear todas las secuencias
 		elif main_sel == 6:
-			cur.execute("DROP SEQUENCE SANS_SEQ")
+			#cur.execute("DROP SEQUENCE SANS_SEQ")
 			main_menu_exit = True
 
 
