@@ -97,45 +97,33 @@ def insertar_pokemon(n, hpactual, estado, fecha):
 		print("Devolviendo al menu principal...")
 		time.sleep(3)
 		return
-	print("Fecthall da", tipo)
 	lowest = """SELECT nombre, prioridad
 			FROM sansanito
 			WHERE legendary=%d
-			WHERE ROWNUM <= 1
-			ORDER BY ASC """ % (tipo[0][0])
+			WHERE ROWNUM = 1 
+			ORDER BY prioridad ASC """ % (tipo[0][0])
 
 	cur.execute("""SELECT COUNT(*) FROM sansanito WHERE legendary=0""")
 	normales = cur.fetchall()
-
-	print("Cantidad de normales en la tabla sansanito es:", normales)
-
 	cur.execute("""SELECT COUNT(*) FROM sansanito WHERE legendary=1""")
 	legendarios = cur.fetchall()
-
-	print("Cantidad de legendarios en la tabla sansanito es:", legendarios)
-
 	total_registros =  normales[0][0] + 5 * legendarios[0][0]
-
-	print("total de registros en la tabla sansanito es:", total_registros)
-
 	prioridad = calculate_priority(n, hpactual, estado)
-
-	print("prioridad de", n, "es", prioridad)
-
 	#legenadrio
 	if tipo[0][0]:
 		#caso 1 - quepa 
-		print("Es un legenadrio y quepa!")
 		if total_registros + 5 <= 50:
 			insert_aux(n, hpactual, estado, fecha, prioridad)
 			print_sansanito()		
 		else:
 			#no quepa
 			cur.execute(lowest)
-			res = cur.fetchall(lowest)
+			res = cur.fetchall()
+			prio_lowest = res[0][1]
+			nom_lowest = res[0][0]
 			# en caso de que sea igual, ignorar y dejar el que estaba
-			if prioridad > res[1]:
-				nombre = res[0]
+			if prioridad > prio_lowest:
+				nombre = nom_lowest
 				delete(nombre)
 	else:
 		#caso 1 - quepa 
@@ -145,9 +133,11 @@ def insertar_pokemon(n, hpactual, estado, fecha):
 		else:
 			# no quepa
 			cur.execute(lowest)
-			res = cur.fetchall(lowest)
-			if prioridad > res[1]:
-				nombre = res[0]
+			res = cur.fetchall()
+			prio_lowest = res[0][1]
+			nom_lowest = res[0][0]
+			if prioridad > prio_lowest:
+				nombre = nom_lowest
 				delete(nombre)
 
 #==================================================QUERIES================================================================
