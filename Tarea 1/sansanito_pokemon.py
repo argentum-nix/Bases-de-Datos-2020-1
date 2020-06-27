@@ -5,7 +5,6 @@ import time
 from simple_term_menu import TerminalMenu
 
 '''TO DO:
-Insertar el ID (secuencia con trigger)
 agregar create al menu, que sea lo mismo que el insert (literal if option ==1 or 2...)
 poblar la tabla una vez que funcione el insert con random
 la query de conteo no parece funcionar
@@ -259,34 +258,38 @@ def ctable_poyos(archive="pokemon."):
 #===================================================CREAR TABLA SANSANITO=================================================
 def ctable_sansanito():
 	cur.execute("DROP TABLE sansanito")
+	cur.execute("""
+				CREATE TABLE sansanito(
+				id NUMBER NOT NULL PRIMARY KEY,
+				pokedex INT,
+				nombre VARCHAR(40),
+				type1 VARCHAR(20),
+				type2 VARCHAR(20),
+				hpactual INT,
+				hpmax INT,
+				legendary  NUMBER(1),
+				estado VARCHAR(30),
+				ingreso DATE,
+				prioridad INT)"""
+				)
+	
+	# Como Oracle 11g no posee valor autoincrementable (existe desde 12C)
+	# El trigger se encarga de ello.
+	cur.execute("""	
+				CREATE SEQUENCE SANS_SEQ
+				START WITH 1""")
 
-	#ID debe ser NOT NULL PRIMARY KEY
-	cur.execute("CREATE TABLE sansanito (\
-				id INT,\
-				pokedex INT,\
-				nombre VARCHAR(40),\
-				type1 VARCHAR(20),\
-				type2 VARCHAR(20),\
-				hpactual INT,\
-				hpmax INT,\
-				legendary  NUMBER(1),\
-				estado VARCHAR(30),\
-				ingreso DATE,\
-				prioridad INT)"
+	cur.execute("""CREATE OR REPLACE TRIGGER SANS_TRG
+				BEFORE INSERT ON sansanito
+				FOR EACH ROW
+				BEGIN
+				SELECT SANS_SEQ.NEXTVAL
+				INTO :new.id
+				FROM dual;
+				END;
+				"""
 				)
-	'''
-	cur.execute("DROP SEQUENCE SANS_SEQ")
-	cur.execute("CREATE SEQUENCE SANS_SEQ")
-	cur.execute("CREATE OR REPLACE TRIGGER SANS_TRG\
-				BEFORE INSERT ON sansanito\
-				FOR EACH ROW\
-				BEGIN\
-				SELECT SANS_SEQ.NEXTVAL\
-				INTO :new.id\
-				FROM dual\
-				END"
-				)
-	'''
+	
 	connection.commit()
 	print_sansanito()
 
@@ -451,7 +454,7 @@ def main():
 				condicion = input()
 		#saliendo, quiero dropear todas las secuencias
 		elif main_sel == 6:
-			#cur.execute("DROP SEQUENCE SANS_SEQ")
+			cur.execute("DROP SEQUENCE SANS_SEQ")
 			main_menu_exit = True
 
 
