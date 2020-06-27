@@ -3,15 +3,19 @@ import pandas
 from tabulate import tabulate
 import time
 from simple_term_menu import TerminalMenu
+from random import choice, randint
 
 '''TO DO:
-poblar la tabla una vez que funcione el insert con random
-la query de conteo no parece funcionar
-la de fecha de ingreso tampoco
+generar la fecha random al poblar la tabla
+ahora no es posible ver el estado None y no puedo buscar por el None
+
 en update tengo que re-calcular la prioridad (llamar a la funcion calcular prioridad)
 quiza agregar casos de que estado debe estar en lista de estados para pillar errores?
+falta read
+falta delete - ver que hago en caso de multiples repeticiones de mismo pokemon
 1 trigger
 1 view
+insert para legendarios - no puede haber mas que un legendario de mismo nombre
 comentar todo todillo
 '''
 
@@ -46,44 +50,44 @@ def read():
 #UPDATE - cambia el registro usando su PK con un WHERE
 def update():
 	# solo modifica hpactual, estado
-	# de hecho tendre que preguntar si con eso se modifica la Prio pues es funcion de hp y weas
+	# se recacula la prioridad
 	print("hola")
 
 #DELETE - borra la fila con WHERE especifico
 def delete(nombre):
-	cur.execute("""
-				DELETE FROM sansanito\
-				WHERE nombre='%s'""" % (nombre)
-				)
-	
+	print("SE BORRARA EL REGISTRO DE", nombre)
+	del_query = """
+				DELETE FROM sansanito
+				WHERE nombre= :1"""
+	cur.execute(hptot_query, [nombre])
+
 #Query
 
 def insert_aux(n, actual, e, f, prio):
-	cur.execute("""
+	poyo_datos = """
 				SELECT pokedex, type1, type2, hptotal, legendary 
-				FROM poyo
-				WHERE nombre = '%s'""" % (n)
-				)
+				FROM poyos
+				WHERE nombre = :1"""
+	cur.execute(poyo_datos, [n])
 	data_poyo = cur.fetchall() #lista con tupla [(pokedex, tipo1, tipo2, hptotal, legendary)]
 	#saco la primera tupla
 	data_poyo = data_poyo[0]
 	#desempaqueto la tupla
 	pokedex, t1, t2, total, l = data_poyo
-	cur.execute("""
+	ins_query = """
 				INSERT INTO sansanito (pokedex, nombre, type1, type2, hpactual, hpmax, legendary, estado, ingreso, prioridad)
-				VALUES (%d, '%s', '%s', '%s', %d, %d, %d, '%s', to_date('%s', 'DD/MM/YY HH:MI'), %d)""" 
-				%  (pokedex, n, t1, t2, actual, total, l, e, f, prio)
-				)
+				VALUES (:1, :2, :3, :4, :5, :6, :7, :8, to_date(:9, 'DD/MM/YY HH:MI'), :10)""" 
 				
-
-#convert(DATETIME, '%s', 5)
+	cur.execute(ins_query, [pokedex, n, t1, t2, actual, total, l, e, f, prio])
+				
 
 
 #hdrs_poyo = ['pokedex', 'nombre', 'type1', 'type2', 'hptotal', 'legendary']
 #hdrs_sansanito = ['id', 'pokedex', 'nombre', 'type1','type2', 'hpactual', 'hptotal','legendary', 'estado', 'ingreso', 'prioridad']
 
 def calculate_priority(n, hpactual, estado):
-	cur.execute("""SELECT hptotal FROM poyo WHERE nombre='%s'""" % (n))
+	hptotal_query =  """SELECT hptotal FROM poyo WHERE nombre = :1""" 
+	cur.execute(hptotal_query, [n])
 	hptotal = cur.fetchall()
 	# a pesar de que se dice que datos que ingresaran seran los correctos
 	# agrego el condicional...
@@ -96,7 +100,8 @@ def calculate_priority(n, hpactual, estado):
 	return prioridad
 
 def insertar_pokemon(n, hpactual, estado, fecha):
-	cur.execute("""SELECT legendary FROM poyo WHERE nombre = '%s'""" % (n))
+	leg_query  = """SELECT legendary FROM poyo WHERE nombre = :1"""
+	cur.execute(leg_query, [n])
 	tipo = cur.fetchall()
 	if tipo == []: #no se encontro que es legenadario, ergo el pkm no existe
 		print("Revise su pokedex - el pokemon ingresado no existe.")
@@ -105,8 +110,7 @@ def insertar_pokemon(n, hpactual, estado, fecha):
 		return
 	lowest = """SELECT nombre, prioridad
 			FROM sansanito
-			WHERE legendary=%d
-			WHERE ROWNUM = 1 
+			WHERE legendary=%d AND ROWNUM = 1 
 			ORDER BY prioridad ASC """ % (tipo[0][0])
 
 	cur.execute("""SELECT COUNT(*) FROM sansanito WHERE legendary=0""")
@@ -129,8 +133,7 @@ def insertar_pokemon(n, hpactual, estado, fecha):
 			nom_lowest = res[0][0]
 			# en caso de que sea igual, ignorar y dejar el que estaba
 			if prioridad > prio_lowest:
-				nombre = nom_lowest
-				delete(nombre)
+				delete(nom_lowest)
 	else:
 		#caso 1 - quepa 
 		if total_registros + 1 <= 50:
@@ -144,29 +147,31 @@ def insertar_pokemon(n, hpactual, estado, fecha):
 			nom_lowest = res[0][0]
 			# en caso de que sea igual, ignorar y dejar el que estaba
 			if prioridad > prio_lowest:
-				nombre = nom_lowest
-				delete(nombre)
+				delete(nom_lowest)
 
 #==================================================QUERIES================================================================
 #LIMIT X no funciona en 11g, asi que se uso WHERE ROWNUM <=  / = X
 # Los 10 pokemon con mayor prioridad
 def maxprio_sansanito():
 	cur.execute("""
-				SELECT nombre, prioridad
+				SELECT * FROM
+				(SELECT nombre, prioridad
 				FROM sansanito
+				ORDER BY prioridad DESC)
 				WHERE ROWNUM <= 10
-				ORDER BY prioridad DESC
 				"""
 				)
+
 	print_table([hdrs_sansanito[2],hdrs_sansanito[-1]])
 
 # Los 10 pokemon con menor prioridad
 def minprio_sansanito():
 	cur.execute("""
-				SELECT nombre, prioridad
+				SELECT * FROM
+				(SELECT nombre, prioridad
 				FROM sansanito
+				ORDER BY prioridad ASC)
 				WHERE ROWNUM <= 10
-				ORDER BY prioridad ASC
 				""")
 	print_table([hdrs_sansanito[2],hdrs_sansanito[-1]])
 
@@ -190,21 +195,23 @@ def legendarios_sansanito():
 #el mas antiguo
 def antiguedad_sansanito():
 	cur.execute("""
-				SELECT nombre
+				SELECT * FROM
+				(SELECT nombre
 				FROM sansanito
+				ORDER BY ingreso ASC)
 				WHERE ROWNUM <= 1
-				ORDER BY ingreso DESC
 				""")
 	print_table([hdrs_sansanito[2], hdrs_sansanito[-2]])
 
 #el mas repetido
 def repetido_sansanito():
 	cur.execute("""
-				SELECT nombre
+				SELECT * FROM
+				(SELECT nombre
 				FROM sansanito
-				WHERE ROWNUM <= 1
 				GROUP BY nombre
-				ORDER BY COUNT(*) DESC
+				ORDER BY COUNT(*) DESC)
+				WHERE ROWNUM <= 1
 				""")
 	print_table(hdrs_sansanito)
 
@@ -249,7 +256,6 @@ def ctable_poyos(archive="pokemon."):
 		row_pkmn = [int(d[0]), d[1], d[2], t2, int(d[4]), bln]
 		cur.execute(add_row_pkmn, row_pkmn)
 		connection.commit()
-	#print_poyo()
 
 #===================================================CREAR TABLA POYO======================================================
 
@@ -290,10 +296,33 @@ def ctable_sansanito():
 				)
 	
 	connection.commit()
-	print_sansanito()
 
 
 #===================================================CREAR TABLA SANSANITO=================================================
+def poblar_sansanito(n):
+	cur.execute("""
+				SELECT nombre
+				FROM poyo""")
+	nombres = cur.fetchall() #una lista de nombres, super grande
+	for i in range(n):
+		nombre_elegido = choice(nombres)[0] #elige nombre random de pokemon, pero existente
+		print(nombre_elegido)
+		estado = choice(estados_permitidos) #elige estado incluyendo el None
+		hptot_query = """
+					SELECT hptotal
+					FROM poyo
+					WHERE nombre = :1"""
+		cur.execute(hptot_query, [nombre_elegido])
+		hpmax = cur.fetchall()
+		print(hpmax)
+		hpactual = randint(0, hpmax[0][0]) #genera hpactual que no sea mayor que hpmax
+		insertar_pokemon(nombre_elegido,hpactual, estado, "06/09/20 4:20")
+		print("Ingrese X seguir")
+		condicion = input()
+		while(condicion != "X" and condicion != "x"):
+			condicion = input()
+
+
 
 
 # MENU
@@ -304,6 +333,7 @@ hdrs_poyo = ['pokedex', 'nombre', 'type1', 'type2', 'hptotal', 'legendary']
 hdrs_sansanito = ['id', 'pokedex', 'nombre', 'type1',\
 				'type2', 'hpactual', 'hpmax',\
 				'legendary', 'estado', 'ingreso', 'prioridad']
+estados_permitidos = ['Envenenado', 'Paralizado', 'Quemado', 'Dormido', 'Congelado', None]
 
 def main():
 	main_menu_title = "  BIENVENIDO AL SANSANITO POKEMON. QUE DESEA HACER?\n"
@@ -467,10 +497,13 @@ if __name__ == "__main__":
 	print(">>>OK")
 	print("Montando el edificio de Sansanito Pokemon...")
 	print(">>>OK")
-	print("Poblando Sansanito Pokemon...")
+	cantidad =int(input("Cuantos pokemons desea generar en el Sansanito?: "))
 	ctable_sansanito()
+	poblar_sansanito(cantidad)
+	print("Poblando Sansanito Pokemon...")
 	print(">>>OK")
 	print("Entrando al Sansanito Pokemon...")
+	print_sansanito()
 	time.sleep(3)
 	print(">>>OK")
 	main()
