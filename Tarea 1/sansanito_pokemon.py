@@ -5,7 +5,6 @@ import time
 from simple_term_menu import TerminalMenu
 
 '''TO DO:
-agregar create al menu, que sea lo mismo que el insert (literal if option ==1 or 2...)
 poblar la tabla una vez que funcione el insert con random
 la query de conteo no parece funcionar
 la de fecha de ingreso tampoco
@@ -308,7 +307,7 @@ hdrs_sansanito = ['id', 'pokedex', 'nombre', 'type1',\
 
 def main():
 	main_menu_title = "  BIENVENIDO AL SANSANITO POKEMON. QUE DESEA HACER?\n"
-	main_menu_items = ["Ingresar un pokemon (create)", "Buscar en tabla (read)", "Opciones especiales de busqueda",\
+	main_menu_items = ["Crear un registro", "Ingresar un pokemon", "Buscar en tabla (read)", "Opciones especiales de busqueda",\
 						"Cambiar datos de pokemon ingresado (update)",\
 						"Ver la tabla Poyo", "Ver la tabla Sansanito Pokemon","Salir"]
 	main_menu_cursor = "> "
@@ -327,7 +326,7 @@ def main():
 	while not main_menu_exit:
 		main_sel = main_menu.show()
 		submenu_flag = True
-		if main_sel == 0:
+		if main_sel == 0 or main_sel == 1:
 			nombre = input("Ingrese el nombre de pokemon: ")
 			hp_actual = int(input("Ingrese HP actual de pokemon: "))
 			estado = input("Ingrese el estado. Si el pokemon no tiene estado, ingrese X: ")
@@ -337,7 +336,7 @@ def main():
 			submenu_flag = False
 			insertar_pokemon(nombre, hp_actual, estado, fecha)
 
-		elif main_sel == 1:
+		elif main_sel == 2:
 			menu1_title = "BUSQUEDA EN SANSANITO POKEMON. ELIGA UNA OPCION.\n"
 			menu1_items = ["Busqueda por un campo", "Salir"]
 			menu1 = TerminalMenu(menu_entries=menu1_items,
@@ -349,7 +348,7 @@ def main():
 							 clear_screen=True)
 
 			time.sleep(5)
-		elif main_sel == 2:
+		elif main_sel == 3:
 			#total de opciones: 8
 			menu2_title = "BUSQUEDA ESPECIAL EN SANSANITO POKEMON. ELIGA UNA OPCION.\n"
 			menu2_items = ["10 pokemon con mayor prioridad", "10 pokemon con menor prioridad",\
@@ -428,7 +427,7 @@ def main():
 							condicion = input()
 				elif menu2_sel == 7:
 					submenu_flag = False
-		elif main_sel == 3:
+		elif main_sel == 4:
 			menu3_title = "CAMBIAR DATOS DE UN POKEMON INGRESADO. ELIGA UNA OPCION.\n"
 			menu3_items = ["Cambiar un solo campo", "Cambiar varios campos", "Salir"]
 			menu3 = TerminalMenu(menu_entries=menu3_items,
@@ -439,21 +438,21 @@ def main():
 							cycle_cursor=True,
 							clear_screen=True)
 		#muestra la tabla de poyo, tanto tiempo como lo quiere el usuario
-		elif main_sel == 4:
+		elif main_sel == 5:
 			print_poyo()
 			print("Ingrese X para volver al MENU PRINCIPAL.")
 			condicion = input()
 			while(condicion.upper() != "X"):
 				condicion = input()
 		#muestra la tabla de sansanito, tanto tiempo como lo quiere el usuario	
-		elif main_sel == 5:
+		elif main_sel == 6:
 			print_sansanito()
 			print("Ingrese X para volver al MENU PRINCIPAL.")
 			condicion = input()
 			while(condicion.upper() != "X"):
 				condicion = input()
 		#saliendo, quiero dropear todas las secuencias
-		elif main_sel == 6:
+		elif main_sel == 7:
 			cur.execute("DROP SEQUENCE SANS_SEQ")
 			main_menu_exit = True
 
