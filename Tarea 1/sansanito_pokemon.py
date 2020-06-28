@@ -7,15 +7,16 @@ from random import choice, randint
 
 '''TO DO:
 generar la fecha random al poblar la tabla
-ahora no es posible ver el estado None y no puedo buscar por el None
 
 en update tengo que re-calcular la prioridad (llamar a la funcion calcular prioridad)
+update debe permitir elegir que campo actualizar 
+
+
 quiza agregar casos de que estado debe estar en lista de estados para pillar errores?
 falta read
-falta delete - ver que hago en caso de multiples repeticiones de mismo pokemon
+
 1 trigger
 1 view
-insert para legendarios - no puede haber mas que un legendario de mismo nombre
 comentar todo todillo
 '''
 
@@ -35,8 +36,12 @@ def print_sansanito():
 
 #CRUD
 #CREATE - hace insercion de registro
-def create():
-	print("hola")
+def create(nombre, hp_actual, estado, fecha):
+	if estado not in estados_permitidos:
+		print("Estado de pokemon no permitido. Registro no fue insertado.")
+		print("Devolviendo al menu...")
+		return
+	insertar_pokemon(nombre, hp_actual, estado, fecha)
 
 #READ - lee registros con PK u otro parametro
 def read():
@@ -49,24 +54,36 @@ def read():
 	
 #UPDATE - cambia el registro usando su PK con un WHERE
 def update():
+	# query para modificar estado
+	# query para modificar hpactual -> prioridad
+	# query para modificar fecha
+
 	# solo modifica hpactual, estado
 	# se recacula la prioridad
 	print("hola")
 
 #DELETE - borra la fila con WHERE especifico
-def delete(nombre):
-	print("SE BORRARA EL REGISTRO DE", nombre)
+def delete(aidi):
+	existencia = """
+				SELECT nombre FROM sansanito
+				WHERE id = :1"""
 	del_query = """
 				DELETE FROM sansanito
-				WHERE nombre= :1"""
-	cur.execute(hptot_query, [nombre])
+				WHERE id = :1"""
+	cur.execute(existencia, [aidi])
+	res = cur.fetchall()
+	if res != []:
+		cur.execute(del_query, [aidi])
+		print("Registro con ID", aidi, "borrado exitosamente.")
+	else:
+		print("ID no encontrado en la tabla!")
 
 #Query
 
 def insert_aux(n, actual, e, f, prio):
 	poyo_datos = """
 				SELECT pokedex, type1, type2, hptotal, legendary 
-				FROM poyos
+				FROM poyo
 				WHERE nombre = :1"""
 	cur.execute(poyo_datos, [n])
 	data_poyo = cur.fetchall() #lista con tupla [(pokedex, tipo1, tipo2, hptotal, legendary)]
@@ -103,51 +120,91 @@ def insertar_pokemon(n, hpactual, estado, fecha):
 	leg_query  = """SELECT legendary FROM poyo WHERE nombre = :1"""
 	cur.execute(leg_query, [n])
 	tipo = cur.fetchall()
-	if tipo == []: #no se encontro que es legenadario, ergo el pkm no existe
+	if tipo == []: #no se encontro qregistro de tipo, ergo el pkm no existe
 		print("Revise su pokedex - el pokemon ingresado no existe.")
 		print("Devolviendo al menu principal...")
 		time.sleep(3)
 		return
-	lowest = """SELECT nombre, prioridad
+	lowest = """
+			SELECT * FROM
+			(SELECT id, prioridad
 			FROM sansanito
-			WHERE legendary=%d AND ROWNUM = 1 
-			ORDER BY prioridad ASC """ % (tipo[0][0])
-
+			WHERE legendary = :1
+			ORDER BY prioridad ASC)
+			WHERE ROWNUM <= 1
+			"""
 	cur.execute("""SELECT COUNT(*) FROM sansanito WHERE legendary=0""")
 	normales = cur.fetchall()
 	cur.execute("""SELECT COUNT(*) FROM sansanito WHERE legendary=1""")
 	legendarios = cur.fetchall()
-	total_registros =  normales[0][0] + 5 * legendarios[0][0]
+	ocupado  =  normales[0][0] + 5 * legendarios[0][0]
 	prioridad = calculate_priority(n, hpactual, estado)
 	#legenadrio
 	if tipo[0][0]:
+		# caso 0 - hay un legendario de mismo nombre. como no se especifica, voy a compararlos para dejar el de mayor prio.
+		existencia = """
+					SELECT prioridad, id FROM sansanito WHERE nombre = :1"""
+		cur.execute(existencia, [n])
+		res_exists = cur.fetchall()
+		# hay un legendario de mismo nombre
+		if res_exists != []: #se encontro un registro
+			prio_lowest = res_exists[0][0]
+			id_lowest = res_exists[0][1]
+
 		#caso 1 - quepa 
-		if total_registros + 5 <= 50:
-			insert_aux(n, hpactual, estado, fecha, prioridad)
-			print_sansanito()		
+		if ocupado + 5 <= 50:
+			# no hay pokemons de mismo nombre, se inserta tal cual
+			if res_exists == []:
+				insert_aux(n, hpactual, estado, fecha, prioridad)	
+			# si hay, se compara para borrar 1 de ellos
+			else:
+				prio_lowest = res_exists[0][0]
+				id_lowest = res_exists[0][1]
+				if prioridad > prio_lowest:
+					print("Prioridad de pkmn de mismo nombre id: ",id_lowest,"es ", prio_lowest, "y es menor que la de pokemon leg actual con prioridad", prioridad)
+					delete(id_lowest)
+					insert_aux(n, hpactual, estado, fecha, prioridad)
+		# caso 2 - sansanito lleno
 		else:
-			#no quepa
-			cur.execute(lowest)
-			res = cur.fetchall()
-			prio_lowest = res[0][1]
-			nom_lowest = res[0][0]
+			if res_exists != []:
+				prio_lowest = res_exists[0][0]
+				id_lowest = res_exists[0][1]
+			else:
+				cur.execute(lowest, [tipo[0][0]])
+				res = cur.fetchall()
+				if res == []:
+					print("No hay legendarios para comparar. Su registro no fue insertado.")
+					print("Devolviendo al menu...")
+					return
+				prio_lowest = res[0][1]
+				id_lowest = res[0][0]
 			# en caso de que sea igual, ignorar y dejar el que estaba
 			if prioridad > prio_lowest:
-				delete(nom_lowest)
+				print("Prioridad de",id_lowest,"es", prio_lowest, "y es menor que la de pokemon legendario actual con prioridad", prioridad)
+				delete(id_lowest)
+				insert_aux(n, hpactual, estado, fecha, prioridad)
+	#normies
 	else:
 		#caso 1 - quepa 
-		if total_registros + 1 <= 50:
-			insert_aux(n, hpactual, estado, fecha, prioridad)
-			print_sansanito()	
+		if ocupado + 1 <= 50:
+			insert_aux(n, hpactual, estado, fecha, prioridad)	
 		else:
 			# no quepa
-			cur.execute(lowest)
+			cur.execute(lowest, [tipo[0][0]])
 			res = cur.fetchall()
+			if res == []:
+					print("No hay normales para comparar. Su registro no fue insertado")
+					print("Devolviendo al menu...")
+					return
 			prio_lowest = res[0][1]
-			nom_lowest = res[0][0]
+			id_lowest = res[0][0]
 			# en caso de que sea igual, ignorar y dejar el que estaba
 			if prioridad > prio_lowest:
-				delete(nom_lowest)
+				print("Prioridad de",id_lowest,"es ", prio_lowest, "es menor que la de pokemon normal actual con prioridad", prioridad)
+				delete(id_lowest)
+				insert_aux(n, hpactual, estado, fecha, prioridad)
+	print_sansanito()
+	print("Hay normales:", normales[0][0], "hay legendarios:", legendarios[0][0], "total lleno:", ocupado)
 
 #==================================================QUERIES================================================================
 #LIMIT X no funciona en 11g, asi que se uso WHERE ROWNUM <=  / = X
@@ -177,10 +234,18 @@ def minprio_sansanito():
 
 #los de estado especifico, incluyendo los None 
 def estado_sansanito(estado):
-	cur.execute("""SELECT nombre
-				FROM sansanito
-				WHERE estado = '%s'""" % (estado)
-				)
+	if estado == None:
+		cur.execute("""
+					SELECT nombre
+					FROM sansanito
+					WHERE estado is null"""
+					)
+	else:
+		cur.execute("""
+					SELECT nombre
+					FROM sansanito
+					WHERE estado = '%s' """ % (estado))
+
 	print_table([hdrs_sansanito[2],hdrs_sansanito[8]])
 
 #los legendarios
@@ -302,11 +367,11 @@ def ctable_sansanito():
 def poblar_sansanito(n):
 	cur.execute("""
 				SELECT nombre
-				FROM poyo""")
+				FROM poyo WHERE legendary = 0""")
 	nombres = cur.fetchall() #una lista de nombres, super grande
 	for i in range(n):
 		nombre_elegido = choice(nombres)[0] #elige nombre random de pokemon, pero existente
-		print(nombre_elegido)
+		print("Se insertara a ",nombre_elegido)
 		estado = choice(estados_permitidos) #elige estado incluyendo el None
 		hptot_query = """
 					SELECT hptotal
@@ -314,13 +379,14 @@ def poblar_sansanito(n):
 					WHERE nombre = :1"""
 		cur.execute(hptot_query, [nombre_elegido])
 		hpmax = cur.fetchall()
-		print(hpmax)
 		hpactual = randint(0, hpmax[0][0]) #genera hpactual que no sea mayor que hpmax
 		insertar_pokemon(nombre_elegido,hpactual, estado, "06/09/20 4:20")
+		#Este loop permite ver paso a paso la insercion de N registros.
+		'''
 		print("Ingrese X seguir")
 		condicion = input()
 		while(condicion != "X" and condicion != "x"):
-			condicion = input()
+			condicion = input()'''
 
 
 
@@ -337,8 +403,8 @@ estados_permitidos = ['Envenenado', 'Paralizado', 'Quemado', 'Dormido', 'Congela
 
 def main():
 	main_menu_title = "  BIENVENIDO AL SANSANITO POKEMON. QUE DESEA HACER?\n"
-	main_menu_items = ["Crear un registro", "Ingresar un pokemon", "Buscar en tabla (read)", "Opciones especiales de busqueda",\
-						"Cambiar datos de pokemon ingresado (update)",\
+	main_menu_items = ["Crear un registro (create)", "Ingresar un pokemon", "Buscar en tabla (read)", "Opciones especiales de busqueda",\
+						"Cambiar datos de pokemon ingresado (update)", "Borrar registro (delete)",\
 						"Ver la tabla Poyo", "Ver la tabla Sansanito Pokemon","Salir"]
 	main_menu_cursor = "> "
 	main_menu_cursor_style = ("fg_red", "bold")
@@ -364,7 +430,8 @@ def main():
 				estado = None
 			fecha = input("Ingrese la fecha en formato DD/MM/YY HH:MM (ej 06/09/20 4:20): ")
 			submenu_flag = False
-			insertar_pokemon(nombre, hp_actual, estado, fecha)
+			create(nombre, hp_actual, estado, fecha)
+			time.sleep(3)
 
 		elif main_sel == 2:
 			menu1_title = "BUSQUEDA EN SANSANITO POKEMON. ELIGA UNA OPCION.\n"
@@ -377,7 +444,7 @@ def main():
 							 cycle_cursor=True,
 							 clear_screen=True)
 
-			time.sleep(5)
+			time.sleep(3)
 		elif main_sel == 3:
 			#total de opciones: 8
 			menu2_title = "BUSQUEDA ESPECIAL EN SANSANITO POKEMON. ELIGA UNA OPCION.\n"
@@ -467,22 +534,27 @@ def main():
 							menu_highlight_style=main_menu_style,
 							cycle_cursor=True,
 							clear_screen=True)
-		#muestra la tabla de poyo, tanto tiempo como lo quiere el usuario
+		# Delete de CRUD
 		elif main_sel == 5:
+			a_borrar = int(input("Ingrese el ID de registro a borrar: "))
+			delete(a_borrar)
+			time.sleep(3)
+		#muestra la tabla de poyo, tanto tiempo como lo quiere el usuario
+		elif main_sel == 6:
 			print_poyo()
 			print("Ingrese X para volver al MENU PRINCIPAL.")
 			condicion = input()
 			while(condicion.upper() != "X"):
 				condicion = input()
 		#muestra la tabla de sansanito, tanto tiempo como lo quiere el usuario	
-		elif main_sel == 6:
+		elif main_sel == 7:
 			print_sansanito()
 			print("Ingrese X para volver al MENU PRINCIPAL.")
 			condicion = input()
 			while(condicion.upper() != "X"):
 				condicion = input()
 		#saliendo, quiero dropear todas las secuencias
-		elif main_sel == 7:
+		elif main_sel == 8:
 			cur.execute("DROP SEQUENCE SANS_SEQ")
 			main_menu_exit = True
 
