@@ -8,15 +8,13 @@ from random import choice, randint
 '''TO DO:
 generar la fecha random al poblar la tabla
 
-en update tengo que re-calcular la prioridad (llamar a la funcion calcular prioridad)
-update debe permitir elegir que campo actualizar 
+update se cae, probar
 
+probar caso de hP actual ingresado negativo o mayor que hptotal
 
-quiza agregar casos de que estado debe estar en lista de estados para pillar errores?
-falta read
 
 1 trigger
-1 view
+1 view (top10 o de esos)
 comentar todo todillo
 '''
 
@@ -74,13 +72,89 @@ def read():
 
 #UPDATE - cambia el registro usando su PK con un WHERE
 def update():
-	# query para modificar estado
-	# query para modificar hpactual -> prioridad
-	# query para modificar fecha
+	id_update = int(input("Ingrese ID de pokemon: "))
+	existencia = """
+				SELECT * FROM sansanito
+				WHERE id = :1"""
+	cur.execute(existencia, [id_update])
+	res = cur.fetchall()
+	if res == []:
+		print("ID no encontrado en la tabla!")
+		print("Devolviendo al menu principal...")
+		time.sleep(3)
+		return
+	else:
+		update_menu_title = "QUE CAMPO DE REGISTRO CON ID " + str(id_update) + " DESEA CAMBIAR?\n"
+		update_menu_items = ["HP Actual", "Estado", "Fecha y hora de ingreso", "Salir"]
+		update_menu_cursor = "> "
+		update_menu_cursor_style = ("fg_red", "bold")
+		update_menu_style = ("bg_purple", "fg_yellow")
+		update_menu_exit = False
 
-	# solo modifica hpactual, estado
-	# se recacula la prioridad
-	print("hola")
+		update_menu = TerminalMenu(menu_entries=update_menu_items,
+							 title=update_menu_title,
+							 menu_cursor=update_menu_cursor,
+							 menu_cursor_style=update_menu_cursor_style,
+							 menu_highlight_style=update_menu_style,
+							 cycle_cursor=True,
+							 clear_screen=True)
+
+	while not update_menu_exit:
+		update_sel = update_menu.show()
+		print("REGISTRO ESCOGIDO:")
+		print_table(hdrs_sansanito, True, res)
+		if update_sel == 0:
+			hp_actual = int(input("Ingrese HP actual de pokemon: "))
+			query_estnom  = """
+							SELECT nombre, estado
+							FROM sansanito
+							WHERE id = :1"""
+			cur.execute(query_estnom, [id_update])
+			estnom = cur.fetchall()
+			prioridad = calculate_priority(estnom[0][0], hp_actual, estnom[0][1])
+			if prioridad != -1:
+				query_update = """
+								UPDATE sansanito
+								SET hpactual = :1, prioridad = :2
+								WHERE id = :3"""
+				cur.execute(query_update, [hp_actual, prioridad, id_update])
+
+		elif update_sel == 1:
+			estado = input("Ingrese el estado. Si el pokemon no tiene estado, ingrese X: ")
+
+			if estado.upper() == "X":
+				estado = None
+
+			if estado not in estados_permitidos:
+				print("Estado de pokemon no permitido. Registro no fue insertado.")
+				print("Devolviendo al menu de update...")
+				time.sleep(1)
+			else:
+				query_nomhp  = """
+								SELECT nombre, hpactual
+								FROM sansanito
+								WHERE id = :1"""
+				cur.execute(query_nomhp, [id_update])
+				nomhp = cur.fetchall()
+				prioridad = calculate_priority(nomhp[0][0], nomhp[0][1], estado)
+				if prioridad != -1:
+					query_update = """
+								UPDATE sansanito
+								SET estado = :1, prioridad = :2
+								WHERE id = :3"""
+					cur.execute(query_update, [estado, prioridad, id_update])
+
+		elif update_sel == 2:
+			fecha = input("Ingrese la fecha en formato DD/MM/YY HH:MM (ej 06/09/20 4:20): ")
+			query_update = """
+					UPDATE sansanito
+					SET ingreso = :1
+					WHERE id = :2;
+				"""
+			cur.execute(query_update, [fecha, id_update])
+		elif update_sel == 3:
+			update_menu_exit = True
+
 
 #DELETE - borra la fila con WHERE especifico
 # recibe flag  - si False, no se imprie registro borrado (delete se llamo durante la insercion)
@@ -132,11 +206,10 @@ def calculate_priority(n, hpactual, estado):
 	hptotal = cur.fetchall()
 	# a pesar de que se dice que datos que ingresaran seran los correctos
 	# agrego el condicional...
-	if hptotal[0][0] < hpactual:
-		print("Datos de hp actual inconsistentes con el hp maximo. Intente de nuevo.")
-		print("Devolviendo al menu principal...")
-		time.sleep(3)
-		return
+	if (hptotal[0][0] < hpactual) or (hpactual < 0):
+		print("Datos de hp actual inconsistentes con el hp total o hp actual negativio. Intente de nuevo.")
+		time.sleep(1)
+		return -1
 	prioridad = hptotal[0][0] - hpactual + bool(estado) * 10
 	return prioridad
 
@@ -163,6 +236,8 @@ def insertar_pokemon(n, hpactual, estado, fecha):
 	legendarios = cur.fetchall()
 	ocupado  =  normales[0][0] + 5 * legendarios[0][0]
 	prioridad = calculate_priority(n, hpactual, estado)
+	if prioridad == -1:
+		return
 	#legenadrio
 	if tipo[0][0]:
 		# caso 0 - hay un legendario de mismo nombre. como no se especifica, voy a compararlos para dejar el de mayor prio.
@@ -316,7 +391,6 @@ def ordenado_sansanito(orden):
 #===================================================CREAR TABLA POYO======================================================
 def ctable_poyos(archive="pokemon."):
 	#quito espacios y no agrego _ por convencion (_ para relaciones y no atributos)
-	cur.execute("DROP TABLE poyo")
 	cur.execute("CREATE TABLE poyo (\
 			pokedex INT,\
 			nombre VARCHAR(40) NOT NULL PRIMARY KEY,\
@@ -350,7 +424,6 @@ def ctable_poyos(archive="pokemon."):
 
 #===================================================CREAR TABLA SANSANITO=================================================
 def ctable_sansanito():
-	cur.execute("DROP TABLE sansanito")
 	cur.execute("""
 				CREATE TABLE sansanito(
 				id NUMBER NOT NULL PRIMARY KEY,
@@ -365,9 +438,15 @@ def ctable_sansanito():
 				ingreso DATE,
 				prioridad INT)"""
 				)
+
 	
+	connection.commit()
+
+
+def id_trigger():
 	# Como Oracle 11g no posee valor autoincrementable (existe desde 12C)
 	# El trigger se encarga de ello.
+	cur = connection.cursor()
 	cur.execute("""	
 				CREATE SEQUENCE SANS_SEQ
 				START WITH 1""")
@@ -382,9 +461,7 @@ def ctable_sansanito():
 				END;
 				"""
 				)
-	
 	connection.commit()
-
 
 #===================================================CREAR TABLA SANSANITO=================================================
 def poblar_sansanito(n):
@@ -551,15 +628,7 @@ def main():
 				elif menu2_sel == 7:
 					submenu_flag = False
 		elif main_sel == 4:
-			menu3_title = "CAMBIAR DATOS DE UN POKEMON INGRESADO. ELIGA UNA OPCION.\n"
-			menu3_items = ["Cambiar un solo campo", "Cambiar varios campos", "Salir"]
-			menu3 = TerminalMenu(menu_entries=menu3_items,
-							title=menu3_title,
-							menu_cursor=main_menu_cursor,
-							menu_cursor_style=main_menu_cursor_style,
-							menu_highlight_style=main_menu_style,
-							cycle_cursor=True,
-							clear_screen=True)
+			update()
 		# Delete de CRUD
 		elif main_sel == 5:
 			a_borrar = int(input("Ingrese el ID de registro a borrar: "))
@@ -581,7 +650,6 @@ def main():
 				condicion = input()
 		#saliendo, quiero dropear todas las secuencias
 		elif main_sel == 8:
-			cur.execute("DROP SEQUENCE SANS_SEQ")
 			main_menu_exit = True
 
 
@@ -597,6 +665,7 @@ if __name__ == "__main__":
 	print(">>>OK")
 	cantidad =int(input("Cuantos pokemons desea generar en el Sansanito?: "))
 	ctable_sansanito()
+	id_trigger()
 	poblar_sansanito(cantidad)
 	print("Poblando Sansanito Pokemon...")
 	print(">>>OK")
@@ -606,4 +675,8 @@ if __name__ == "__main__":
 	print(">>>OK")
 	main()
 
-connection.close()
+	cur.execute("DROP SEQUENCE SANS_SEQ")
+	cur.execute("DROP TABLE sansanito")
+	cur.execute("DROP TABLE poyo")
+
+	connection.close()
