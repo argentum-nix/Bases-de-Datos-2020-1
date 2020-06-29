@@ -20,8 +20,12 @@ falta read
 comentar todo todillo
 '''
 
-def print_table(hdrs, fmt='psql'):
+# recibe flag=True para utilizar data customizado en vez de todo lo guardado en cursor
+# esto se usa para no imprimir tablas vacias en ciertos casos y en vez tirar un aviso
+def print_table(hdrs, flag=False, data=[],fmt='psql'):
 	res = cur.fetchall()
+	if flag:
+		res = data
 	print(tabulate(res, headers=hdrs, tablefmt=fmt))
 
 def print_poyo():
@@ -36,22 +40,38 @@ def print_sansanito():
 
 #CRUD
 #CREATE - hace insercion de registro
-def create(nombre, hp_actual, estado, fecha):
+def create():
+	nombre = input("Ingrese el nombre de pokemon: ")
+	estado = input("Ingrese el estado. Si el pokemon no tiene estado, ingrese X: ")
+
+	if estado.upper() == "X":
+		estado = None
+
 	if estado not in estados_permitidos:
 		print("Estado de pokemon no permitido. Registro no fue insertado.")
-		print("Devolviendo al menu...")
+		print("Devolviendo al menu principal...")
 		return
+
+	hp_actual = int(input("Ingrese HP actual de pokemon: "))
+	fecha = input("Ingrese la fecha en formato DD/MM/YY HH:MM (ej 06/09/20 4:20): ")
 	insertar_pokemon(nombre, hp_actual, estado, fecha)
 
 #READ - lee registros con PK u otro parametro
 def read():
-	# leer todo
-	# leer que columnas
-	# leer de que tabla
-	# ordenar por cual valor
-	# de que modo ordeno
-	print("hola")
-	
+	id_buscar = int(input("Ingrese ID de pokemon: "))
+	existencia = """
+				SELECT * FROM sansanito
+				WHERE id = :1"""
+	cur.execute(existencia, [id_buscar])
+	res = cur.fetchall()
+	if res == []:
+		print("ID no encontrado en la tabla!")
+		return
+	else:
+		print_table(hdrs_sansanito, True, res)
+
+
+
 #UPDATE - cambia el registro usando su PK con un WHERE
 def update():
 	# query para modificar estado
@@ -63,7 +83,9 @@ def update():
 	print("hola")
 
 #DELETE - borra la fila con WHERE especifico
-def delete(aidi):
+# recibe flag  - si False, no se imprie registro borrado (delete se llamo durante la insercion)
+# si es True, fue llamado por el usuario desde el menu
+def delete(aidi, flag=True):
 	existencia = """
 				SELECT nombre FROM sansanito
 				WHERE id = :1"""
@@ -74,9 +96,11 @@ def delete(aidi):
 	res = cur.fetchall()
 	if res != []:
 		cur.execute(del_query, [aidi])
-		print("Registro con ID", aidi, "borrado exitosamente.")
+		if flag:
+			print("Registro con ID", aidi, "borrado exitosamente.")
 	else:
 		print("ID no encontrado en la tabla!")
+		print("Devolviendo al menu principal...")
 
 #Query
 
@@ -162,7 +186,7 @@ def insertar_pokemon(n, hpactual, estado, fecha):
 				id_lowest = res_exists[0][1]
 				if prioridad > prio_lowest:
 					print("Prioridad de pkmn de mismo nombre id: ",id_lowest,"es ", prio_lowest, "y es menor que la de pokemon leg actual con prioridad", prioridad)
-					delete(id_lowest)
+					delete(id_lowest, False)
 					insert_aux(n, hpactual, estado, fecha, prioridad)
 		# caso 2 - sansanito lleno
 		else:
@@ -174,14 +198,14 @@ def insertar_pokemon(n, hpactual, estado, fecha):
 				res = cur.fetchall()
 				if res == []:
 					print("No hay legendarios para comparar. Su registro no fue insertado.")
-					print("Devolviendo al menu...")
+					print("Devolviendo al menu principal...")
 					return
 				prio_lowest = res[0][1]
 				id_lowest = res[0][0]
 			# en caso de que sea igual, ignorar y dejar el que estaba
 			if prioridad > prio_lowest:
 				print("Prioridad de",id_lowest,"es", prio_lowest, "y es menor que la de pokemon legendario actual con prioridad", prioridad)
-				delete(id_lowest)
+				delete(id_lowest, False)
 				insert_aux(n, hpactual, estado, fecha, prioridad)
 	#normies
 	else:
@@ -194,17 +218,16 @@ def insertar_pokemon(n, hpactual, estado, fecha):
 			res = cur.fetchall()
 			if res == []:
 					print("No hay normales para comparar. Su registro no fue insertado")
-					print("Devolviendo al menu...")
+					print("Devolviendo al menu principal...")
 					return
 			prio_lowest = res[0][1]
 			id_lowest = res[0][0]
 			# en caso de que sea igual, ignorar y dejar el que estaba
 			if prioridad > prio_lowest:
 				print("Prioridad de",id_lowest,"es ", prio_lowest, "es menor que la de pokemon normal actual con prioridad", prioridad)
-				delete(id_lowest)
+				delete(id_lowest, False)
 				insert_aux(n, hpactual, estado, fecha, prioridad)
 	print_sansanito()
-	print("Hay normales:", normales[0][0], "hay legendarios:", legendarios[0][0], "total lleno:", ocupado)
 
 #==================================================QUERIES================================================================
 #LIMIT X no funciona en 11g, asi que se uso WHERE ROWNUM <=  / = X
@@ -423,19 +446,13 @@ def main():
 		main_sel = main_menu.show()
 		submenu_flag = True
 		if main_sel == 0 or main_sel == 1:
-			nombre = input("Ingrese el nombre de pokemon: ")
-			hp_actual = int(input("Ingrese HP actual de pokemon: "))
-			estado = input("Ingrese el estado. Si el pokemon no tiene estado, ingrese X: ")
-			if estado.upper() == "X":
-				estado = None
-			fecha = input("Ingrese la fecha en formato DD/MM/YY HH:MM (ej 06/09/20 4:20): ")
 			submenu_flag = False
-			create(nombre, hp_actual, estado, fecha)
+			create()
 			time.sleep(3)
 
 		elif main_sel == 2:
-			menu1_title = "BUSQUEDA EN SANSANITO POKEMON. ELIGA UNA OPCION.\n"
-			menu1_items = ["Busqueda por un campo", "Salir"]
+			menu1_title = "BUSQUEDA DE REGISTRO EN SANSANITO POKEMON\n"
+			menu1_items = ["Buscar por ID", "Salir"]
 			menu1 = TerminalMenu(menu_entries=menu1_items,
 							 title=menu1_title,
 							 menu_cursor=main_menu_cursor,
@@ -443,8 +460,17 @@ def main():
 							 menu_highlight_style=main_menu_style,
 							 cycle_cursor=True,
 							 clear_screen=True)
+			while submenu_flag:
+				menu1_sel = menu1.show()
+				if menu1_sel == 0:
+					read()
+					print("Ingrese X para volver al MENU PRINCIPAL.")
+					condicion = input()
+					while(condicion != "X" and condicion != "x"):
+						condicion = input()
+				elif menu1_sel == 1:
+					submenu_flag = False 
 
-			time.sleep(3)
 		elif main_sel == 3:
 			#total de opciones: 8
 			menu2_title = "BUSQUEDA ESPECIAL EN SANSANITO POKEMON. ELIGA UNA OPCION.\n"
