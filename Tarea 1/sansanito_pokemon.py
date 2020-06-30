@@ -8,10 +8,6 @@ from random import choice, randint
 '''TO DO:
 generar la fecha random al poblar la tabla
 
-update se cae, probar
-
-probar caso de hP actual ingresado negativo o mayor que hptotal
-
 
 1 trigger
 1 view (top10 o de esos)
@@ -309,19 +305,28 @@ def insertar_pokemon(n, hpactual, estado, fecha):
 	print_sansanito()
 
 #==================================================QUERIES================================================================
-#LIMIT X no funciona en 11g, asi que se uso WHERE ROWNUM <=  / = X
+
 # Los 10 pokemon con mayor prioridad
 def maxprio_sansanito():
 	cur.execute("""
-				SELECT * FROM
-				(SELECT nombre, prioridad
-				FROM sansanito
-				ORDER BY prioridad DESC)
-				WHERE ROWNUM <= 10
+				SELECT * FROM maxprio_view
 				"""
 				)
 
 	print_table([hdrs_sansanito[2],hdrs_sansanito[-1]])
+
+#Vista de los 10 pokemon con mayor prioridad
+def maxprio_view():
+    cur.execute(
+        """
+            CREATE OR REPLACE VIEW maxprio_view AS
+            SELECT nombre, prioridad FROM
+            	(SELECT nombre, prioridad
+            	FROM sansanito
+                ORDER BY prioridad DESC)
+            WHERE ROWNUM <= 10
+        """)
+    
 
 # Los 10 pokemon con menor prioridad
 def minprio_sansanito():
@@ -678,6 +683,7 @@ if __name__ == "__main__":
 	print(">>>OK")
 	print("Entrando al Sansanito Pokemon...")
 	print_sansanito()
+	maxprio_view()
 	time.sleep(3)
 	print(">>>OK")
 	main()
