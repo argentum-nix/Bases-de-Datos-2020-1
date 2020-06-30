@@ -366,7 +366,7 @@ def legendarios_sansanito():
 def antiguedad_sansanito():
 	cur.execute("""
 				SELECT * FROM
-				(SELECT nombre
+				(SELECT nombre, ingreso
 				FROM sansanito
 				ORDER BY ingreso ASC)
 				WHERE ROWNUM <= 1
@@ -391,7 +391,7 @@ def ordenado_sansanito(orden):
 				FROM sansanito
 				ORDER BY prioridad %s""" % (orden)
 				)
-	print_table(hdrs_sansanito)
+	print_table([hdrs_sansanito[2], hdrs_sansanito[5], hdrs_sansanito[6], hdrs_sansanito[-1]])
 
 #==================================================QUERIES================================================================
 
