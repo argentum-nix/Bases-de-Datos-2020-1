@@ -336,6 +336,9 @@ def minprio_sansanito():
 
 #los de estado especifico, incluyendo los None 
 def estado_sansanito(estado):
+	if estado not in estados_permitidos:
+		print("Estado de pokemon no permitido. Intente de nuevo.")
+		return
 	if estado == None:
 		cur.execute("""
 					SELECT nombre
