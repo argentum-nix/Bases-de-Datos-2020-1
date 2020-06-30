@@ -147,13 +147,17 @@ def update():
 		elif update_sel == 2:
 			fecha = input("Ingrese la fecha en formato DD/MM/YY HH:MM (ej 06/09/20 4:20): ")
 			query_update = """
-					UPDATE sansanito
-					SET ingreso = :1
-					WHERE id = :2;
-				"""
+						UPDATE sansanito
+						SET ingreso = to_date(:1, 'DD/MM/YY HH:MI')
+						WHERE id = :2;
+						"""
+			print("Nueva fecha", fecha)
 			cur.execute(query_update, [fecha, id_update])
 		elif update_sel == 3:
 			update_menu_exit = True
+			
+		cur.execute(existencia, [id_update])
+		res = cur.fetchall()
 
 
 #DELETE - borra la fila con WHERE especifico
@@ -467,7 +471,7 @@ def id_trigger():
 def poblar_sansanito(n):
 	cur.execute("""
 				SELECT nombre
-				FROM poyo WHERE legendary = 0""")
+				FROM poyo""")
 	nombres = cur.fetchall() #una lista de nombres, super grande
 	for i in range(n):
 		nombre_elegido = choice(nombres)[0] #elige nombre random de pokemon, pero existente
