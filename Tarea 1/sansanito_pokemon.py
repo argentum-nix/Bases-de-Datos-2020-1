@@ -6,12 +6,11 @@ from simple_term_menu import TerminalMenu
 from random import choice, randint
 
 '''TO DO:
-generar la fecha random al poblar la tabla
-
-
-1 trigger
-1 view (top10 o de esos)
+revisar el insert, especialmente la carga del sansanito?
+agregar funcion de ver la carga del sansanito?
+agregar un print bonito?
 comentar todo todillo
+readme
 '''
 
 # recibe flag=True para utilizar data customizado en vez de todo lo guardado en cursor
@@ -47,7 +46,7 @@ def create():
 		return
 
 	hp_actual = int(input("Ingrese HP actual de pokemon: "))
-	fecha = input("Ingrese la fecha en formato DD/MM/YY HH:MM (ej 06/09/20 4:20): ")
+	fecha = input("Ingrese la fecha en formato DD/MM/YY HH24:MM (ej 06/09/20 14:20): ")
 	insertar_pokemon(nombre, hp_actual, estado, fecha)
 
 #READ - lee registros con PK u otro parametro
@@ -141,11 +140,11 @@ def update():
 					cur.execute(query_update, [estado, prioridad, id_update])
 
 		elif update_sel == 2:
-			fecha = input("Ingrese la fecha en formato DD/MM/YY HH:MM (ej 06/09/20 4:20): ")
+			fecha = input("Ingrese la fecha en formato DD/MM/YY HH:MM (ej 06/09/20 14:20): ")
 			print("Nueva fecha", fecha)
 			query_fecha = """
 						UPDATE sansanito
-						SET ingreso = to_date(:1, 'DD/MM/YY HH:MI')
+						SET ingreso = to_date(:1, 'DD/MM/YY HH24:MI')
 						WHERE id = :2
 						"""
 			cur.execute(query_fecha, [fecha, id_update])
@@ -191,7 +190,7 @@ def insert_aux(n, actual, e, f, prio):
 	pokedex, t1, t2, total, l = data_poyo
 	ins_query = """
 				INSERT INTO sansanito (pokedex, nombre, type1, type2, hpactual, hpmax, legendary, estado, ingreso, prioridad)
-				VALUES (:1, :2, :3, :4, :5, :6, :7, :8, to_date(:9, 'DD/MM/YY HH:MI'), :10)""" 
+				VALUES (:1, :2, :3, :4, :5, :6, :7, :8, to_date(:9, 'DD/MM/YY HH24:MI'), :10)""" 
 				
 	cur.execute(ins_query, [pokedex, n, t1, t2, actual, total, l, e, f, prio])
 				
@@ -476,6 +475,15 @@ def id_trigger():
 	connection.commit()
 
 #===================================================CREAR TABLA SANSANITO=================================================
+def generar_fecha():
+	dia = randint(1, 31) 
+	mes = randint(1, 12)
+	# genera fecha desde fecha de inaguracion de campus SJ hasta este ano
+	year = randint(9, 20)
+	hora = randint(1, 23)
+	minuto = randint(0, 59)
+	return "{}/{}/{} {}:{}".format(dia, mes, year, hora, minuto)
+
 def poblar_sansanito(n):
 	cur.execute("""
 				SELECT nombre
@@ -492,13 +500,14 @@ def poblar_sansanito(n):
 		cur.execute(hptot_query, [nombre_elegido])
 		hpmax = cur.fetchall()
 		hpactual = randint(0, hpmax[0][0]) #genera hpactual que no sea mayor que hpmax
-		insertar_pokemon(nombre_elegido,hpactual, estado, "06/09/20 4:20")
+		fecha_ingreso = generar_fecha()
+		insertar_pokemon(nombre_elegido,hpactual, estado, fecha_ingreso)
 		#Este loop permite ver paso a paso la insercion de N registros.
-		'''
+		
 		print("Ingrese X seguir")
 		condicion = input()
 		while(condicion != "X" and condicion != "x"):
-			condicion = input()'''
+			condicion = input()
 
 
 
