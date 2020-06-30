@@ -691,5 +691,6 @@ if __name__ == "__main__":
 	cur.execute("DROP SEQUENCE SANS_SEQ")
 	cur.execute("DROP TABLE sansanito")
 	cur.execute("DROP TABLE poyo")
+	cur.execute("DROP VIEW maxprio_view")
 
 	connection.close()
