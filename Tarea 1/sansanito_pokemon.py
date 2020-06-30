@@ -146,16 +146,16 @@ def update():
 
 		elif update_sel == 2:
 			fecha = input("Ingrese la fecha en formato DD/MM/YY HH:MM (ej 06/09/20 4:20): ")
-			query_update = """
+			print("Nueva fecha", fecha)
+			query_fecha = """
 						UPDATE sansanito
 						SET ingreso = to_date(:1, 'DD/MM/YY HH:MI')
-						WHERE id = :2;
+						WHERE id = :2
 						"""
-			print("Nueva fecha", fecha)
-			cur.execute(query_update, [fecha, id_update])
+			cur.execute(query_fecha, [fecha, id_update])
 		elif update_sel == 3:
 			update_menu_exit = True
-			
+
 		cur.execute(existencia, [id_update])
 		res = cur.fetchall()
 
