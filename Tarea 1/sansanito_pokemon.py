@@ -81,7 +81,7 @@ def update():
 	if res == []:
 		print("ID no encontrado en la tabla!")
 		print("Devolviendo al menu principal...")
-		time.sleep(3)
+		time.sleep(1)
 		return
 	else:
 		update_menu_title = "QUE CAMPO DE REGISTRO CON ID " + str(id_update) + " DESEA CAMBIAR?\n"
@@ -224,7 +224,7 @@ def insertar_pokemon(n, hpactual, estado, fecha):
 	if tipo == []: #no se encontro qregistro de tipo, ergo el pkm no existe
 		print("Revise su pokedex - el pokemon ingresado no existe.")
 		print("Devolviendo al menu principal...")
-		time.sleep(3)
+		time.sleep(1)
 		return
 	lowest = """
 			SELECT * FROM
@@ -637,7 +637,7 @@ def main():
 		elif main_sel == 5:
 			a_borrar = int(input("Ingrese el ID de registro a borrar: "))
 			delete(a_borrar)
-			time.sleep(3)
+			time.sleep(1)
 		#muestra la tabla de poyo, tanto tiempo como lo quiere el usuario
 		elif main_sel == 6:
 			print_poyo()
