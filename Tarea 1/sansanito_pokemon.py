@@ -10,6 +10,38 @@ agregar un print bonito?
 comentar todo todillo
 readme
 '''
+txt_sns = """
+███████╗ █████╗ ███╗   ██╗███████╗ █████╗ ███╗   ██╗██╗████████╗ ██████╗                   
+██╔════╝██╔══██╗████╗  ██║██╔════╝██╔══██╗████╗  ██║██║╚══██╔══╝██╔═══██╗                  
+███████╗███████║██╔██╗ ██║███████╗███████║██╔██╗ ██║██║   ██║   ██║   ██║                  
+╚════██║██╔══██║██║╚██╗██║╚════██║██╔══██║██║╚██╗██║██║   ██║   ██║   ██║                  
+███████║██║  ██║██║ ╚████║███████║██║  ██║██║ ╚████║██║   ██║   ╚██████╔╝                  
+╚══════╝╚═╝  ╚═╝╚═╝  ╚═══╝╚══════╝╚═╝  ╚═╝╚═╝  ╚═══╝╚═╝   ╚═╝    ╚═════╝                   
+                            ██████╗  ██████╗ ██╗  ██╗███████╗███╗   ███╗ ██████╗ ███╗   ██╗
+                            ██╔══██╗██╔═══██╗██║ ██╔╝██╔════╝████╗ ████║██╔═══██╗████╗  ██║
+                            ██████╔╝██║   ██║█████╔╝ █████╗  ██╔████╔██║██║   ██║██╔██╗ ██║
+                            ██╔═══╝ ██║   ██║██╔═██╗ ██╔══╝  ██║╚██╔╝██║██║   ██║██║╚██╗██║
+                            ██║     ╚██████╔╝██║  ██╗███████╗██║ ╚═╝ ██║╚██████╔╝██║ ╚████║
+                            ╚═╝      ╚═════╝ ╚═╝  ╚═╝╚══════╝╚═╝     ╚═╝ ╚═════╝ ╚═╝  ╚═══╝ 
+					     █████████████						
+				        ████▒▒░░░░░░░░██▒▒░░██			 		
+				      ██▒▒░░░░██░░██░░░░██░░░░██				 		
+				    ██▒▒░░░░░░██░░██░░░░░░▒▒░░██				 		
+				    ██░░░░░░░░██░░██░░░░░░▒▒▒▒██				 		
+				  ██░░░░░░▒▒▒▒░░░░░░▒▒▒▒░░░░▒▒██						
+				██▒▒░░░░░░░░░░░░██░░░░░░░░░░░░███                		
+				██░░░░▒▒░░░░░░░░██░░░░░░░░░░▒▒███                		
+				██░░░░▒▒░░░░░░░░░░░░░░░░░░░░██						
+				  ██████░░░░░░░░░░░░░░░░░░▒▒██						
+				██▒▒▒▒▒▒██░░░░░░░░░░░░░░░░▒▒██						
+				██▒▒▒▒▒▒▒▒██░░░░░░░░░░░░▒▒██				   		  
+				██▒▒▒▒▒▒▒▒██░░░░░░░░░░▒▒████						
+				  ██▒▒▒▒▒▒▒▒██▒▒▒▒▒▒████▒▒▒▒██			     		
+				    ██▒▒▒▒██████████▒▒▒▒▒▒▒▒▒▒██				 		
+				      ██████      ████████████				  		
+				      ██████      ████████████                		   
+				       █████       █████                       
+				"""
 
 # recibe flag=True para utilizar data customizado en vez de todo lo guardado en cursor
 # esto se usa para no imprimir tablas vacias en ciertos casos y en vez tirar un aviso
@@ -558,7 +590,7 @@ hdrs_sansanito = ['id', 'pokedex', 'nombre', 'type1',\
 estados_permitidos = ['Envenenado', 'Paralizado', 'Quemado', 'Dormido', 'Congelado', None]
 
 def main():
-	main_menu_title = "  BIENVENIDO AL SANSANITO POKEMON. QUE DESEA HACER?\n"
+	main_menu_title = txt_sns + "\nBIENVENIDO AL SANSANITO POKEMON. QUE DESEA HACER?\n"
 	main_menu_items = ["Crear un registro (create)", "Ingresar un pokemon", "Buscar en tabla (read)", "Opciones especiales de busqueda",\
 						"Cambiar datos de pokemon ingresado (update)", "Borrar registro (delete)",\
 						"Ver la tabla Poyo", "Ver la tabla Sansanito Pokemon", "Capacidad actual", "Salir"]
