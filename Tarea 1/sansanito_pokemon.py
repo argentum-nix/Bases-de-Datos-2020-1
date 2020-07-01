@@ -6,8 +6,6 @@ from simple_term_menu import TerminalMenu
 from random import choice, randint
 
 '''TO DO:
-revisar el insert, especialmente la carga del sansanito?
-agregar funcion de ver la carga del sansanito?
 agregar un print bonito?
 comentar todo todillo
 readme
@@ -212,6 +210,14 @@ def calculate_priority(n, hpactual, estado):
 	prioridad = hptotal[0][0] - hpactual + bool(estado) * 10
 	return prioridad
 
+def calcular_ocupacion():
+	cur.execute("""SELECT COUNT(*) FROM sansanito WHERE legendary=0""")
+	normales = cur.fetchall()
+	cur.execute("""SELECT COUNT(*) FROM sansanito WHERE legendary=1""")
+	legendarios = cur.fetchall()
+	ocupado  =  normales[0][0] + 5 * legendarios[0][0]
+	return ocupado
+
 # flag se usa para no imprimir al poblar el sansanito de manera random
 def insertar_pokemon(n, hpactual, estado, fecha, flag=True):
 	leg_query  = """SELECT legendary FROM poyo WHERE nombre = :1"""
@@ -228,11 +234,7 @@ def insertar_pokemon(n, hpactual, estado, fecha, flag=True):
 			ORDER BY prioridad ASC)
 			WHERE ROWNUM <= 1
 			"""
-	cur.execute("""SELECT COUNT(*) FROM sansanito WHERE legendary=0""")
-	normales = cur.fetchall()
-	cur.execute("""SELECT COUNT(*) FROM sansanito WHERE legendary=1""")
-	legendarios = cur.fetchall()
-	ocupado  =  normales[0][0] + 5 * legendarios[0][0]
+	ocupado  =  calcular_ocupacion()
 	prioridad = calculate_priority(n, hpactual, estado)
 	if prioridad == -1:
 		return
@@ -520,7 +522,7 @@ def generar_fecha():
 def poblar_sansanito(n):
 	cur.execute("""
 				SELECT nombre
-				FROM poyo WHERE legendary = 0""")
+				FROM poyo""")
 	nombres = cur.fetchall() #una lista de nombres, super grande
 	for i in range(n):
 		nombre_elegido = choice(nombres)[0] #elige nombre random de pokemon, pero existente
@@ -559,7 +561,7 @@ def main():
 	main_menu_title = "  BIENVENIDO AL SANSANITO POKEMON. QUE DESEA HACER?\n"
 	main_menu_items = ["Crear un registro (create)", "Ingresar un pokemon", "Buscar en tabla (read)", "Opciones especiales de busqueda",\
 						"Cambiar datos de pokemon ingresado (update)", "Borrar registro (delete)",\
-						"Ver la tabla Poyo", "Ver la tabla Sansanito Pokemon","Salir"]
+						"Ver la tabla Poyo", "Ver la tabla Sansanito Pokemon", "Capacidad actual", "Salir"]
 	main_menu_cursor = "> "
 	main_menu_cursor_style = ("fg_red", "bold")
 	main_menu_style = ("bg_purple", "fg_yellow")
@@ -581,7 +583,7 @@ def main():
 			print("TABLA ORIGINAL:")
 			print_sansanito()
 			create()
-			print("TABLA FINAL:")
+			print("\nTABLA FINAL:")
 			print_sansanito()
 			print("Ingrese X para volver al MENU PRINCIPAL.")
 			condicion = input()
@@ -712,8 +714,15 @@ def main():
 			condicion = input()
 			while(condicion.upper() != "X"):
 				condicion = input()
-		#saliendo, quiero dropear todas las secuencias
+		# funcion extra que muestra la ocupacion actual de sansanito
 		elif main_sel == 8:
+			print("La capacidad actual es: {}/50".format(calcular_ocupacion()))
+			print("Ingrese X para volver al MENU PRINCIPAL.")
+			condicion = input()
+			while(condicion != "X" and condicion != "x"):
+				condicion = input()
+		#saliendo, quiero dropear todas las secuencias
+		elif main_sel == 9:
 			main_menu_exit = True
 
 
