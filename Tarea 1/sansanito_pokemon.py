@@ -6,7 +6,6 @@ from simple_term_menu import TerminalMenu
 from random import choice, randint
 
 '''TO DO:
-agregar un print bonito?
 comentar todo todillo
 readme
 '''
