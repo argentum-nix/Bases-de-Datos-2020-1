@@ -5,10 +5,6 @@ import time
 from simple_term_menu import TerminalMenu
 from random import choice, randint
 
-'''TO DO:
-comentar todo todillo
-readme
-'''
 txt_sns = """
 ███████╗ █████╗ ███╗   ██╗███████╗ █████╗ ███╗   ██╗██╗████████╗ ██████╗                   
 ██╔════╝██╔══██╗████╗  ██║██╔════╝██╔══██╗████╗  ██║██║╚══██╔══╝██╔═══██╗                  
@@ -16,17 +12,17 @@ txt_sns = """
 ╚════██║██╔══██║██║╚██╗██║╚════██║██╔══██║██║╚██╗██║██║   ██║   ██║   ██║                  
 ███████║██║  ██║██║ ╚████║███████║██║  ██║██║ ╚████║██║   ██║   ╚██████╔╝                  
 ╚══════╝╚═╝  ╚═╝╚═╝  ╚═══╝╚══════╝╚═╝  ╚═╝╚═╝  ╚═══╝╚═╝   ╚═╝    ╚═════╝                   
-                            ██████╗  ██████╗ ██╗  ██╗███████╗███╗   ███╗ ██████╗ ███╗   ██╗
-                            ██╔══██╗██╔═══██╗██║ ██╔╝██╔════╝████╗ ████║██╔═══██╗████╗  ██║
-                            ██████╔╝██║   ██║█████╔╝ █████╗  ██╔████╔██║██║   ██║██╔██╗ ██║
-                            ██╔═══╝ ██║   ██║██╔═██╗ ██╔══╝  ██║╚██╔╝██║██║   ██║██║╚██╗██║
-                            ██║     ╚██████╔╝██║  ██╗███████╗██║ ╚═╝ ██║╚██████╔╝██║ ╚████║
-                            ╚═╝      ╚═════╝ ╚═╝  ╚═╝╚══════╝╚═╝     ╚═╝ ╚═════╝ ╚═╝  ╚═══╝ 
-					     █████████████						
-				        ████▒▒░░░░░░░░██▒▒░░██			 		
-				      ██▒▒░░░░██░░██░░░░██░░░░██				 		
-				    ██▒▒░░░░░░██░░██░░░░░░▒▒░░██				 		
-				    ██░░░░░░░░██░░██░░░░░░▒▒▒▒██				 		
+							██████╗  ██████╗ ██╗  ██╗███████╗███╗   ███╗ ██████╗ ███╗   ██╗
+							██╔══██╗██╔═══██╗██║ ██╔╝██╔════╝████╗ ████║██╔═══██╗████╗  ██║
+							██████╔╝██║   ██║█████╔╝ █████╗  ██╔████╔██║██║   ██║██╔██╗ ██║
+							██╔═══╝ ██║   ██║██╔═██╗ ██╔══╝  ██║╚██╔╝██║██║   ██║██║╚██╗██║
+							██║     ╚██████╔╝██║  ██╗███████╗██║ ╚═╝ ██║╚██████╔╝██║ ╚████║
+							╚═╝      ╚═════╝ ╚═╝  ╚═╝╚══════╝╚═╝     ╚═╝ ╚═════╝ ╚═╝  ╚═══╝ 
+						 █████████████						
+						████▒▒░░░░░░░░██▒▒░░██			 		
+					  ██▒▒░░░░██░░██░░░░██░░░░██				 		
+					██▒▒░░░░░░██░░██░░░░░░▒▒░░██				 		
+					██░░░░░░░░██░░██░░░░░░▒▒▒▒██				 		
 				  ██░░░░░░▒▒▒▒░░░░░░▒▒▒▒░░░░▒▒██						
 				██▒▒░░░░░░░░░░░░██░░░░░░░░░░░░███                		
 				██░░░░▒▒░░░░░░░░██░░░░░░░░░░▒▒███                		
@@ -36,33 +32,97 @@ txt_sns = """
 				██▒▒▒▒▒▒▒▒██░░░░░░░░░░░░▒▒██				   		  
 				██▒▒▒▒▒▒▒▒██░░░░░░░░░░▒▒████						
 				  ██▒▒▒▒▒▒▒▒██▒▒▒▒▒▒████▒▒▒▒██			     		
-				    ██▒▒▒▒██████████▒▒▒▒▒▒▒▒▒▒██				 		
-				      ██████      ████████████				  		
-				      ██████      ████████████                		   
-				       █████       █████                       
+					██▒▒▒▒██████████▒▒▒▒▒▒▒▒▒▒██				 		
+					  ██████      ████████████				  		
+					  ██████      ████████████                		   
+					   █████       █████                       
 				"""
 
-# recibe flag=True para utilizar data customizado en vez de todo lo guardado en cursor
-# esto se usa para no imprimir tablas vacias en ciertos casos y en vez tirar un aviso
 def print_table(hdrs, flag=False, data=[],fmt='psql'):
+	"""
+	Imprime una tabla.
+
+	Utiliza datos de cursor (o data, si flag es True)
+	para rellenar la tabla.
+
+	Parametros
+	----------
+	hdrs : headers de las columnas
+		Datos de primera fila de la tabla
+	flag : str
+		Es False por defecto. True indica que se debe utilizar
+		data para rellenar la tabla.
+	data : lista
+		Datos que se utilizan para rellar la tabla si flag es True
+	fmt : str
+		Formato de la tabla. Por defecto, es psql.
+
+	Return
+	-------
+	None
+		No retorna nada
+
+	"""
 	res = cur.fetchall()
 	if flag:
 		res = data
 	print(tabulate(res, headers=hdrs, tablefmt=fmt))
 
 def print_poyo():
+	"""
+	Imprime una tabla de datos de poyo.
+
+	Parametros
+	----------
+	No recibe parametros.
+
+	Return
+	-------
+	None
+		No retorna nada
+
+	"""
 	poyo = "SELECT * FROM poyo"
 	cur.execute(poyo)
 	print_table(hdrs_poyo)
 
 def print_sansanito():
+	"""
+	Imprime una tabla de datos de sansanito pokemon.
+
+	Parametros
+	----------
+	No recibe parametros.
+
+	Return
+	-------
+	None
+		No retorna nada
+
+	"""
 	ssn = "SELECT * FROM sansanito"
 	cur.execute(ssn)
 	print_table(hdrs_sansanito)
 
-#CRUD
-#CREATE - hace insercion de registro
+#============================CRUD=================================================
 def create():
+	"""
+	Crea una fila en la tabla. Funcion CREATE de CRUD.
+
+	Recibe nombre, estado, hp actual y fecha de ingreso de pokemon.
+	Llama a funcion insertar_pokemon que crea una fila en la tabla si 
+	corresponde.
+
+	Parametros
+	----------
+	No recibe parametros.
+
+	Return
+	-------
+	None
+		No retorna nada
+
+	"""
 	nombre = input("Ingrese el nombre de pokemon: ")
 	estado = input("Ingrese el estado. Si el pokemon no tiene estado, ingrese X: ")
 
@@ -366,16 +426,16 @@ def maxprio_sansanito():
 
 #Vista de los 10 pokemon con mayor prioridad
 def maxprio_view():
-    cur.execute(
-        """
-            CREATE OR REPLACE VIEW maxprio_view AS
-            SELECT nombre, prioridad FROM
-            	(SELECT nombre, prioridad
-            	FROM sansanito
-                ORDER BY prioridad DESC)
-            WHERE ROWNUM <= 10
-        """)
-    
+	cur.execute(
+		"""
+			CREATE OR REPLACE VIEW maxprio_view AS
+			SELECT nombre, prioridad FROM
+				(SELECT nombre, prioridad
+				FROM sansanito
+				ORDER BY prioridad DESC)
+			WHERE ROWNUM <= 10
+		""")
+	
 
 # Los 10 pokemon con menor prioridad
 def minprio_sansanito():
