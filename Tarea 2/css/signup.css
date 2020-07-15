@@ -1,5 +1,5 @@
 body{
-	background-color: #121212; 
+	background-color: #121212;
 	font-family: 'Nunito', sans-serif;
 }
 
@@ -23,6 +23,14 @@ input{
   	border-radius:12px;
   	width:90%;
 }
+
+.select-signup select {
+	width: 70%;
+  	border: none;
+  	border-radius: 12px;
+	margin-top: 10px;
+}
+
 
 .signup-container{
   	width: 100%;  
@@ -83,7 +91,6 @@ input{
 .button1{
 	background-color: #ffa6c9;
 	border-radius: 12px;
-	font-style: bold;
 	margin-top: 20px;
 }
 
