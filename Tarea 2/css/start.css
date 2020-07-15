@@ -24,12 +24,23 @@ input {
   	width:90%;
 }
 
-.select-signup select {
-	width: 70%;
-  	border: none;
-  	border-radius: 12px;
-	margin-top: 10px;
+.styling select::-ms-expand {
+	display: none;
 }
+.select-signup select {
+	-webkit-appearance: none;
+	-moz-appearance: none;
+	appearance: none;
+	border: 1px solid #ffa6c9;
+	border-radius: 12px;
+	color: #ffa6c9;
+	font-size: 11px;
+	height: 25px;
+	padding-left: 10px;
+	margin-top: 10px;
+	width: 250px;
+}
+
 
 
 .container {
@@ -50,6 +61,7 @@ input {
 	width: 250px;
 	height: auto;
   	text-align: center;
+  	align-items: center;
   	background: #fff;
   	border-radius: 10px;
   	overflow: hidden;
@@ -109,6 +121,35 @@ input {
   	font-size: 11px;
   	line-height: 0.2;
   	text-align: center;
+}
+
+
+.error {
+	width: auto;
+	align-items: center;
+	border: 1px solid #D8D8D8;
+	padding: 7px;
+	border-radius:12px;
+	text-transform: uppercase;
+	font-size: 11px;
+	background-color: rgb(255, 249, 242);
+	color: rgb(211, 0, 0);
+	text-align: center;
+	margin-top: 10px;
+}
+
+.success{
+	width: auto;
+	align-items: center;
+	padding:7px;
+	margin: 5px 0;
+  	border-radius:12px;
+	border: 1px solid #D8D8D8;
+	text-transform: uppercase;
+	font-size: 11px;
+	background-color: rgb(236, 255, 216);
+	color: green;
+	margin-top: 10px;
 }
 
 
