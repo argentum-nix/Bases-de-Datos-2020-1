@@ -37,7 +37,7 @@ if(isset($_POST['signup-submit'])){
 				exit();
 			}
 			else{
-				$sql_query = "INSERT INTO personas (nombre, mail, password) VALUES (?, ?, ?)";
+				$sql_query = "INSERT INTO personas (nombre, password, mail) VALUES (?, ?, ?)";
 				$statement = mysqli_stmt_init($connection);
 				if (!mysqli_stmt_prepare($statement, $sql_query)){
 					header("Location: ../signup.php?error=sqlerror2");
