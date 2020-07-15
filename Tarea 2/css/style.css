@@ -1,0 +1,20 @@
+
+body{
+	background-color: #121212;
+}
+
+.nav{
+	background-color: #ad4379;
+	grid-area: navbar;
+	width: 230px;
+	flex = 1;
+}
+.top-bar{
+	grid-area: ;
+	height: 60px;
+	z-index: 2;
+	background-color: #ad4379;
+	
+}
+
+
