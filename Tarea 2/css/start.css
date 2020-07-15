@@ -1,0 +1,114 @@
+body {
+	background-color: #121212;
+	font-family: 'Nunito', sans-serif;
+}
+
+button {
+	outline: none !important;
+	border: none;
+	background: transparent;
+}
+
+button:hover {
+	cursor: pointer;
+}
+
+iframe {
+	border: none !important;
+}
+
+input {
+	border: none;
+	padding:3px;
+  	border-radius:12px;
+  	width:90%;
+}
+
+.select-signup select {
+	width: 70%;
+  	border: none;
+  	border-radius: 12px;
+	margin-top: 10px;
+}
+
+
+.container {
+  	width: 100%;  
+  	min-height: 100vh;
+  	display: -webkit-box;
+  	display: -webkit-flex;
+  	display: -moz-box;
+  	display: -ms-flexbox;
+  	display: flex;
+  	flex-wrap: wrap;
+  	justify-content: center;
+  	align-items: center;
+  	padding: 15px; 
+}
+
+.wrap {
+	width: 250px;
+	height: auto;
+  	text-align: center;
+  	background: #fff;
+  	border-radius: 10px;
+  	overflow: hidden;
+  	padding: 77px 55px 33px 55px;
+  	font-size: 12px;
+  	box-shadow: 0 5px 10px 0px rgba(0, 0, 0, 0.1);
+  	-moz-box-shadow: 0 5px 10px 0px rgba(0, 0, 0, 0.1);
+  	-webkit-box-shadow: 0 5px 10px 0px rgba(0, 0, 0, 0.1);
+  	-o-box-shadow: 0 5px 10px 0px rgba(0, 0, 0, 0.1);
+  	-ms-box-shadow: 0 5px 10px 0px rgba(0, 0, 0, 0.1);
+}
+
+
+.form-title {
+	display: block;
+	font-family: 'Nunito';
+  	font-size: 7px;
+  	line-height: 1.5;
+  	text-align: center;
+
+}
+
+.wrap-form {
+	width: 100%;
+	margin:10px 0;
+  	position: relative;
+  	font-size: 10px;
+  	margin-bottom: 7px;
+}
+
+.form-input {
+	align-items: center;
+	padding:3px;
+	margin: 5px 0;
+  	border-radius:12px;
+  	box-shadow:0 0 15px 4px rgba(0,0,0,0.06);
+}
+
+.button1 {
+	background-color: #ffa6c9;
+	border-radius: 12px;
+	margin-top: 20px;
+}
+
+.button1:hover {
+	box-shadow: 0 3px 10px 0 rgba(0,0,0,0.24), 0 17px 50px 0 rgba(0,0,0,0.19);
+}
+
+.button1:active {
+	background-color: #1DB954;
+  	box-shadow: 0 2px #666;
+  	transform: translateY(4px);
+}
+
+.extras {
+	margin-top: 60px;
+  	font-size: 11px;
+  	line-height: 0.2;
+  	text-align: center;
+}
+
+
