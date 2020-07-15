@@ -33,6 +33,25 @@
 					<button type="submit" name="signup-submit">Regístrate</button>
 				</div>
 				</form>
+			<?php 
+			// Codigo que muestra algunos mensajes de error
+			if (isset($_GET["error"])) {
+				if ($_GET['error'] == 'emptyfields') {
+					echo '<div class="error">Por favor, rellene todos los campos.</div>';
+				}
+				else if ($_GET["error"] == 'mailcheckfailed') {
+					echo '<div class="error">Correo electrónico inválido.</div>';
+				}
+				else if ($_GET["error"] == 'userexists') {
+					echo '<div class="error">Correo electrónico ya está registrado en el sistema.</div>';
+				}
+			}
+			if (isset($_GET["signup"])) {
+				if ($_GET["signup"] == "success"){
+					echo '<div class="success">¡Registración exitosa!</div>';
+				}
+			}
+			?>
 			</div>
 			<div class="extras">
 				<p>¿Ya tienes una cuenta?</p><a href="login.php">Iniciar sesión.</a>
