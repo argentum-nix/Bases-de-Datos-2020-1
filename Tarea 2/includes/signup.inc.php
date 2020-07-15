@@ -24,7 +24,7 @@ if(isset($_POST['signup-submit'])){
 		$sql_query = "SELECT mail FROM personas WHERE mail=?";
 		$statement = mysqli_stmt_init($connection);
 		if (!mysqli_stmt_prepare($statement, $sql_query)){
-			header("Location: ../signup.php?error=sqlerror1");
+			header("Location: ../signup.php?error=sqlerror");
 			exit();
 		}
 		else{
@@ -40,7 +40,7 @@ if(isset($_POST['signup-submit'])){
 				$sql_query = "INSERT INTO personas (nombre, password, mail) VALUES (?, ?, ?)";
 				$statement = mysqli_stmt_init($connection);
 				if (!mysqli_stmt_prepare($statement, $sql_query)){
-					header("Location: ../signup.php?error=sqlerror2");
+					header("Location: ../signup.php?error=sqlerror");
 					exit();
 				}
 				$cripted_pwd = password_hash($pwd_usuario, PASSWORD_DEFAULT);
@@ -53,12 +53,12 @@ if(isset($_POST['signup-submit'])){
 					$sql_query = "INSERT INTO usuarios (id_usuario) VALUES (?)";
 					$statement = mysqli_stmt_init($connection);
 					if (!mysqli_stmt_prepare($statement, $sql_query)){
-						header("Location: ../signup.php?error=sqlerror3");
+						header("Location: ../signup.php?error=sqlerror");
 						exit();
 					}
 					mysqli_stmt_bind_param($statement, "i", $last_id);
 					mysqli_stmt_execute($statement);
-					header("Location: ../signup.php?success");
+					header("Location: ../signup.php?signup=succes");
 					exit();
 				}
 
@@ -67,12 +67,12 @@ if(isset($_POST['signup-submit'])){
 					$sql_query = "INSERT INTO artistas (id_artista) VALUES (?)";
 					$statement = mysqli_stmt_init($connection);
 					if (!mysqli_stmt_prepare($statement, $sql_query)){
-						header("Location: ../signup.php?error=sqlerror4");
+						header("Location: ../signup.php?error=sqlerror");
 						exit();
 					}
 					mysqli_stmt_bind_param($statement, "i", $last_id);
 					mysqli_stmt_execute($statement);
-					header("Location: ../signup.php?success");
+					header("Location: ../signup.php?signup=success");
 					exit();
 				}
 			}
