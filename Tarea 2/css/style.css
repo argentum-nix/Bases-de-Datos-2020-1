@@ -61,7 +61,7 @@ body{
 .nav-item i {
 	font-family: FontAwesome;
 	position: absolute;
-	margin-right: 30px;
+	margin-right: 15px;
 	font-size: 22px;
 	right: 5px;
 	font-style:normal;
@@ -75,67 +75,72 @@ body{
 .topbar {
 	grid-area: main-view;
     height: 60px;
-    position: absolute;
     top: 0px;
-    right: 0px;
     width: 100%;
 	background-color: #000;
 }
 
-.active-user{
-	display: flex;
-	background-color: #000;
-	border-radius: 12px;
-	border-color: #fff;
-	border: 1px;
-	position: relative;
+.topbar .menu .profile {
+	width: 28px;
+	height: 28px;
+	border-radius: 50%;
+	object-fit: cover;
+
 }
 
-.dropdown {
-  display: inline-block;
-  position: absolute;
-  opacity: 0.8;
+.topbar .menu i {
+	font-family: FontAwesome;
+	font-style: normal;
 }
 
-li a, .dropbtn {
-  display: inline-block;
-  color: white;
-  text-align: center;
-  padding: 14px 16px;
-  text-decoration: none;
-}
-
-.dropdown-content {
-  display: none;
-  position: fixed;
-  background-color: black;
-  min-width: 160px;
-  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-  z-index: 1;
-}
-
-.dropdown-content a {
-  	border-radius: 4px;
-    display:block;
-	padding: 0 16px;
-	height: 40px;
+.topbar .menu button {
+	border-radius: 23px;
+	height: 32px;
+	border: none;
 	color: #fff;
-	font-weight: 500;
-	justify-content: center;
-	display: flex;
-	flex-direction: column;
-	position: relative;
+	background-color: #000;
 }
 
-.dropdown:hover .dropdown-content {
-  display: block;
+.topbar .menu button:hover {
+	background-color: #ffa6c9;
+	cursor: pointer;
 }
 
-li.dropdown {
-  display: inline-block;
-  float:left;
+.topbar .menu button span{
+	margin-left: 8px;
+	font-weight: 800;
+	font-size: 12px;
+	white-space: nowrap;
+	overflow: hidden;
+
 }
 
+.topbar .menu:hover > .dropdown-menu, .topbar .menu:hover > button {
+	display: block;
+	background-color: #282828;
+}
+
+.topbar .menu .dropdown-menu {
+	background-color: #282828;
+	margin-top: 8px;
+	box-shadow: 0 4px 4px #000;
+	border-radius: 4px;
+
+}
+
+.topbar .menu .dropdown-menu .dropdown-item {
+	color: white;
+	opacity: .8;
+	padding: 3px 20px;
+	line-height: 32px;
+}
+
+.topbar .menu .dropdown-menu .dropdown-item:hover {
+	color: #fff;
+    background: #ffa6c9;
+}
+
+}
 
 .main {
 	grid-area: main-view;

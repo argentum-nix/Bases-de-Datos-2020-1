@@ -26,51 +26,30 @@ if(isset($_POST['login-submit'])) {
 		$res = mysqli_stmt_get_result($statement);
 		$fila = mysqli_fetch_assoc($res);
 		if($fila){
+			$nom = $fila["nombre"];
+			$uid = $fila["id_persona"];
 			$checkpwd = password_verify($pwd_usuario, $fila['password']);
 			if($checkpwd == true){
 				session_start();
-				$_SESSION["id"] = $fila["id_persona"];
-				$_SESSION["nombre"] = $fila["nombre"];
-
-				// Revisa si es usuario o si es artista
-				// Dependiendo de tipo de usuario voy a esconder botones de CRUD.
-				$flag = 0;
-				$sql_query = "SELECT * FROM usuarios WHERE id_usuario=?";
-				$statement = mysqli_stmt_init($connection);
-				if (!mysqli_stmt_prepare($statement, $sql_query)) {
-					header("Location: ../login.php?error=sqlerror");
-					exit();
-				}
-				mysqli_stmt_bind_param($statement, "i", $fila["id_persona"]);
-				mysqli_stmt_execute($statement);
-				mysqli_stmt_store_result($statement);
-				$check = mysqli_stmt_num_rows($statement);
-				if($check = 1){
-					$_SESSION["usertype"] = "user";
-					$flag = 1;
-				}
-				$sql_query = "SELECT * FROM artistas WHERE id_artista=?";
-				$statement = mysqli_stmt_init($connection);
-				if (!mysqli_stmt_prepare($statement, $sql_query)) {
-					header("Location: ../login.php?error=sqlerror");
-					exit();
-				}
-				mysqli_stmt_bind_param($statement, "i", $fila["id_persona"]);
-				mysqli_stmt_execute($statement);
-				mysqli_stmt_store_result($statement);
-				$check = mysqli_stmt_num_rows($statement);
-				if($check = 1){
-					$_SESSION["usertype"] = "artist";
-					$flag = 1;
-				}
-
-				if($flag == 0){
-					header("Location: ../login.php?error=sqlerror");
+				$_SESSION["id"] = $uid;
+				$_SESSION["nombre"] = $nom;
+				$res= mysqli_query($connection, "SELECT * FROM usuarios WHERE id_usuario='$uid'");
+				if(mysqli_num_rows($res) > 0){
+					$_SESSION['usertype'] = 'user';
+					header("Location: ../index.php?login=success");
 					exit();
 				}
 				else{
-					header("Location: ../index.php?login=success");
-					exit();
+					$res = mysqli_query($connection, "SELECT * FROM artistas WHERE id_artista='$uid'");
+					if(mysqli_num_rows($res) > 0){
+						$_SESSION['usertype'] = 'artist';
+						header("Location: ../index.php?login=success");
+						exit();
+					}
+					else{
+						header("Location: ../login.php?error=sqlerror");
+						exit();
+					}
 				}
 			}
 
@@ -86,7 +65,8 @@ if(isset($_POST['login-submit'])) {
 	}
 	mysqli_stmt_close($statement);
 	mysqli_close($connection);
-}
+	}
+
 else{
 	header("Location: ../login.php");
 	exit();
