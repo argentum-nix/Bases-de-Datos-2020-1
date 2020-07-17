@@ -1,7 +1,7 @@
 
 body{
 	background-color: #121212;
-	font-family: 'Arial', sans-serif;
+	font-family: 'Nunito', sans-serif;
 
 }
 
@@ -75,7 +75,63 @@ body{
 .topbar {
 	grid-area: main-view;
 	height: 60px;
-	z-index: 2;
+	position:fixed;
+	top:0px;
+	right: 0px;
+	width: 150px;
+}
+
+.active-user{
+	display: flex;
+	background-color: #000;
+	border-radius: 12px;
+	border-color: #fff;
+	border: 1px;
+	position: fixed;
+}
+
+.dropdown {
+  display: inline-block;
+  opacity: 0.8;
+}
+
+li a, .dropbtn {
+  display: inline-block;
+  color: white;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+}
+
+.dropdown-content {
+  display: none;
+  position: fixed;
+  background-color: black;
+  min-width: 160px;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  z-index: 1;
+}
+
+.dropdown-content a {
+  	border-radius: 4px;
+    display:block;
+	padding: 0 16px;
+	height: 40px;
+	color: #fff;
+	font-weight: 500;
+	justify-content: center;
+	display: flex;
+	flex-direction: column;
+	position: relative;
+}
+
+.dropdown:hover .dropdown-content {
+  display: block;
+}
+
+li.dropdown {
+  display: inline-block;
+  float:left;
 }
 
 
