@@ -1,0 +1,153 @@
+
+body{
+	background-color: #121212;
+	font-family: 'Nunito', sans-serif;
+
+}
+
+.main-container {
+	position: relative;
+	background: #121212;
+	display: grid;
+	height: 100vh;
+	grid-template-rows: 1fr auto;
+	grid-template-columns:  auto 1fr;
+	grid-template-areas: "sidebar main-view main-view"
+						
+}
+
+.wrapper {
+    display: flex;
+    width: 100%;
+    align-items: stretch;
+}
+
+.sidebar {
+	align-items: center;
+	background-color: #000;
+	padding-left: 10px;
+	padding-top: 5px;
+	grid-area: sidebar;
+	width: 230px;
+	min-height: 0;
+	flex: 1;
+}
+
+.sidebar .sidebar-header{
+	width: 230px;
+	height: 60px;
+	margin-bottom: 10px;
+}
+
+.nav-item{
+	width: auto;
+	height: 40px;
+}
+
+.nav-item a{
+	border-radius: 4px;
+    display:block;
+	padding: 0 16px;
+	height: 40px;
+	color: #ffa6c9;
+	opacity: .8;
+	font-weight: 500;
+	justify-content: center;
+	display: flex;
+	flex-direction: column;
+	position: relative;
+}
+
+.nav-item i {
+	font-family: FontAwesome;
+	position: absolute;
+	margin-right: 30px;
+	font-size: 22px;
+	right: 5px;
+	font-style:normal;
+}
+
+.nav-item a:hover {
+	color: #fff;
+    background: #ffa6c9;
+}
+
+.topbar {
+	grid-area: main-view;
+	height: 60px;
+	position:fixed;
+	top:0px;
+	right: 0px;
+	width: 150px;
+}
+
+.active-user{
+	display: flex;
+	background-color: #000;
+	border-radius: 12px;
+	border-color: #fff;
+	border: 1px;
+	position: fixed;
+}
+
+.dropdown {
+  display: inline-block;
+  opacity: 0.8;
+}
+
+li a, .dropbtn {
+  display: inline-block;
+  color: white;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+}
+
+.dropdown-content {
+  display: none;
+  position: fixed;
+  background-color: black;
+  min-width: 160px;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  z-index: 1;
+}
+
+.dropdown-content a {
+  	border-radius: 4px;
+    display:block;
+	padding: 0 16px;
+	height: 40px;
+	color: #fff;
+	font-weight: 500;
+	justify-content: center;
+	display: flex;
+	flex-direction: column;
+	position: relative;
+}
+
+.dropdown:hover .dropdown-content {
+  display: block;
+}
+
+li.dropdown {
+  display: inline-block;
+  float:left;
+}
+
+
+.main {
+	grid-area: main-view;
+	height: 100%;
+	overflow: scroll;
+	flex: 1;
+	min-height: 0;
+}
+
+.nav-create h2 {
+	font-size: 20px;
+	border-radius: 4px;
+    display:block;
+	padding: 0 16px;
+	height: 20px;
+	color: #fff;
+}
