@@ -29,8 +29,8 @@ if(isset($_POST['login-submit'])) {
 			$checkpwd = password_verify($pwd_usuario, $fila['password']);
 			if($checkpwd == true){
 				session_start();
-				$_SESSION["id"] = $row["id_persona"];
-				$_SESSION["nombre"] = $row["nombre"];
+				$_SESSION["id"] = $fila["id_persona"];
+				$_SESSION["nombre"] = $fila["nombre"];
 
 				// Revisa si es usuario o si es artista
 				// Dependiendo de tipo de usuario voy a esconder botones de CRUD.

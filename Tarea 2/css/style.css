@@ -74,11 +74,12 @@ body{
 
 .topbar {
 	grid-area: main-view;
-	height: 60px;
-	position:fixed;
-	top:0px;
-	right: 0px;
-	width: 150px;
+    height: 60px;
+    position: absolute;
+    top: 0px;
+    right: 0px;
+    width: 100%;
+	background-color: #000;
 }
 
 .active-user{
@@ -87,11 +88,12 @@ body{
 	border-radius: 12px;
 	border-color: #fff;
 	border: 1px;
-	position: fixed;
+	position: relative;
 }
 
 .dropdown {
   display: inline-block;
+  position: absolute;
   opacity: 0.8;
 }
 
@@ -141,6 +143,13 @@ li.dropdown {
 	overflow: scroll;
 	flex: 1;
 	min-height: 0;
+}
+
+.nav-create{
+	border-top: 1px solid #fff;
+	padding-bottom: 15px;
+	padding-top: 15px;
+	border-bottom: 1px solid #fff;
 }
 
 .nav-create h2 {

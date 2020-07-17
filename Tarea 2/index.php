@@ -1,6 +1,5 @@
 <?php 
 session_start();
-echo $_SESSION['nombre'];
 ?>
 
 <!DOCTYPE html>
@@ -21,9 +20,8 @@ echo $_SESSION['nombre'];
 <body>
 		<div class="main-container">
 			<div class="topbar">
-				<div class="active-user">
 				  <li class="dropdown">
-				    <a href="javascript:void(0)" class="nav-link"> <?php echo $_SESSION['id'];?> </a>
+				    <a href="javascript:void(0)" class="nav-link"> <?php echo $_SESSION['nombre'];?> </a>
 				    <div class="dropdown-content">
 				    <div class="nav-item">
 						 		<a href="#" class="nav-link">
@@ -48,7 +46,6 @@ echo $_SESSION['nombre'];
 	                </div>
 				    </div>
 				  </li>
-				</div>
 			</div>
 			<div class="wrapper">
 				<nav class="sidebar">
