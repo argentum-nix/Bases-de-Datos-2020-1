@@ -46,7 +46,7 @@ if(isset($_POST['login-submit'])) {
 				mysqli_stmt_store_result($statement);
 				$check = mysqli_stmt_num_rows($statement);
 				if($check = 1){
-					$_SESSION["usertype"] = "Usuario";
+					$_SESSION["usertype"] = "user";
 					$flag = 1;
 				}
 				$sql_query = "SELECT * FROM artistas WHERE id_artista=?";
@@ -60,7 +60,7 @@ if(isset($_POST['login-submit'])) {
 				mysqli_stmt_store_result($statement);
 				$check = mysqli_stmt_num_rows($statement);
 				if($check = 1){
-					$_SESSION["usertype"] = "Arista";
+					$_SESSION["usertype"] = "artist";
 					$flag = 1;
 				}
 
@@ -69,7 +69,7 @@ if(isset($_POST['login-submit'])) {
 					exit();
 				}
 				else{
-					header("Location: ../home.php?login=success");
+					header("Location: ../index.php?login=success");
 					exit();
 				}
 			}
