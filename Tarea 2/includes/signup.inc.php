@@ -58,7 +58,7 @@ if(isset($_POST['signup-submit'])){
 					}
 					mysqli_stmt_bind_param($statement, "i", $last_id);
 					mysqli_stmt_execute($statement);
-					header("Location: ../signup.php?signup=succes");
+					header("Location: ../signup.php?signup=success");
 					exit();
 				}
 

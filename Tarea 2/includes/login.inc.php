@@ -17,7 +17,7 @@ if(isset($_POST['login-submit'])) {
 		$sql_query = "SELECT * FROM personas WHERE mail=?";
 		$statement = mysqli_stmt_init($connection);
 		if (!mysqli_stmt_prepare($statement, $sql_query)) {
-			header("Location: ../login.php?error=sqlerror1");
+			header("Location: ../login.php?error=sqlerror");
 			exit();
 		}
 		
@@ -38,7 +38,7 @@ if(isset($_POST['login-submit'])) {
 				$sql_query = "SELECT * FROM usuarios WHERE id_usuario=?";
 				$statement = mysqli_stmt_init($connection);
 				if (!mysqli_stmt_prepare($statement, $sql_query)) {
-					header("Location: ../login.php?error=sqlerror2");
+					header("Location: ../login.php?error=sqlerror");
 					exit();
 				}
 				mysqli_stmt_bind_param($statement, "i", $fila["id_persona"]);
@@ -52,7 +52,7 @@ if(isset($_POST['login-submit'])) {
 				$sql_query = "SELECT * FROM artistas WHERE id_artista=?";
 				$statement = mysqli_stmt_init($connection);
 				if (!mysqli_stmt_prepare($statement, $sql_query)) {
-					header("Location: ../login.php?error=sqlerror3");
+					header("Location: ../login.php?error=sqlerror");
 					exit();
 				}
 				mysqli_stmt_bind_param($statement, "i", $fila["id_persona"]);
@@ -65,7 +65,7 @@ if(isset($_POST['login-submit'])) {
 				}
 
 				if($flag == 0){
-					header("Location: ../login.php?error=sqlerror4");
+					header("Location: ../login.php?error=sqlerror");
 					exit();
 				}
 				else{
@@ -75,7 +75,7 @@ if(isset($_POST['login-submit'])) {
 			}
 
 			else if($checkpwd == false){
-				header("Location: ../home.php?error=wrongpwd");
+				header("Location: ../login.php?error=wrongpwd");
 				exit();
 			}
 		}

@@ -20,6 +20,19 @@
 					<button type="submit" name="login-submit">Iniciar Sesión</button>
 				</div>
 			</form>
+			<?php 
+			if (isset($_GET["error"])) {
+				if ($_GET['error'] == 'emptyfields') {
+					echo '<div class="error">Por favor, rellene todos los campos.</div>';
+				}
+				else if ($_GET["error"] == 'wrongpwd') {
+					echo '<div class="error">Contraseña incorrecta.</div>';
+				}
+				else if ($_GET["error"] == 'notfound') {
+					echo '<div class="error">Usuario no encontrado en el sistema.</div>';
+				}
+			}
+			?>
 			<div class="extras">
 				<a href="signup.php">Regístrate.</a>
 			</div>
