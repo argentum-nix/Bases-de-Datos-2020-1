@@ -37,10 +37,10 @@ include("includes/header.php");
 	<div class="row list mb-5">
 		<?php
 		$aid = $_SESSION["id"];
-		$res = mysqli_query($connection, "SELECT nombre FROM albumes WHERE id_artista ='$aid' LIMIT 20");
+		$res = mysqli_query($connection, "SELECT nombre, debut_year FROM albumes WHERE id_artista ='$aid' LIMIT 20");
 		while($fila1 = mysqli_fetch_array($res)){
 			$album_name = $fila1["nombre"];
-			$artist_name = $_SESSION["nombre"];
+			$year = $fila1["debut_year"];
 		?>
 		<div class="col-12 col-md-3 col-lg-2">
 			<div class="card">
@@ -52,7 +52,7 @@ include("includes/header.php");
 						<h5 class="card-title"><?php echo $album_name?></h5>
 					</a>
 					<a href="">
-						<p class="card-text"><?php echo $artist_name?></p>
+						<p class="card-text"><?php echo $year?></p>
 					</a>
 				</div>
 			</div>
