@@ -1,4 +1,15 @@
 <div class="topbar">
+	<div class="botones-nav">
+		<button type="button">
+			<a href="#">Usuarios que sigo</a>
+		</button>
+		<button type="button">
+			<a href="#">Artistas que sigo</a>
+		</button>
+		<button type="button">
+			<a href="#">Playlists que sigo</a>
+		</button>
+	</div>
 	<div class="dropdown menu ml-3"style="width: 100px; position: absolute; right:3%; margin-right: 28px; top: 10px;">
 		<button type="button" class="d-flex align-items-center" data-toggle="dropdown">
 			<?php if($_SESSION['usertype'] == 'user'):?>
@@ -13,7 +24,7 @@
 				<a href="#" class="dropdown-item">Cuenta</a>
 				<a href="#" class="dropdown-item">Perfil</a>
 				<div class="dropdown-divider"></div>
-				<a href="#" class="dropdown-item">Salir</a>
+				<a href="#" class="dropdown-item">Salir</a> 
 		</div>
 	</div>
 </div>

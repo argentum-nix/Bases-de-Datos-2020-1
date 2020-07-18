@@ -43,7 +43,6 @@
 							<span>Nueva canción</span>
 						</a>
 					</div>
-				</div>
 					<div class="nav-item">
 						<a href="#" class="nav-link">
 							<i class="fas fa-plus-circle"></i>

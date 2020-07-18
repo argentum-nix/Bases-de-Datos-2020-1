@@ -2,6 +2,7 @@
 body{
 	background-color: #121212;
 	font-family: 'Nunito', sans-serif;
+	margin:0;
 
 }
 
@@ -9,12 +10,13 @@ body{
 	position: relative;
 	background: #121212;
 	display: grid;
-	height: 100vh;
+	min-height: 100vh;
 	grid-template-rows: 1fr auto;
 	grid-template-columns:  auto 1fr;
 	grid-template-areas: "sidebar main-view main-view"
 						
 }
+
 
 .wrapper {
     display: flex;
@@ -43,6 +45,7 @@ body{
 	width: auto;
 	height: 40px;
 }
+
 
 .nav-item a{
 	border-radius: 4px;
@@ -79,6 +82,42 @@ body{
     width: 100%;
 	background-color: #000;
 }
+
+.topbar .botones-nav button{
+	border-radius: 23px;
+    color: #fff;
+    background: #000;
+    font-size: 13px;
+    border: none;
+    margin-right: 10px;
+    margin-left: 10px;
+    top: 10px;
+    position: relative;
+    white-space: nowrap;
+	overflow: hidden;
+}
+
+.topbar .botones-nav a{
+	color: white;
+	font-weight: 800;
+	font-size: 13px;
+	text-decoration: none;
+}
+
+.topbar .botones-nav button:hover {
+	background-color: #282828;
+	cursor: pointer;
+}
+
+.topbar .menu button a{
+	margin-left: 8px;
+	font-weight: 800;
+	font-size: 3px;
+	white-space: nowrap;
+	overflow: hidden;
+
+}
+
 
 .topbar .menu .profile {
 	width: 28px;
@@ -139,17 +178,6 @@ body{
 	color: #fff;
     background: #ffa6c9;
 }
-
-}
-
-.main {
-	grid-area: main-view;
-	height: 100%;
-	overflow: scroll;
-	flex: 1;
-	min-height: 0;
-}
-
 .nav-create{
 	border-top: 1px solid #fff;
 	padding-bottom: 15px;
@@ -164,4 +192,77 @@ body{
 	padding: 0 16px;
 	height: 20px;
 	color: #fff;
+}
+
+.main{
+	grid-area: main-view;
+	flex:1;
+	height: 100%;
+	min-height: 0;
+	margin-left: 20px;
+	margin-right: 20px;
+	padding-top: 16px;
+}
+.main .margin-top {
+	position: sticky;
+	height: 60px;
+}
+
+.main .view-container {
+	min-height: 0;
+	flex: 1;
+}
+
+.main .title {
+	font-size: 24px;
+	font-weight: 700;
+	letter-spacing: .04em;
+	color: #fff;
+
+}
+
+.main .list {
+	padding: 0px 7px;
+}
+
+.main .list .card {
+	padding: 20px 20px 16px;
+	background: #282828;
+	border-radius: 8px;
+}
+
+.main .list .col-12 {
+	padding-left: 8px;
+	padding-right: 8px;
+}
+
+.main .list .card .card-body {
+	min-height: 62px;
+	border:none;
+}
+
+.main .list .card .card-title {
+	font-size: 14px;
+	line-height: 20px;
+	font-weight: 700;
+	letter-spacing: .24px;
+	color: #fff;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	margin: 0; 
+}
+
+.main .list .card .card-text {
+	font-size: 12px;
+	font-height: 18px;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	display: -webkit-box;
+	-webkit-line-clamp: 2;
+	-webkit-box-orient: vertical;
+	color: #fff;
+	opacity: .6;
+
 }
