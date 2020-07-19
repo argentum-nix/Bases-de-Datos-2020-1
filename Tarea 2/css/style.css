@@ -1,20 +1,38 @@
-
-body{
+body {
 	background-color: #121212;
 	font-family: 'Nunito', sans-serif;
-	margin:0;
+}
 
+iframe {
+	border: none !important;
 }
 
 .main-container {
 	position: relative;
+	font: Nunito;
 	background: #121212;
 	display: grid;
 	min-height: 100vh;
 	grid-template-rows: 1fr auto;
 	grid-template-columns:  auto 1fr;
-	grid-template-areas: "sidebar main-view main-view"
+	grid-template-areas: "sidebar main-view main-view";
 						
+}
+
+.x-button {
+	background: transparent;
+    display: flex;
+    opacity: .8;
+    font-weight: 700;
+    font-size: 25px;
+    color: #fff;
+    margin: auto;
+    border-radius: 12px;
+}
+
+.x-button:hover{
+	background: #282828;
+	color: #fff;
 }
 
 
@@ -35,19 +53,19 @@ body{
 	flex: 1;
 }
 
-.sidebar .sidebar-header{
+.sidebar .sidebar-header {
 	width: 230px;
 	height: 60px;
 	margin-bottom: 10px;
 }
 
-.nav-item{
+.nav-item {
 	width: auto;
 	height: 40px;
 }
 
 
-.nav-item a{
+.nav-item a {
 	border-radius: 4px;
     display:block;
 	padding: 0 16px;
@@ -178,6 +196,7 @@ body{
 	color: #fff;
     background: #ffa6c9;
 }
+
 .nav-create{
 	border-top: 1px solid #fff;
 	padding-bottom: 15px;
@@ -203,6 +222,7 @@ body{
 	margin-right: 20px;
 	padding-top: 16px;
 }
+
 .main .margin-top {
 	position: sticky;
 	height: 60px;
@@ -266,3 +286,5 @@ body{
 	opacity: .6;
 
 }
+
+

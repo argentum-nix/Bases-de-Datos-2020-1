@@ -5,7 +5,7 @@
 		</div>
 		<div class="sidebar-nav">
 			<div class="nav-item">
-				<a href="#" class="nav-link">
+				<a href="index.php" class="nav-link">
 					<i class="fas fa-home"></i>
 					<span>Inicio</span>
 				</a>
@@ -21,7 +21,7 @@
 				<div class="nav-create d-flex flex-column mt-4">
 					<h2>Playlists</h2>
 					<div class="nav-item">
-						<a href="#" class="nav-link">
+						<a href="add_playlist.php" class="nav-link">
 							<i class="fas fa-plus-circle"></i>
 							<span>Nuevo playlist</span>
 						</a>
