@@ -286,5 +286,12 @@ iframe {
 	opacity: .6;
 
 }
+.data-container {
+	height: 230px;
+    background-image: linear-gradient(#000,#282828);
+    position: relative;
+    display: flex;
+    margin-bottom: 20px;
+}
 
 
