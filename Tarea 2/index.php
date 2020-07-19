@@ -1,5 +1,9 @@
 <?php 
+// Permite entrar en index.php si y solo si el usuario esta logeado
 include("includes/header.php");
+if(!isset($_SESSION['usertype'])){
+   header("Location: login.php");
+}
 ?>
 <?php if($_SESSION['usertype'] == 'user'):?>
 	<h2 class='title mb-3'>Hecho para <?php echo $_SESSION['nombre'];?>:</h2>

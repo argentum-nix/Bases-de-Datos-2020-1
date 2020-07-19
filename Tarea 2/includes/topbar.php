@@ -21,10 +21,10 @@
 				<i class="fas fa-caret-down ml-2 mr-2"></i>
 		</button>
 		<div class="dropdown-menu mt-0 p-0">
-				<a href="#" class="dropdown-item">Cuenta</a>
-				<a href="#" class="dropdown-item">Perfil</a>
+				<a href="account.php" class="dropdown-item">Cuenta</a>
+				<a href="profile.php" class="dropdown-item">Perfil</a>
 				<div class="dropdown-divider"></div>
-				<a href="#" class="dropdown-item">Salir</a> 
+				<a name="logout-submit" href="includes/logout.inc.php" class="dropdown-item">Salir</a> 
 		</div>
 	</div>
 </div>

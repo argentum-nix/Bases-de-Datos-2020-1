@@ -27,7 +27,7 @@
 						</a>
 					</div>
 					<div class="nav-item">
-						<a href="#" class="nav-link">
+						<a href="fav_songs.php" class="nav-link">
 							<i class="fas fa-heart"></i>
 							<span>Canciones favoritas</span>
 						</a>
@@ -38,13 +38,13 @@
 				<div class="nav-create d-flex flex-column mt-4">
 					<h2>Studio</h2>
 					<div class="nav-item">
-						<a href="#" class="nav-link">
+						<a href="add_song.php" class="nav-link">
 							<i class="fas fa-music"></i>
 							<span>Nueva canción</span>
 						</a>
 					</div>
 					<div class="nav-item">
-						<a href="#" class="nav-link">
+						<a href="add_album.php" class="nav-link">
 							<i class="fas fa-plus-circle"></i>
 							<span>Nuevo album</span>
 						</a>
