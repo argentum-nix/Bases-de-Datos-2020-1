@@ -294,4 +294,41 @@ iframe {
     margin-bottom: 20px;
 }
 
+.entityinfo {
+	padding-top: 40px 0px 10px 0px;
+	display: inline-block;
+	width: 100%;
+}
 
+.entityinfo .leftsection {
+	width: 30%;
+	float: left;
+	max-width: 250px;
+}
+
+.entityinfo .rightsection {
+	width: 70%;
+	float: left;
+	padding: 5px 10px 5px 40px;
+	box-sizing: border-box;
+}
+
+.tracklist-container .tracklist .track {
+	height: 40px;
+	padding: 25px 10px;
+	list-style: none;
+}
+
+.tracklist-container .tracklist .track .trackinfo {
+	font-weight: 200;
+}
+
+
+.tracklist-container .tracklist .track:hover {
+	background-color: #282828;
+}
+
+.tracklist-container .tracklist .track .trackinfo .trackname {
+	color: #ffa6c9;
+	font-weight: 300;
+}

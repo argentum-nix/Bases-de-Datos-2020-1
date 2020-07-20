@@ -24,7 +24,7 @@ if(!isset($_SESSION['usertype'])){
 					<img class="card-img-top pb-2" src="img/album1.png">
 				</a>
 				<div class="card-body p-0">
-					<a href="">
+					<a href="view_album.php?">
 						<h5 class="card-title"><?php echo $album_name?></h5>
 					</a>
 					<a href="">
@@ -41,27 +41,24 @@ if(!isset($_SESSION['usertype'])){
 	<div class="row list mb-5">
 		<?php
 		$aid = $_SESSION["id"];
-		$res = mysqli_query($connection, "SELECT nombre, debut_year FROM albumes WHERE id_artista ='$aid' LIMIT 20");
+		$res = mysqli_query($connection, "SELECT id_album, nombre, debut_year FROM albumes WHERE id_artista ='$aid' LIMIT 20");
 		while($fila1 = mysqli_fetch_array($res)){
-			$album_name = $fila1["nombre"];
-			$year = $fila1["debut_year"];
-		?>
-		<div class="col-12 col-md-3 col-lg-2">
-			<div class="card">
-				<a href="">
-					<img class="card-img-top pb-2" src="img/album1.png">
-				</a>
-				<div class="card-body p-0">
-					<a href="">
-						<h5 class="card-title"><?php echo $album_name?></h5>
+			echo
+			"<div class='col-12 col-md-3 col-lg-2'>
+				<div class='card'>
+					<a href='view_album.php?id=".$fila1["id_album"]."'>
+						<img class='card-img-top pb-2' src='img/album1.png'>
 					</a>
-					<a href="">
-						<p class="card-text"><?php echo $year?></p>
-					</a>
+					<div class='card-body p-0'>
+						<a href='view_album.php?id=".$fila1["id_album"]."'>
+							<h5 class='card-title'>".$fila1["nombre"]."</h5>
+						</a>
+						<p class='card-text'>".$fila1["debut_year"]."</p>
+					</div>
 				</div>
-			</div>
-		</div>
-		<?php }; ?>
+			</div>";
+		}
+		?>
 	</div>
 
 <?php endif;?>
