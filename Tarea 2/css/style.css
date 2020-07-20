@@ -295,7 +295,7 @@ iframe {
 }
 
 .entityinfo {
-	padding-top: 40px 0px 10px 0px;
+	padding: 20px 0px 20px 0px;
 	display: inline-block;
 	width: 100%;
 }
@@ -314,8 +314,8 @@ iframe {
 }
 
 .tracklist-container .tracklist .track {
-	height: 40px;
-	padding: 25px 10px;
+	height: 60px;
+	padding: 5px 10px 35px 10px;
 	list-style: none;
 }
 
@@ -332,3 +332,70 @@ iframe {
 	color: #ffa6c9;
 	font-weight: 300;
 }
+
+.tracklist-container .tracklist .track .playbutton {
+	width: 30px;
+	visibility: hidden;
+	position: absolute;
+	padding-top: 10px;
+	cursor: pointer;
+
+}
+
+.tracklist-container .tracklist .track .note {
+	width: 30px;
+	position: absolute;
+	padding-top: 10px;
+	cursor: pointer;
+
+}
+
+.tracklist-container .tracklist .track:hover .playbutton {
+	visibility: visible;
+
+}
+
+.tracklist-container .tracklist .track:hover .note {
+	visibility: hidden;
+
+}
+
+
+.tracklist-container .tracklist .track .trackinfo {
+	float: left;
+	width: 75%;
+	padding-left: 45px;
+}
+
+
+.tracklist-container .tracklist .track .trackinfo .trackname {
+	display: block;
+	font-weight: 600;
+}
+
+.tracklist-container .tracklist .track .track-duration .trackdur {
+	color: #b3b3b3;
+	font-size: 15px;
+	width: 15%;
+	text-align: right;
+	padding-top: 10px;
+	float: left;
+}
+
+
+.tracklist-container .tracklist .track .track-options {
+	width: 5%;
+	float: left;
+	text-align: right;
+}
+
+.tracklist-container .tracklist .track .track-options .optbutton{
+	width: 15px;
+	visibility: hidden;
+	padding-top: 15px;
+}
+
+.tracklist-container .tracklist .track:hover .track-options .optbutton {
+	visibility: visible;
+}
+

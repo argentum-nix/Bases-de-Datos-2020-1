@@ -10,30 +10,27 @@ if(!isset($_SESSION['usertype'])){
 	<p style="color:#b3b3b3">Cuanto más escuches, mejores serán las recomendaciones.</p>
 	<div class="row list mb-5">
 		<?php
-		$res = mysqli_query($connection, "SELECT nombre, id_artista FROM albumes LIMIT 20");
+		$res = mysqli_query($connection, "SELECT nombre, id_artista, id_album FROM albumes LIMIT 20");
 		while($fila1 = mysqli_fetch_array($res)){
-			$album_name = $fila1["nombre"];
-			$aid = $fila1["id_artista"];
-			$query_artista = mysqli_query($connection, "SELECT nombre FROM personas WHERE id_persona=".$aid);
+			$query_artista = mysqli_query($connection, "SELECT nombre FROM personas WHERE id_persona=".$fila1['id_artista']);
 			$fila2 = mysqli_fetch_array($query_artista);
-			$artist_name = $fila2["nombre"];
-		?>
-		<div class="col-12 col-md-3 col-lg-2">
-			<div class="card">
-				<a href="">
-					<img class="card-img-top pb-2" src="img/album1.png">
-				</a>
-				<div class="card-body p-0">
-					<a href="view_album.php?">
-						<h5 class="card-title"><?php echo $album_name?></h5>
+			echo "
+			<div class='col-12 col-md-3 col-lg-2'>
+				<div class='card'>
+					<a href='view_album.php?id=".$fila1['id_album']."'>
+						<img class='card-img-top pb-2' src='img/album1.png'>
 					</a>
-					<a href="">
-						<p class="card-text"><?php echo $artist_name?></p>
-					</a>
+					<div class='card-body p-0'>
+						<a href='view_album.php?id=".$fila1['id_album']."''>
+							<h5 class='card-title'>".$fila1['nombre']."</h5>
+						</a>
+						<a href='artist_profile.php?id=".$fila1['id_artista']."'>
+							<p class='card-text'>".$fila2['nombre']."</p>
+						</a>
+					</div>
 				</div>
-			</div>
-		</div>
-		<?php }; ?>
+			</div>";
+		}?>
 	</div>
 <?php else:?>
 
