@@ -1,9 +1,10 @@
 <?php 
 include("includes/header.php");
-if(isset($_GET['id'])) {
+if(isset($_GET['id']) and isset($_GET['name']) and isset($_GET['count'])and isset($_GET['cur'])) {
 	$artista_id = $_GET['id'];
 	$artist = $_GET['name'];
 	$seguidores = $_GET['count'];
+	$is_current_user = $_GET['cur'];
 }
 else {
 	header("Location: index.php");
@@ -33,11 +34,11 @@ else {
 			echo
 			"<div class='col-12 col-md-3 col-lg-2'>
 				<div class='card'>
-					<a href='view_album.php?id=".$fila1["id_album"]."'>
+					<a href='view_album.php?id=".$fila1["id_album"]."&&cur=".$is_current_user."'>
 						<img class='card-img-top pb-2' src='img/album1.png'>
 					</a>
 					<div class='card-body p-0'>
-						<a href='view_album.php?id=".$fila1["id_album"]."'>
+						<a href='view_album.php?id=".$fila1["id_album"]."&&cur=".$is_current_user."'>
 							<h5 class='card-title'>".$fila1["nombre"]."</h5>
 						</a>
 						<p class='card-text'>".$fila1["debut_year"]."</p>
@@ -46,7 +47,7 @@ else {
 			</div>";
 		}
 		if($flag) {
-			echo "Artista no tiene albumes publicados.";
+			echo "<p style='color:#b3b3b3'>Artista no tiene albumes publicados.</p>";
 		}
 		?>
 	</div>

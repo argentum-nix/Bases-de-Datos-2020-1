@@ -1,39 +1,33 @@
 <?php 
 include("includes/header.php");
-if(isset($_GET['id'])) {
+if(isset($_GET['id']) and isset($_GET['cur'])) {
 	$album_id = $_GET['id'];
+	$is_current = $_GET['cur'];
 }
 else {
 	header("Location: index.php");
 	exit();
 }
 
-$query = mysqli_query($connection,
-								"CREATE OR REPLACE VIEW vista_album as
-								SELECT C.nombre as nombre_cancion,
-								C.duracion,
-								P.nombre as nombre_artista,
-								A.debut_year,
-								A.nombre as nombre_album
-								FROM canciones_albumes CA, canciones C, personas P, albumes A
-								WHERE CA.id_album = '$album_id'
-								AND A.id_album = CA.id_album 
-								AND CA.id_cancion = C.id_cancion
-								AND C.id_artista = P.id_persona");
-$duracion_album = mysqli_query($connection, "SELECT SUM(duracion) as total FROM vista_album");
+// Se trabaja sobre la vista que contiene canciones asociadas a cada album, con su nombre, artista y duracion.
+// Ademas, la vista contiene nombre de album y se fecha de publicacion.
+$duracion_album = mysqli_query($connection, "SELECT SUM(duracion) FROM vista_album WHERE id_album='$album_id'");
 $fila = mysqli_fetch_row($duracion_album);
 $duracion_album = $fila[0];
 $s = $duracion_album % 60;
 $min = ($duracion_album - $s)/60;
-$query = mysqli_query($connection, "SELECT * FROM vista_album");
+
+$query = mysqli_query($connection, "SELECT * FROM vista_album WHERE id_album='$album_id'");
 $total_canciones = mysqli_num_rows($query);
 $fila = mysqli_fetch_row($query);
 
 if($fila) {
 	$year = $fila[3];
-	$album_name = $fila[4];
+	$album_name = $fila[5];
+	$aid = $fila[6];
 	$artist = $fila[2];
 }
+// Album en cuestion esta vacio. Se obtienen manualmente sus datos, pues no esta en la vista.
 else {
 	$query_aux = mysqli_query($connection, "SELECT nombre, id_artista, debut_year FROM albumes WHERE id_album='$album_id'");
 	$fila2 = mysqli_fetch_row($query_aux);
@@ -52,7 +46,8 @@ else {
 	</div>
 	<div class="rightsection">
 		<h2 class='title mb-3' style="margin-top: 0px"><?php echo $album_name ?></h2>
-		<p style="color:#b3b3b3; font-weight: 500; margin-bottom: 0px;">Por <?php echo $artist ?></p>
+		<?php echo "<a style='text-decoration:none;' href='user_profile.php?id=".$aid."&&cur=".$is_current."'><p style='color:#b3b3b3; font-weight: 500; margin-bottom: 0px;text-decoration:none;'>Por ".$artist."</p></a>";
+		?>
 		<p style="color:#b3b3b3; font-weight: 400; margin-top: 3px;"><?php echo $total_canciones ?> canciones</p>
 		<p style="color:#b3b3b3; font-weight: 400; margin-top: 90px;"><?php echo $min ?> min <?php echo $s?> s</p>
 		<p style="color:#b3b3b3; font-weight: 400;"><?php echo $year ?></p>

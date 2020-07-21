@@ -22,7 +22,14 @@
 		</button>
 		<div class="dropdown-menu mt-0 p-0">
 				<a href="account.php" class="dropdown-item">Cuenta</a>
-				<a href="profile.php" class="dropdown-item">Perfil</a>
+				<?php if($_SESSION['usertype'] == 'artist'){
+					echo "<a href='artist_profile.php?id=".$_SESSION['id']."&&cur=".true."'class='dropdown-item'>Perfil</a>";
+
+				}
+				else{
+					echo "<a href='user_profile.php?id=".$_SESSION['id']."&&cur=".true."'class='dropdown-item'>Perfil</a>";
+				}
+				?>
 				<div class="dropdown-divider"></div>
 				<a name="logout-submit" href="includes/logout.inc.php" class="dropdown-item">Salir</a> 
 		</div>

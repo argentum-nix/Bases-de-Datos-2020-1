@@ -24,7 +24,7 @@ if(!isset($_SESSION['usertype'])){
 						<a href='view_album.php?id=".$fila1['id_album']."''>
 							<h5 class='card-title'>".$fila1['nombre']."</h5>
 						</a>
-						<a href='artist_profile.php?id=".$fila1['id_artista']."'>
+						<a href='artist_profile.php?id=".$fila1['id_artista']."&&cur=0'>
 							<p class='card-text'>".$fila2['nombre']."</p>
 						</a>
 					</div>

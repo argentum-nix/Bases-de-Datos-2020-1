@@ -1,0 +1,48 @@
+
+Vista para tener todas las canciones del album, 
+con los nombres, duraciones, nombre de album de cuestion y 
+su año de debut.
+
+
+CREATE VIEW vista_album as
+							SELECT C.nombre as nombre_cancion,
+							C.duracion,
+							P.nombre as nombre_artista,
+							A.debut_year,
+							A.id_album,
+							A.nombre as nombre_album,
+							C.id_artista
+							FROM canciones_albumes CA, canciones C, personas P, albumes A
+							WHERE A.id_album = CA.id_album 
+							AND CA.id_cancion = C.id_cancion
+							AND C.id_artista = P.id_persona
+
+Misma idea, ahora para playlists.
+CREATE VIEW vista_playlist AS
+							SELECT C.nombre as nombre_cancion,
+							C.duracion,
+							PL.id_usuario,
+							P.nombre as nombre_artista,
+							PL.id_playlist,
+							PL.nombre as nombre_playlist
+							FROM canciones_playlists CP, canciones C, personas P, playlists PL
+							WHERE PL.id_playlist = CP.id_playlist 
+							AND CP.id_cancion = C.id_cancion
+							AND C.id_artista = P.id_persona
+
+
+Vista para tener todos los usuarios a los que siguen N personas de la BD:
+
+CREATE VIEW user_follows as
+				SELECT P.id_persona, U.id_usuario
+				FROM personas P, usuarios U, follows F 
+                                WHERE P.id_persona = F.id_persona1
+                                AND F.id_persona2 = U.id_usuario
+
+Vista para tener todas las artistas a los que siguen las N personas de la BD:
+
+CREATE VIEW artist_follows as
+				SELECT P.id_persona,  A.id_artista
+				FROM personas P, artistas A, follows F 
+                                WHERE P.id_persona = F.id_persona1
+                                AND F.id_persona2 = A.id_artista

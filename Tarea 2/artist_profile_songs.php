@@ -1,9 +1,10 @@
 <?php 
 include("includes/header.php");
-if(isset($_GET['id'])) {
+if(isset($_GET['id']) and isset($_GET['name']) and isset($_GET['count']) and isset($_GET['cur'])) {
 	$artista_id = $_GET['id'];
 	$artist = $_GET['name'];
 	$seguidores = $_GET['count'];
+	$is_current_user = $_GET['cur'];
 }
 else {
 	header("Location: index.php");
@@ -58,7 +59,7 @@ $fila = mysqli_fetch_row($query_canciones);
 		</li>";
 	}
 	if($flag) {
-			echo "Artista no tiene cancniones publicadas.";
+			echo "<p style='color:#b3b3b3'>Artista no tiene cancniones publicadas.</p>";
 		}
 
 ?>	
