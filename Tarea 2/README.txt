@@ -19,7 +19,8 @@ CREATE VIEW vista_album as
 
 Misma idea, ahora para playlists.
 CREATE VIEW vista_playlist AS
-							SELECT C.nombre as nombre_cancion,
+							SELECT 
+							C.nombre as nombre_cancion,
 							C.duracion,
 							PL.id_usuario,
 							P.nombre as nombre_artista,
@@ -46,3 +47,18 @@ CREATE VIEW artist_follows as
 				FROM personas P, artistas A, follows F 
                                 WHERE P.id_persona = F.id_persona1
                                 AND F.id_persona2 = A.id_artista
+
+
+Vista para tener todos los likes, canciones y usuarios que dieron like 
+
+CREATE VIEW likes_view as
+				SELECT LC.id_usuario, C.nombre as nombre_cancion, P.nombre as nombre_artista, C.duracion
+				FROM likes_canciones LC, canciones C, personas P 
+				WHERE LC.id_cancion = C.id_cancion 
+				AND C.id_artista = P.id_persona
+
+CREATE VIEW play_follows as 
+				SELECT FP.id_persona, FP.id_playlist, P.nombre, PR.nombre as nombre_usuario
+				FROM playlists P, follow_playlists FP, personas PR
+				WHERE P.id_playlist = FP.id_playlist
+				AND P.id_usuario = PR.id_persona

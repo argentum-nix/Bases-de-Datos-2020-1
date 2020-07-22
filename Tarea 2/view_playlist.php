@@ -27,8 +27,11 @@ $fila = mysqli_fetch_row($query);
 
 if($fila) {
 	$playlist_name = $fila[5];
-	$author = $fila[3];
 	$uid = $fila[2];
+	$query_aux = mysqli_query($connection, "SELECT nombre FROM personas WHERE id_persona='$uid'");
+	$fila2 = mysqli_fetch_row($query_aux);
+	$author = $fila2[0];
+
 }
 // Playlist en cuestion esta vacio. Se obtienen manualmente sus datos, pues no esta en la vista.
 else {
@@ -40,11 +43,14 @@ else {
 	$fila2 = mysqli_fetch_row($query_aux);
 	$author = $fila2[0];
 }
+
+
 ?>
+
 
 <div class="entityinfo">
 	<div class="leftsection">
-		<img src="img/album1.png" style="width: 100%"/>
+		<img src="img/playlist.png" style="width: 100%"/>
 	</div>
 	<div class="rightsection">
 		<h2 class='title mb-3' style="margin-top: 0px"><?php echo $playlist_name ?></h2>
@@ -54,15 +60,15 @@ else {
 		<p style="color:#b3b3b3; font-weight: 400; margin-top: 90px;"><?php echo $min ?> min <?php echo $s?> s</p>
 		<p style="color:#b3b3b3; font-weight: 400;"><?php echo $seguidores?> seguidores</p>
 	</div>
-</div>
 
-<?php 
-if(!$is_current){
+	<?php 
+
+	if(!$is_current){
 		$curid = $_SESSION['id'];
-		$query_follow = mysqli_query($connection, "SELECT * FROM follow_playlist WHERE id_persona='$curid' AND id_playlist='$playlist_id'");
-		$fila = mysqli_fetch_row($query_follow);
+		$query_follow = mysqli_query($connection, "SELECT * FROM follow_playlists WHERE id_persona='$curid' AND id_playlist='$playlist_id'");
+		$fila1 = mysqli_fetch_row($query_follow);
 		// Usuario actual (sea este artista o usuario normal) ya sigue a artista de este perfil
-		if($fila){
+		if($fila1){
 			echo
 			"<form action='includes/follow.inc.php' method='post'>
 				<input type='hidden' name='current_user' value='".$_SESSION['id']."'>
@@ -81,7 +87,8 @@ if(!$is_current){
 			</form>";
 		}
 	}
-?>
+	?>
+</div>
 
 <div class="tracklist-container">
 	<ul class="tracklist" style='padding:0'>
@@ -91,8 +98,8 @@ if(!$is_current){
 		$duracion = $fila[1];
 		$s = $duracion % 60;
 		$min = ($duracion - $s)/60;
-		$playlist_name = $fila[4];
-		$artist = $fila[2];
+		$playlist_name = $fila[5];
+		$artist = $fila[3];
 		$fila = mysqli_fetch_row($query);
 
 		echo 

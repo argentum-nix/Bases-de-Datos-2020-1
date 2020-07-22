@@ -17,14 +17,14 @@ if(!isset($_SESSION['usertype'])){
 			echo "
 			<div class='col-12 col-md-3 col-lg-2'>
 				<div class='card'>
-					<a href='view_album.php?id=".$fila1['id_album']."'>
+					<a href='view_album.php?id=".$fila1['id_album']."&&cur=".false."'>
 						<img class='card-img-top pb-2' src='img/album1.png'>
 					</a>
 					<div class='card-body p-0'>
-						<a href='view_album.php?id=".$fila1['id_album']."''>
+						<a href='view_album.php?id=".$fila1['id_album']."&&cur='".false."'>
 							<h5 class='card-title'>".$fila1['nombre']."</h5>
 						</a>
-						<a href='artist_profile.php?id=".$fila1['id_artista']."&&cur=0'>
+						<a href='artist_profile.php?id=".$fila1['id_artista']."&&cur=".false."'>
 							<p class='card-text'>".$fila2['nombre']."</p>
 						</a>
 					</div>
@@ -43,11 +43,11 @@ if(!isset($_SESSION['usertype'])){
 			echo
 			"<div class='col-12 col-md-3 col-lg-2'>
 				<div class='card'>
-					<a href='view_album.php?id=".$fila1["id_album"]."'>
+					<a href='view_album.php?id=".$fila1["id_album"]."&&cur=".true."'>
 						<img class='card-img-top pb-2' src='img/album1.png'>
 					</a>
 					<div class='card-body p-0'>
-						<a href='view_album.php?id=".$fila1["id_album"]."'>
+						<a href='view_album.php?id=".$fila1["id_album"]."&&cur=".true."'>
 							<h5 class='card-title'>".$fila1["nombre"]."</h5>
 						</a>
 						<p class='card-text'>".$fila1["debut_year"]."</p>

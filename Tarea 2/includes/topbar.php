@@ -1,13 +1,13 @@
 <div class="topbar">
 	<div class="botones-nav">
 		<button type="button">
-			<a href="#">Usuarios que sigo</a>
+			<a href="followed_users.php">Usuarios que sigo</a>
 		</button>
 		<button type="button">
-			<a href="#">Artistas que sigo</a>
+			<a href="followed_artists.php">Artistas que sigo</a>
 		</button>
 		<button type="button">
-			<a href="#">Playlists que sigo</a>
+			<a href="followed_playlists.php">Playlists que sigo</a>
 		</button>
 	</div>
 	<div class="dropdown menu ml-3"style="width: 100px; position: absolute; right:3%; margin-right: 28px; top: 10px;">

@@ -49,6 +49,10 @@ else if(isset($_POST['follow_playlist'])){
 	require 'bdh.inc.php';
 	$current_user = $_POST['current_user'];
 	$to_follow = $_POST['to-follow'];
+	$query =  mysqli_query($connection, "INSERT INTO follow_playlists (id_persona, id_playlist) VALUES ('$current_user', '$to_follow')");
+	header("Location: ../view_playlist.php?id=".$to_follow."&&cur=".$is_current."&&follow=success");
+	mysqli_close($connection);
+	exit();
 	
 
 }
@@ -56,6 +60,10 @@ else if(isset($_POST['follow_playlist'])){
 else if(isset($_POST['unfollow_playlist'])){
 	$current_user = $_POST['current_user'];
 	$to_unfollow = $_POST['to-unfollow'];
+	$query =  mysqli_query($connection, "DELETE FROM follow_playlists WHERE id_playlist='$to_unfollow' AND id_persona='$current_user'");
+	header("Location: ../view_playlist.php?id=".$to_unfollow."&&cur=".$is_current."&&unfollow=success");
+	mysqli_close($connection);
+	exit();
 
 }
 

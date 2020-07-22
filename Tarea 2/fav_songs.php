@@ -1,8 +1,59 @@
 <?php 
 include("includes/header.php");
+
+$query_canciones = mysqli_query($connection,"SELECT nombre_cancion, nombre_artista, duracion FROM likes_view WHERE id_usuario=".$_SESSION['id']);
+$fila = mysqli_fetch_row($query_canciones);
 ?>
 
-<!--CREATE VIEW as
-SELECT C.nombre, P.nombre FROM likes_canciones LC, canciones C, personas P WHERE LC.id_cancion = C.id_cancion AND LC.id_usuario = 8 AND C.id_artista = P.id_persona GROUP BY C.id_cancion-->
+<div class="entityinfo">
+	<div class="leftsection">
+		<img src="img/heart.jpg" style="width: 100%"/>
+	</div>
+	<div class="rightsection">
+		<h2 class='title mb-3' style="margin-top: 0px">Tus canciones favoritas</h2>
+		
+	</div>
+</div>
+
+<div class="tracklist-container">
+	<ul class="tracklist" style='padding:0'>
+	<h2 class='title mb-3' style="margin-top: 0px">Lo que te gusta</h2>
+<?php
+	$flag = true;
+	while($fila) {
+		$flag = false;
+		$nombre_cancion = $fila[0];
+		$duracion = $fila[2];
+		$artist = $fila[1];
+		$s = $duracion % 60;
+		$min = ($duracion - $s)/60;
+		$fila = mysqli_fetch_row($query_canciones);
+
+		echo 
+		"<li class='track'>
+			<img class='note' src = 'img/note.png'/>
+			<img class='playbutton' src='img/play.png'/>
+			<div class='trackinfo'>
+				<span class='trackname' style='font-size:17px;'>".$nombre_cancion."</span>
+				<span class='trackname' style='color:#b3b3b3; font-weight:400;'>".$artist."</span>
+
+			</div>
+			<div class='track-options'>
+				<img class='optbutton' src='img/dots.png'/>
+			</div>
+
+			<div class='track-duration'>
+				<span class='trackdur'>".$min.":".$s."</span>
+			</div>
+		</li>";
+	}
+	if($flag) {
+			echo "<p style='color:#b3b3b3'>Todavía no tienes canciones favoritas.</p>";
+		}
+
+?>	
+	</ul>
+
+</div>
 
 <?php include("includes/footer.php")?>

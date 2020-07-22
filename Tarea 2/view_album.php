@@ -46,7 +46,7 @@ else {
 	</div>
 	<div class="rightsection">
 		<h2 class='title mb-3' style="margin-top: 0px"><?php echo $album_name ?></h2>
-		<?php echo "<a style='text-decoration:none;' href='user_profile.php?id=".$aid."&&cur=".$is_current."'><p style='color:#b3b3b3; font-weight: 500; margin-bottom: 0px;text-decoration:none;'>Por ".$artist."</p></a>";
+		<?php echo "<a style='text-decoration:none;' href='artist_profile.php?id=".$aid."&&cur=".$is_current."'><p style='color:#b3b3b3; font-weight: 500; margin-bottom: 0px;text-decoration:none;'>Por ".$artist."</p></a>";
 		?>
 		<p style="color:#b3b3b3; font-weight: 400; margin-top: 3px;"><?php echo $total_canciones ?> canciones</p>
 		<p style="color:#b3b3b3; font-weight: 400; margin-top: 90px;"><?php echo $min ?> min <?php echo $s?> s</p>

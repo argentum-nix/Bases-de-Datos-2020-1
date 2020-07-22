@@ -33,7 +33,7 @@ $username = $fila[0];
 			"<form action='includes/follow.inc.php' method='post'>
 				<input type='hidden' name='current' value='".$_SESSION['id']."'>
 				<input type='hidden' name='is_cur' value='".$is_current_user."'>
-				<input type='hidden' name='to-unfollow' value='".$artista_id."'>
+				<input type='hidden' name='to-unfollow' value='".$user_id."'>
 				<button class='x-button' name='unfollow_user' type='submit'>Dejar de seguir</button>
 			</form>";
 		}
@@ -42,7 +42,7 @@ $username = $fila[0];
 			"<form action='includes/follow.inc.php' method='post'>
 				<input type='hidden' name='current' value='".$_SESSION['id']."'>
 				<input type='hidden' name='is_cur' value='".$is_current_user."'>
-				<input type='hidden' name='to-follow' value='".$artista_id."'>
+				<input type='hidden' name='to-follow' value='".$user_id."'>
 				<button class='x-button' name='follow_user' type='submit'>Seguir</button>
 			</form>";
 		}
