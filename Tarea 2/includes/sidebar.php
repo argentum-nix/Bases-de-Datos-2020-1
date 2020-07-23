@@ -11,7 +11,7 @@
 				</a>
 			</div>
 			<div class="nav-item">
-				<a href="#" class="nav-link">
+				<a href="search.php" class="nav-link">
 					<i class="fas fa-search"></i>
 					<span>Buscar</span>
 				</a>

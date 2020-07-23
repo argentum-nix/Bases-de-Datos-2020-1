@@ -32,6 +32,17 @@ CREATE VIEW vista_playlist AS
 							AND C.id_artista = P.id_persona
 
 
+Misma idea, para canción:
+
+CREATE VIEW vista_cancion AS 
+							SELECT C.id_cancion,C.id_artista,
+							 C.duracion, P.nombre as nombre_artista,
+							C.nombre as nombre_cancion FROM canciones C
+							INNER JOIN personas P ON C.id_artista=P.id_persona
+
+
+
+
 Vista para tener todos los usuarios a los que siguen N personas de la BD:
 
 CREATE VIEW user_follows as
