@@ -93,7 +93,7 @@ $seguidores = $fila[0];
 		</li>";
 	}
 	if($flag) {
-			echo "<p style='color:#b3b3b3'>Artista no tiene cancniones publicadas.</p>";
+			echo "<p style='color:#b3b3b3'>Artista no tiene canciones publicadas.</p>";
 		}
 
 ?>	
@@ -132,7 +132,7 @@ echo
 			</div>";
 		}
 		if($flag) {
-			echo "Artista no tiene albumes publicados.";
+			echo "<p style='color:#b3b3b3; padding-left:5px;'>Artista no tiene albumes publicados.</p>";
 		}
 		?>
 	</div>

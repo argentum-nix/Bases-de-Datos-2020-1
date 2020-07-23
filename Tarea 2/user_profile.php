@@ -74,10 +74,10 @@ $username = $fila[0];
 		}
 		if($flag) {
 			if($is_current_user){
-				echo "<p style='color:#b3b3b3'>Todavía no hiciste una playlist.</p>";
+				echo "<p style='color:#b3b3b3; padding-left:5px;'>Todavía no hiciste una playlist.</p>";
 			}
 			else{
-				echo "<p style='color:#b3b3b3'>Usuario todavía no creó una playlist.</p>";
+				echo "<p style='color:#b3b3b3; padding-left:5px;'>Usuario todavía no creó una playlist.</p>";
 			}
 		}
 		?>
