@@ -17,12 +17,12 @@
 					</a>
 				</div>
 				<div class="nav-item">
-					<a href="search.php" class="nav-link">
+					<a href="edit_account.php" class="nav-link">
 						<span>Editar perfil</span>
 					</a>
 				</div>
 				<div class="nav-item">
-					<a href="search.php" class="nav-link">
+					<a href="change_pass.php" class="nav-link">
 						<span>Cambiar contraseña</span>
 					</a>
 				</div>

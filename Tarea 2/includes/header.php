@@ -20,7 +20,7 @@ require 'bdh.inc.php';
 <body>
 	<div class="main-container">
 		<?php 
-		if($_SERVER['REQUEST_URI'] == '/T2/account.php'){
+		if($_SERVER['REQUEST_URI'] == '/T2/account.php' or $_SERVER['REQUEST_URI'] == '/T2/edit_account.php' or $_SERVER['REQUEST_URI'] == '/T2/change_pass.php' ){
 			include("includes/sidebar_account.php");
 		}
 		else{
