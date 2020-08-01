@@ -19,7 +19,8 @@ else{
 <?php
 
 // Busqueda por albumes
-//if($item){
+if($item){
+	$flaga = false;
 	$query_albumes = mysqli_query($connection,"SELECT P.nombre as nombre_artista, A.id_artista, A.nombre as nombre_album, A.id_album FROM albumes A, personas P WHERE P.id_persona=A.id_artista AND A.nombre LIKE '%$item%'");
 
 	$fila = mysqli_fetch_row($query_albumes);
@@ -27,6 +28,7 @@ else{
 		echo 
 		"<h2 class='title mb-3' style='margin-top: 0px'>Albumes</h2>
 		<div class='row list mb-5'>";
+		$flaga = true;
 	}
 	while($fila) {
 		$alid = $fila[3];
@@ -56,16 +58,22 @@ else{
 		</div>";
 
 		}
-	echo "</div>";
-//}
+	if($flaga){
+		echo "</div>";
+	}
+
+}
+
 // Busqueda por playlists
-//if($item){
+if($item){
+	$flagp = false;
 	$query_playlists = mysqli_query($connection,"SELECT P.nombre as nombre_usuario, PL.id_usuario, PL.id_playlist, PL.nombre as nombre_playlist FROM playlists PL, personas P WHERE P.id_persona=PL.id_usuario AND PL.nombre LIKE '%$item'");
 	$fila = mysqli_fetch_row($query_playlists);
 	if($fila){
 		echo 
 		"<h2 class='title mb-3' style='margin-top: 0px'>Playlists</h2>
 		<div class='row list mb-5'>";
+		$flagp = true;
 	}
 
 	while($fila){
@@ -98,17 +106,22 @@ else{
 				</div>
 			</div>";
 		}
-	echo "</div>";
-//}
+	if($flagp){
+		echo "</div>";
+	}
+
+}
 
 // Busqueda por artista
-//if($item){
+if($item){
+	$flagar = false;
 	$query_artistas = mysqli_query($connection,"SELECT P.nombre, A.id_artista FROM personas P, artistas A WHERE P.id_persona=A.id_artista AND P.nombre LIKE '%$item%'");
 	$fila = mysqli_fetch_row($query_artistas);
 	if($fila){
 		echo 
 		"<h2 class='title mb-3' style='margin-top: 0px'>Artistas</h2>
 		<div class='row list mb-5'>";
+		$flagar = true;
 	}
 	while($fila){
 		$nombre = $fila[0];
@@ -134,17 +147,21 @@ else{
 					</div>
 				</div>";
 	}
-	echo "</div>";
-//}
+	if($flagar){
+		echo "</div>";
+	}
+
+}
 // Busqueda por usuarios
-//if($item){
+if($item){
+	$flagi = false;
 	$query_usuarios = mysqli_query($connection,"SELECT P.nombre, U.id_usuario FROM personas P, usuarios U WHERE P.id_persona=U.id_usuario AND P.nombre LIKE '%$item%'");
 	$fila = mysqli_fetch_row($query_usuarios);
 	if($fila){
 		echo 
 		"<h2 class='title mb-3' style='margin-top: 15px'>Usuarios</h2>
 		<div class='row list mb-5'>";
-		
+		$flagi = true;
 	}
 	while($fila){
 		$nombre = $fila[0];
@@ -170,17 +187,21 @@ else{
 					</div>
 				</div>";
 	}
-	echo "</div>";
-//}
+	if($flagi){
+		echo "</div>";
+	}
+}
 // Busqueda por canciones
-//if($item){
+if($item){
 	$query_canciones = mysqli_query($connection,"SELECT * FROM vista_cancion WHERE nombre_cancion LIKE '%$item%'");
 	$fila = mysqli_fetch_row($query_canciones);
+	$flagc = false;
 	if ($fila){
 		echo 
 		"<div class='tracklist-container'>
 		<ul class='tracklist' style='padding:0'>
 		<h2 class='title mb-3' style='margin-top: 10px'>Canciones</h2>";
+		$flagc = true;
 	}
 		while($fila) {
 			$nombre_cancion = $fila[4];
@@ -214,9 +235,11 @@ else{
 				</div>
 			</li>";
 	}
-//}
-	echo "</ul>";
-echo "</div>";
+	if($flagc){
+		echo "</ul>";
+		echo "</div>";
+	}
+}
 ?>
 
 <?php include("includes/footer.php")?>
