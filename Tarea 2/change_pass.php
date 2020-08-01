@@ -18,13 +18,13 @@ include("includes/header.php");
 			<?php 
 			if (isset($_GET["error"])) {
 				if ($_GET['error'] == 'emptyfields') {
-					echo '<div class="error">Por favor, rellene todos los campos.</div>';
+					echo '<div class="error" style="width:50%; margin: 30px auto;">Por favor, rellene todos los campos.</div>';
 				}
-				else if ($_GET["error"] == 'samepass') {
-					echo '<div class="error">Contraseña ingresada no difiere de la actual.</div>';
+				else if ($_GET["error"] == 'wrongpwd') {
+					echo '<div class="error" style="width:50%; margin: 30px auto;">Contraseñas distintas o no difieren de la actual.</div>';
 				}
 				else if ($_GET["error"] == 'notequal') {
-					echo '<div class="error">Contraseñas ingresadas no son iguales.</div>';
+					echo '<div class="error" style="width:50%; margin: 30px auto;">Contraseñas ingresadas no son iguales.</div>';
 				}
 			}
 			?>
