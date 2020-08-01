@@ -17,6 +17,7 @@
 				</a>
 			</div>
 			<!-- Muestra contenido segun el tipo de usuario-->
+
 			<?php if($_SESSION['usertype'] == 'user'):?>
 				<div class="nav-create d-flex flex-column mt-4">
 					<h2>Playlists</h2>

@@ -18,18 +18,6 @@ else {
 		<p style="color:#b3b3b3; font-weight: 500; margin-bottom: 0px;">Perfil de usuario</p>
 		<h2 class='title mb-3' style="margin-top: 0px"><?php echo $username ?></h2>
 	</div>
-	<?php
-	// solo si no es el perfil de usuario activo se mostrar el boton de seguir
-	// pero si ya sigo al usuario, debo mostrar "dejar de seguir"
-	if($is_current_user){
-		echo
-		"<form action='follow.inc.php' method='post'>
-			<input type='hidden' name='current' value='".$_SESSION['id']."'>
-			<input type='hidden' name='to-follow' value='".$user_id."'>
-			<button class='x-button' name='follow_artist' type='submit'>Seguir</button>
-		</form>";
-	}
-	?>
 </div>
 
 <h2 class='title mb-3' style="margin-top: 0px">Todas las playlists</h2>

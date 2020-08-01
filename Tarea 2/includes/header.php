@@ -19,7 +19,13 @@ require 'bdh.inc.php';
 
 <body>
 	<div class="main-container">
-		<?php include("includes/sidebar.php") ?>
+		<?php 
+		if($_SERVER['REQUEST_URI'] == '/T2/account.php'){
+			include("includes/sidebar_account.php");
+		}
+		else{
+			 include("includes/sidebar.php");
+		}?>
 
 		<div id="main" class="main d-flex flex-column">
 			<div class="margin-top"></div>

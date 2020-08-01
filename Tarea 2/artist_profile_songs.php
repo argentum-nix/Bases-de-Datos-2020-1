@@ -66,3 +66,4 @@ $fila = mysqli_fetch_row($query_canciones);
 	</ul>
 
 </div>
+<?php include("includes/footer.php")?>
