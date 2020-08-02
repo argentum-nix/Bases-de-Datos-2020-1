@@ -58,6 +58,7 @@ else if(isset($_POST['follow_playlist'])){
 }
 
 else if(isset($_POST['unfollow_playlist'])){
+	require 'bdh.inc.php';
 	$current_user = $_POST['current_user'];
 	$to_unfollow = $_POST['to-unfollow'];
 	$query =  mysqli_query($connection, "DELETE FROM follow_playlists WHERE id_playlist='$to_unfollow' AND id_persona='$current_user'");

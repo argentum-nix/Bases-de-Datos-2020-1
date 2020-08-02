@@ -26,6 +26,11 @@
 						<span>Cambiar contraseña</span>
 					</a>
 				</div>
+				<div class="nav-item">
+					<a href="delete_account.php" class="nav-link">
+						<span>Eliminar la cuenta</span>
+					</a>
+				</div>
 			</div>
 		</div>
 	</nav>

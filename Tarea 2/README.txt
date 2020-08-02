@@ -73,3 +73,57 @@ CREATE VIEW play_follows as
 				FROM playlists P, follow_playlists FP, personas PR
 				WHERE P.id_playlist = FP.id_playlist
 				AND P.id_usuario = PR.id_persona
+
+
+DELIMITER $$
+CREATE TRIGGER delete_playlist
+AFTER DELETE ON playlists
+FOR EACH ROW 
+BEGIN
+	DELETE FROM follow_playlists WHERE id_playlist = OLD.id_playlist;
+END$$
+
+DELIMITER $$
+CREATE TRIGGER delete_album
+AFTER DELETE ON albumes
+FOR EACH ROW 
+BEGIN
+	DELETE FROM canciones_albumes WHERE id_album = OLD.id_album;
+END$$
+DELIMITER $$
+
+CREATE TRIGGER delete_cancion
+AFTER DELETE ON canciones
+FOR EACH ROW 
+BEGIN
+	DELETE FROM canciones_albumes WHERE id_cancion = OLD.id_cancion;
+	DELETE FROM likes_canciones WHERE id_cancion = OLD.id_cancion;
+	DELETE FROM canciones_playlists WHERE id_cancion = OLD.id_cancion;
+END$$
+
+DELIMITER $$
+CREATE TRIGGER delete_account
+AFTER DELETE ON personas
+FOR EACH ROW
+BEGIN
+	IF EXISTS(SELECT * FROM usuarios WHERE id_usuario = OLD.id_persona) THEN
+        BEGIN
+            DELETE FROM likes_canciones WHERE id_usuario = OLD.id_persona;
+            DELETE FROM follow_playlists WHERE id_persona = OLD.id_persona;
+            DELETE FROM follows WHERE id_persona1 = OLD.id_persona OR id_persona2 = OLD.id_persona;
+            DELETE FROM playlists WHERE id_usuario = OLD.id_persona;
+ 	    DELETE FROM usuarios WHERE id_usuario = OLD.id_persona;
+
+        END;
+    ELSE     
+	BEGIN
+             DELETE FROM albumes WHERE id_artista = OLD.id_persona;
+             DELETE FROM canciones WHERE id_artista = OLD.id_persona;
+	     DELETE FROM follow_playlists WHERE id_persona = OLD.id_persona;
+             DELETE FROM follows WHERE id_persona1 = OLD.id_persona OR id_persona2 = OLD.id_persona;
+             DELETE FROM artistas WHERE id_artista = OLD.id_persona;
+        END;
+   END IF;
+END$$
+
+

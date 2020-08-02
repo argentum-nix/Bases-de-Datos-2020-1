@@ -20,7 +20,7 @@ require 'bdh.inc.php';
 <body>
 	<div class="main-container">
 		<?php 
-		if($_SERVER['REQUEST_URI'] == '/T2/account.php' or strpos($_SERVER['REQUEST_URI'], '/T2/edit_account.php') !== false  or strpos($_SERVER['REQUEST_URI'],'/T2/change_pass.php') !== false) {
+		if($_SERVER['REQUEST_URI'] == '/T2/account.php' or strpos($_SERVER['REQUEST_URI'], '/T2/edit_account.php') !== false  or strpos($_SERVER['REQUEST_URI'],'/T2/change_pass.php') !== false or strpos($_SERVER['REQUEST_URI'],'/T2/delete_account.php') !== false ) {
 			include("includes/sidebar_account.php");
 
 		}
