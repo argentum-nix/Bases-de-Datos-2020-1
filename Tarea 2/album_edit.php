@@ -45,82 +45,45 @@ else {
 		<img src="img/album1.png" style="width: 100%"/>
 	</div>
 	<div class="rightsection">
-		<h2 class='title mb-3' style="margin-top: 0px"><?php echo $album_name ?></h2>
+		<h2 class='title mb-3' style="margin-top: 0px">
+			<?php
+			if($is_current){
+				echo
+				"<form action='includes/album.inc.php' method='post' style='width:600px;'>
+					<div class='form-input' style='display:flex; margin:0;'>
+					<input type='text' name='name' placeholder='Nuevo nombre' style='display:flex; margin-right:50px; background: #282828; height: 40px; font-weight: 600; font-size: 20px; padding-left: 20px; color: #fff;'>
+					<button class='x-button'type='submit' name='change_albumname'>Guardar</button>
+					</div>
+					<input type='hidden' name='to-change' value='".$album_id."'>
+					<input type='hidden' name='is_cur' value='".$is_current."'>";
+					echo
+				"<form action='includes/album.inc.php' method='post' style='width:600px;'>
+					<div class='form-input' style='display:flex; margin:0;'>
+					<input type='text' name='year' placeholder='Nuevo año de estreno' style='display:flex; margin-right:50px; background: #282828; height: 40px; font-weight: 600; font-size: 20px; padding-left: 20px; color: #fff; width:250px;'>
+					<button class='x-button'type='submit' name='change_albumyear' style='margin-left:185px;'>Guardar</button>
+					</div>
+					<input type='hidden' name='to-change' value='".$album_id."'>
+					<input type='hidden' name='is_cur' value='".$is_current."'>";
+			}
+			?>
+		</h2>
 		<?php echo "<a style='text-decoration:none;' href='artist_profile.php?id=".$aid."&&cur=".$is_current."'><p style='color:#b3b3b3; font-weight: 500; margin-bottom: 0px;text-decoration:none;'>Por ".$artist."</p></a>";
 		?>
 		<p style="color:#b3b3b3; font-weight: 400; margin-top: 3px;"><?php echo $total_canciones ?> canciones</p>
 		<p style="color:#b3b3b3; font-weight: 400; margin-top: 90px;"><?php echo $min ?> min <?php echo $s?> s</p>
-		<p style="color:#b3b3b3; font-weight: 400;"><?php echo $year ?></p>
-	</div>
-	<?php
-	if($is_current){
-		echo
-		"<a href='album_edit.php?id=".$album_id."&&cur=".$is_current."'style='float:right; text-decoration:none;'>
-			<button class='x-button' type='submit'>Editar el album</button>
-		</a>";
-	}
-	?>
-</div>
-
-
-<div class="tracklist-container">
-	<ul class="tracklist" style='padding:0'>
-<?php
-	while($fila) {
-		$nombre_cancion = $fila[0];
-		$duracion = $fila[1];
-		$s = $duracion % 60;
-		$min = ($duracion - $s)/60;
-		$year = $fila[3];
-		$album_name = $fila[4];
-		$artist = $fila[2];
-		$fila = mysqli_fetch_row($query);
-
+		<?php 
 		echo 
-		"<li class='track'>
-			<img class='note' src = 'img/note.png'/>
-			<img class='playbutton' src='img/play.png'/>
-			<div class='trackinfo'>
-				<span class='trackname' style='font-size:17px;'>".$nombre_cancion."</span>
-				<span class='trackname' style='color:#b3b3b3; font-weight:400;'>".$artist."</span>
+		"<form action='includes/album.inc.php' method='post' style='float:left;'>
+			<input type='hidden' name='to-delete' value='".$album_id."'>
+			<button class='x-button' style='float:left;' name='delete_album' type='submit'>Borrar</button>
+		</form>
 
-			</div>
-			<div class='track-options'>
-				<button onclick='showOptionsMenu(this)'><img class='optbutton' src='img/dots.png'></button>
-			</div>
-
-			<div class='track-duration'>
-				<span class='trackdur'>".$min.":".$s."</span>
-			</div>
-		</li>";
-	}
-
-?>
-	
-		
-	</ul>
-</div>
-
-<nav class='optMenu'>
-	<input type="hidden" name="songid">
-	<?php
-	// soy artista de este album y no existen colaboraciones
-		if($is_current){
-			// entonces debo poder sacar la cancion de album
-			echo "<div class='item'> Borrar de álbum </div>";
-			// entonces debo poder agregarla a otro album
-			echo "<div class='item'> Agregar a otro álbum</div>";
-			// y debo poder editarla tambien
-			echo "<div class='item'> Editar la canción</div>";
-		}
-		else{
-			// soy usuario, solo puedo dar likes y agregar a playlists
-			echo "<div class='item'> Agregar a Tus Me Gusta </div>";
-			echo "<div class='item'> Agregar a playlist </div>";
-		}
+		<a href='view_album.php?id=".$album_id."&&cur=".$is_current."'style='float:right; text-decoration:none; margin-top:3px;'>
+			<button class='x-button'type='submit'>Dejar de editar</button>
+		</form>";
 	?>
-
-</nav>
+	</div>
+</div>
 
 
 

@@ -16,7 +16,34 @@ iframe {
 	grid-template-rows: 1fr auto;
 	grid-template-columns:  auto 1fr;
 	grid-template-areas: "sidebar main-view main-view";
-						
+
+}
+
+nav.optMenu {
+	position: fixed;
+	background-color: #282828;
+	width: 230px;
+	border: 1px solid rgba(0,0,0,0.15);
+	border-radius: 3px;
+	z-index:1000;
+	display: none;
+
+}
+
+nav.optMenu .item {
+	width:100%;
+	padding:15px 20px;
+	box-sizing: border-box;
+	font-weight: 400;
+	color: rgba(147, 147, 147, 0.8);
+	cursor: pointer; 
+	height: 40px;
+}
+
+nav.optMenu .item:hover {
+	background-color:#ffa6c9;
+	opacity: 0.8;
+	color: white;
 }
 
 .x-button {
@@ -401,9 +428,5 @@ iframe {
 	visibility: visible;
 }
 
-.optbutton:hover{
-	display: block;
-	background-color: #282828;
-}
 
 
