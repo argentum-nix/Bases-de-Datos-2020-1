@@ -52,6 +52,14 @@ else {
 		<p style="color:#b3b3b3; font-weight: 400; margin-top: 90px;"><?php echo $min ?> min <?php echo $s?> s</p>
 		<p style="color:#b3b3b3; font-weight: 400;"><?php echo $year ?></p>
 	</div>
+	<?php
+	if($is_current){
+		echo
+		"<a href='album_edit.php?id=".$album_id."&&cur=".$is_current."'style='float:right; text-decoration:none;'>
+			<button class='x-button' type='submit'>Editar el album</button>
+		</a>";
+	}
+	?>
 </div>
 
 

@@ -28,6 +28,49 @@ else if(isset($_POST['cancel_creation'])){
 	header("Location: ../index.php");
 	exit();
 }
+
+else if(isset($_POST['delete_album'])){
+	require 'bdh.inc.php';
+	$alid = $_POST['to-delete'];
+	$query = mysqli_query($connection, "DELETE FROM albumes WHERE id_album=".$alid);
+	header("Location: ../index.php?delete_album=success");
+	exit();
+}
+
+else if(isset($_POST['change_albumname'])){
+	require 'bdh.inc.php';
+	$alid = $_POST['to-change'];
+	$nuevo_nombre = $_POST['name'];
+	$is_current = $_POST['is_cur'];
+	$sql_query = "UPDATE albumes SET nombre=?  WHERE id_album=?";
+	$statement = mysqli_stmt_init($connection);
+	if (!mysqli_stmt_prepare($statement, $sql_query)){
+		header("Location: ../album_edit.php?id=".$alid."&&cur=".$is_current."&&error=sqlerror");
+	exit();
+	}
+	mysqli_stmt_bind_param($statement, "si", $nuevo_nombre, $alid);
+	mysqli_stmt_execute($statement);
+	header("Location: ../view_album.php?id=".$alid."&&cur=".$is_current."&&change=success");
+	exit();
+}
+
+else if(isset($_POST['change_albumyear'])){
+	require 'bdh.inc.php';
+	$alid = $_POST['to-change'];
+	$year = $_POST['year'];
+	$is_current = $_POST['is_cur'];
+	$sql_query = "UPDATE albumes SET debut_year=?  WHERE id_album=?";
+	$statement = mysqli_stmt_init($connection);
+	if (!mysqli_stmt_prepare($statement, $sql_query)){
+		header("Location: ../album_edit.php?id=".$alid."&&cur=".$is_current."&&error=sqlerror");
+	exit();
+	}
+	mysqli_stmt_bind_param($statement, "ii", $year, $alid);
+	mysqli_stmt_execute($statement);
+	header("Location: ../view_album.php?id=".$alid."&&cur=".$is_current."&&change=success");
+	exit();
+}
+
 else{
 	header("Location: ../index.php");
 	exit();
