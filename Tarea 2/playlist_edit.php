@@ -26,7 +26,6 @@ $total_canciones = mysqli_num_rows($query);
 $fila = mysqli_fetch_row($query);
 
 if($fila) {
-	$playlist_name = $fila[5];
 	$uid = $fila[2];
 	$query_aux = mysqli_query($connection, "SELECT nombre FROM personas WHERE id_persona='$uid'");
 	$fila2 = mysqli_fetch_row($query_aux);
@@ -37,7 +36,6 @@ if($fila) {
 else {
 	$query_aux = mysqli_query($connection, "SELECT nombre, id_usuario FROM playlists WHERE id_playlist='$playlist_id'");
 	$fila2 = mysqli_fetch_row($query_aux);
-	$playlist_name = $fila2[0];
 	$uid =  $fila2[1];
 	$query_aux = mysqli_query($connection, "SELECT nombre FROM personas WHERE id_persona='$uid'");
 	$fila2 = mysqli_fetch_row($query_aux);
@@ -51,7 +49,20 @@ else {
 		<img src="img/playlist.png" style="width: 100%"/>
 	</div>
 	<div class="rightsection">
-		<h2 class='title mb-3' style="margin-top: 0px"><?php echo $playlist_name ?></h2>
+		<h2 class='title mb-3' style="margin-top: 0px">
+			<?php
+			if($is_current){
+				echo
+				"<form action='includes/playlist.inc.php' method='post' style='width:600px;'>
+					<div class='form-input' style='display:flex; margin:0;'>
+					<input type='text' name='name' placeholder='Nuevo nombre' style='display:flex; margin-right:50px; background: #282828; height: 40px; font-weight: 600; font-size: 20px; padding-left: 20px; color: #fff;'>
+					<button class='x-button'type='submit' name='change_playname'>Guardar</button>
+					</div>
+					<input type='hidden' name='to-change' value='".$playlist_id."'>
+					<input type='hidden' name='is_cur' value='".$is_current."'>";
+			}
+			?>
+		</h2>
 		<?php echo "<a style='text-decoration:none;' href='user_profile.php?id=".$uid."&&cur=".$is_current."'><p style='color:#b3b3b3; font-weight: 500; margin-bottom: 0px;text-decoration:none;'>Por ".$author."</p></a>";
 		?>
 		<p style="color:#b3b3b3; font-weight: 400; margin-top: 3px;"><?php echo $total_canciones ?> canciones</p>
@@ -60,73 +71,18 @@ else {
 	
 
 	<?php 
+		echo 
+		"<form action='includes/playlist.inc.php' method='post' style='float:left;'>
+			<input type='hidden' name='to-delete' value='".$playlist_id."'>
+			<button class='x-button' style='float:left;' name='delete_playlist' type='submit'>Borrar</button>
+		</form>
 
-	if(!$is_current){
-		$curid = $_SESSION['id'];
-		$query_follow = mysqli_query($connection, "SELECT * FROM follow_playlists WHERE id_persona='$curid' AND id_playlist='$playlist_id'");
-		$fila1 = mysqli_fetch_row($query_follow);
-		// Usuario actual (sea este artista o usuario normal) ya sigue a artista de este perfil
-		if($fila1){
-			echo
-			"<form action='includes/follow.inc.php' method='post'>
-				<input type='hidden' name='current_user' value='".$_SESSION['id']."'>
-				<input type='hidden' name='is_cur' value='".$is_current."'>
-				<input type='hidden' name='to-unfollow' value='".$playlist_id."'>
-				<button class='x-button' name='unfollow_playlist' type='submit'>Dejar de seguir</button>
-			</form>";
-		}
-		else{
-			echo
-			"<form action='includes/follow.inc.php' method='post'>
-				<input type='hidden' name='current_user' value='".$_SESSION['id']."'>
-				<input type='hidden' name='is_cur' value='".$is_current."'>
-				<input type='hidden' name='to-follow' value='".$playlist_id."'>
-				<button class='x-button' name='follow_playlist' type='submit'>Seguir</button>
-			</form>";
-		}
-	}
-	// actual es el autor, permito el crud
-	else {
-		echo
-		"<a href='playlist_edit.php?id=".$playlist_id."&&cur=".$is_current."'style='float:right; text-decoration:none;'>
-			<button class='x-button' type='submit'>Editar el playlist</button>
-		</a>";
-	}
+		<a href='view_playlist.php?id=".$playlist_id."&&cur=".$is_current."'style='float:right; text-decoration:none; margin-top:3px;'>
+			<button class='x-button'type='submit'>Dejar de editar</button>
+		</form>";
 	?>
 	</div>
 </div>
 
-<div class="tracklist-container">
-	<ul class="tracklist" style='padding:0'>
-<?php
-	while($fila) {
-		$nombre_cancion = $fila[0];
-		$duracion = $fila[1];
-		$s = $duracion % 60;
-		$min = ($duracion - $s)/60;
-		$playlist_name = $fila[5];
-		$artist = $fila[3];
-		$fila = mysqli_fetch_row($query);
-
-		echo 
-		"<li class='track'>
-			<img class='note' src = 'img/note.png'/>
-			<img class='playbutton' src='img/play.png'/>
-			<div class='trackinfo'>
-				<span class='trackname' style='font-size:17px;'>".$nombre_cancion."</span>
-				<span class='trackname' style='color:#b3b3b3; font-weight:400;'>".$artist."</span>
-
-			</div>
-			<div class='track-duration'>
-				<span class='trackdur'>".$min.":".$s."</span>
-			</div>
-		</li>";
-	}
-
-?>
-	
-		
-	</ul>
-</div>
 
 <?php include("includes/footer.php")?>
