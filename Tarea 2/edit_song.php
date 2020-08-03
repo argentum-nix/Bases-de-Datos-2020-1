@@ -57,7 +57,7 @@ else {
 			<button class='x-button' style='float:left;' name='delete_song' type='submit'>Borrar canción</button>
 		</form>
 
-		<a href='view_album.php?id=".$cid."&&cur=".$is_current."'style='float:right; text-decoration:none; margin-top:3px;'>
+		<a href='index.php'style='float:right; text-decoration:none; margin-top:3px;'>
 			<button class='x-button'type='submit'>Dejar de editar</button>
 		</form>";
 	?>

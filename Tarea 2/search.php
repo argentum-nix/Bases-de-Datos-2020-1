@@ -208,6 +208,7 @@ if($item){
 			$duracion = $fila[2];
 			$artist = $fila[3];
 			$aid = $fila[1];
+			$cancion_id = $fila[0];
 			$s = $duracion % 60;
 			$min = ($duracion - $s)/60;
 			$fila = mysqli_fetch_row($query_canciones);
@@ -226,8 +227,9 @@ if($item){
 					<a style='text-decoration:none;' href='artist_profile.php?id=".$aid."&&cur=".$is_current."'><span class='trackname' style='color:#b3b3b3; font-weight:400;'>".$artist."</span></a>
 
 				</div>
-				<div class='track-options'>
-					<img class='optbutton' src='img/dots.png'/>
+					<div class='track-options'>
+						<input type='hidden' id='id_cancion' class='cid' value='".$cancion_id."'>
+					<button onclick='showOptionsMenu(this)'><img class='optbutton' src='img/dots.png'></button>
 				</div>
 
 				<div class='track-duration'>
@@ -241,6 +243,46 @@ if($item){
 	}
 }
 ?>
+<nav class='optMenu'>
+	<input type="hidden" class="cid">
+	<?php
+	// soy artista de esta cancion
+		if($is_current){
+			// entonces debo poder agregarla a otro album
+			echo
+				"<select class='item' onchange='addToAlbum(this)'>
+					<option value='' style=''>Agregar a otro álbum</option>";
+				$query = mysqli_query($connection, "SELECT * FROM albumes WHERE id_artista=".$_SESSION['id']);
+				$fila = mysqli_fetch_row($query);
+				while($fila){
+					$alid = $fila[0];
+					$nombre = $fila[2];
+					echo "<option value='".$alid."'>".$nombre."</option>";
+					$fila = mysqli_fetch_row($query);
+				}
+				echo "</select>";
+			// y debo poder editarla tambien
+			echo "<div class='item' onclick='editSong(this)'> Editar la canción</div>";
+		}
+		else{
+			// soy usuario, solo puedo dar likes y agregar a playlists
+			echo "<div class='item' id='like'></div>";
+			echo
+				"<select class='item' onchange='addToPlaylist(this)'>
+					<option value=''>Agregar a playlist</option>";
+				$query = mysqli_query($connection, "SELECT * FROM playlists WHERE id_usuario=".$_SESSION['id']);
+				$fila = mysqli_fetch_row($query);
+				while($fila){
+					$pid = $fila[0];
+					$nombre = $fila[2];
+					echo "
+					<form action='includes/album.inc.php' method='post'>
+					<button name='add_toalbum'><option value='".$pid."'>".$nombre."</option></button>";
+					$fila = mysqli_fetch_row($query);
+				}
+				echo "</select>";
+		}
+	?>
 
 <?php include("includes/footer.php")?>
 

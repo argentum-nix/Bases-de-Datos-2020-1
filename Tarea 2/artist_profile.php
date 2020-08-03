@@ -56,7 +56,7 @@ $seguidores = $fila[0];
 			</form>";
 		}
 	}
-	$query_canciones = mysqli_query($connection,"SELECT nombre, duracion FROM canciones WHERE id_artista='$artista_id' LIMIT 10");
+	$query_canciones = mysqli_query($connection,"SELECT nombre, duracion, id_cancion FROM canciones WHERE id_artista='$artista_id' LIMIT 10");
 	$fila = mysqli_fetch_row($query_canciones);
 	?>
 </div>
@@ -69,6 +69,7 @@ $seguidores = $fila[0];
 	while($fila) {
 		$flag = false;
 		$nombre_cancion = $fila[0];
+		$cancion_id = $fila[2];
 		$duracion = $fila[1];
 		$s = $duracion % 60;
 		$min = ($duracion - $s)/60;
@@ -84,7 +85,8 @@ $seguidores = $fila[0];
 
 			</div>
 			<div class='track-options'>
-				<img class='optbutton' src='img/dots.png'/>
+				<input type='hidden' id='id_cancion' class='cid' value='".$cancion_id."'>
+				<button onclick='showOptionsMenu(this)'><img class='optbutton' src='img/dots.png'></button>
 			</div>
 
 			<div class='track-duration'>
@@ -101,6 +103,45 @@ $seguidores = $fila[0];
 
 </div>
 
+<nav class='optMenu'>
+	<input type="hidden" class="cid">
+	<?php
+	// soy artista y autor
+		if($is_current_user){
+			echo
+				"<select class='item' onchange='addToAlbum(this)'>
+					<option value='' style=''>Agregar a otro álbum</option>";
+				$query = mysqli_query($connection, "SELECT * FROM albumes WHERE id_artista=".$_SESSION['id']);
+				$fila = mysqli_fetch_row($query);
+				while($fila){
+					$alid = $fila[0];
+					$nombre = $fila[2];
+					echo "<option value='".$alid."'>".$nombre."</option>";
+					$fila = mysqli_fetch_row($query);
+				}
+				echo "</select>";
+			// y debo poder editarla tambien
+			echo "<div class='item' onclick='editSong(this)'> Editar la canción</div>";
+		}
+		// soy usuario, solo puedo dar likes y agregar a playlists
+		else{
+			echo "<div class='item' id='like'></div>";
+			echo
+				"<select class='item' onchange='addToPlaylist(this)'>
+					<option value='' style=''>Agregar a otro playlist</option>";
+				$query = mysqli_query($connection, "SELECT * FROM playlists WHERE id_usuario=".$_SESSION['id']);
+				$fila = mysqli_fetch_row($query);
+				while($fila){
+					$pid = $fila[0];
+					$nombre = $fila[2];
+					echo "<option value='".$pid."'>".$nombre."</option>";
+					$fila = mysqli_fetch_row($query);
+				}
+				echo "</select>";
+
+		}
+	?>
+</nav>
 <?php
 echo 
 	"<a style='text-decoration: none; color:#b3b3b3;text-align:right;'

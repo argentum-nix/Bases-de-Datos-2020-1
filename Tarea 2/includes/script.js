@@ -29,13 +29,13 @@ function addToPlaylist(selectObject){
   	(data, status) => { console.log("Data: " + data + "\nStatus: " + status); });
   	hideOptionsMenu();
   	$(selectObject).val("");
+
 }
 
 function deleteFromPlaylist(selectObject, pid){
-	var play_id = selectObject.value;  
-	console.log(album_id);
+	var play_id = pid;
 	var songid = $(selectObject).prevAll(".cid").val();
-		$.post('/T2/includes/playlist.inc.php', {delete_fromplay: '1', cid: songid, pid: play_id},
+	$.post('/T2/includes/playlist.inc.php', {delete_fromplay: '1', cid: songid, pid: play_id},
   	(data, status) => { console.log("Data: " + data + "\nStatus: " + status); });
   	location.reload();
   	hideOptionsMenu();

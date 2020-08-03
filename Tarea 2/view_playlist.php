@@ -106,6 +106,7 @@ else {
 		$min = ($duracion - $s)/60;
 		$playlist_name = $fila[5];
 		$artist = $fila[3];
+		$cancion_id = $fila[6];
 		$fila = mysqli_fetch_row($query);
 
 		echo 
@@ -129,8 +130,51 @@ else {
 
 ?>
 	
-		
 	</ul>
 </div>
+
+<nav class='optMenu'>
+	<input type="hidden" class="cid">
+	<?php
+	// soy usuario y autor de playlist
+		if($is_current){
+			// soy usuario, solo puedo dar likes y agregar a playlists
+			echo "<div class='item' id='like'></div>";
+			// entonces debo poder sacar la cancion de playlist
+			echo "<div class='item' onclick='deleteFromPlaylist(this, ".$playlist_id.")'> Borrar de playlist </div>";
+			// entonces debo poder agregarla a otro playlist
+			echo
+				"<select class='item' onchange='addToPlaylist(this)'>
+					<option value='' style=''>Agregar a otro playlist</option>";
+				$query = mysqli_query($connection, "SELECT * FROM playlists WHERE id_usuario=".$_SESSION['id']);
+				$fila = mysqli_fetch_row($query);
+				while($fila){
+					$pid = $fila[0];
+					$nombre = $fila[2];
+					echo "<option value='".$pid."'>".$nombre."</option>";
+					$fila = mysqli_fetch_row($query);
+				}
+				echo "</select>";
+		}
+		else if($_SESSION['usertype'] == 'user' and !$is_current){
+			// soy usuario, solo puedo dar likes y agregar a playlists
+			echo "<div class='item' id='like'></div>";
+			// entonces debo poder agregarla a otro playlist
+			echo
+				"<select class='item' onchange='addToPlaylist(this)'>
+					<option value='' style=''>Agregar a otro playlist</option>";
+				$query = mysqli_query($connection, "SELECT * FROM playlists WHERE id_usuario=".$_SESSION['id']);
+				$fila = mysqli_fetch_row($query);
+				while($fila){
+					$pid = $fila[0];
+					$nombre = $fila[2];
+					echo "<option value='".$pid."'>".$nombre."</option>";
+					$fila = mysqli_fetch_row($query);
+				}
+				echo "</select>";
+		}
+	?>
+
+</nav>
 
 <?php include("includes/footer.php")?>

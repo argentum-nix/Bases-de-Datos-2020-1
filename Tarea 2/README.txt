@@ -66,7 +66,7 @@ CREATE VIEW artist_follows as
 Vista para tener todos los likes, canciones y usuarios que dieron like 
 
 CREATE VIEW likes_view as
-				SELECT LC.id_usuario, C.nombre as nombre_cancion, P.nombre as nombre_artista, C.duracion
+				SELECT LC.id_usuario, C.nombre as nombre_cancion, P.nombre as nombre_artista, C.duracion, C.id_cancion
 				FROM likes_canciones LC, canciones C, personas P 
 				WHERE LC.id_cancion = C.id_cancion 
 				AND C.id_artista = P.id_persona
@@ -84,6 +84,7 @@ AFTER DELETE ON playlists
 FOR EACH ROW 
 BEGIN
 	DELETE FROM follow_playlists WHERE id_playlist = OLD.id_playlist;
+    	DELETE FROM canciones_playlists WHERE id_playlist = OLD.id_playlist;
 END$$
 
 DELIMITER $$
