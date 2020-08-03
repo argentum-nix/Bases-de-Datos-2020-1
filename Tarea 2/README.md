@@ -25,7 +25,7 @@ Universidad Técnica Santa María
 - [Edición de la cuenta](#edici-n-de-la-cuenta)
 
 # Modelo UML
-![Formato PDF](misc/Modelo_201873505-1.pdf)
+[Formato PDF](misc/Modelo_201873505-1.pdf)
 
 # Dependencias y Stack
 - PHP 7.4.8
