@@ -47,6 +47,10 @@ Cualquier canción puede ser editada desde la busqueda - por ejemplo, el usuario
 Los usuarios pueden crear los playlists ilimitados a través de un simple formulario:
 ![alt text](misc/new_play.png)
 
+Los artistas pueden crear las canciones y los albumes desde el Studio.
+![alt text](misc/new_song.png)
+![alt text](misc/new_album.png)
+
 # Canciones favoritas 
 Los usuarios tienen acceso en la barra izquierda a una vista de sus canciones favoritas. Las canciones son editables como en cualquier otra parte - es decir, se puede quitar el like (la canción al hacer refresh desaparecerá de la vista) o agregar la canción a algún playlist propio.
 ![alt text](misc/favsong.png)
@@ -63,6 +67,7 @@ Si el usuario actual es autor del playlist, tendrá visible el botón de editar 
 Analógicamente, si el usuario es el artista y es autor de canción, tendrá visible el botón de editar - este permite acceder a una vista con un formulario.
 ![alt text](misc/edit_song1.png)
 ![alt text](misc/edit_song2.png)
+
 Lo mismo para albumes.
 ![alt text](misc/edit_album1.png)
 ![alt text](misc/edit_album2.png)
