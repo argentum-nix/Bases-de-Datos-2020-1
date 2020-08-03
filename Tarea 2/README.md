@@ -1,5 +1,5 @@
 # Poyofy - clon de Spotify, pero rosado
-![](https://images.wikidexcdn.net/mwuploads/esssbwiki/thumb/0/07/latest/20180613002925/Kirby_SSBU.png/200px-Kirby_SSBU.png)
+![](https://www.google.com/url?sa=i&url=https%3A%2F%2Fdeath-battle-en-espanol.fandom.com%2Fes%2Fwiki%2FKirby&psig=AOvVaw03znmJ9OG7TbURE5NFv3iG&ust=1596556341923000&source=images&cd=vfe&ved=0CAIQjRxqFwoTCOiauZey_-oCFQAAAAAdAAAAABAm)
 Tarea 2 de ramo *Bases de Datos: INF 239*
 Universidad Técnica Santa María <br/>
 2020-1
