@@ -45,7 +45,7 @@ Existen dos tipos de cuentas - cuenta Usuario o cuenta Artista. Para elegir el t
 La sesión de usuario se inicializa a partir de login.php, una vez ingresados bien los datos según la base de datos.
 Para cerrar la sesión, se puede utilizar el menu dropdown el topbar persistente, el botón en la sección Cuenta o al borrar la cuenta - en este caso, se destruye toda la información relacionada con el usuario (likes, playlists, canciones, etc).
 
-# Barra de navegación superior
+# Navegación (topbar)
 Permite acceder a vistas de usuarios seguidos, artistas seguidos o playlists seguidos. Cualquier usuario tiene estas vistas disponibles.
 ![alt text](misc/followed_users.png)
 ![alt text](misc/followed_artists.png)
