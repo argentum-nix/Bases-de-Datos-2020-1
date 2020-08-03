@@ -1,4 +1,4 @@
-#Poyofy - clon de Spotify, pero rosado
+# Poyofy - clon de Spotify, pero rosado
 
 Tarea 2 de ramo *Bases de Datos: INF 239*
 Universidad Técnica Santa María <br/>
