@@ -22,4 +22,6 @@ Universidad Técnica Santa María
 - El contenido del repositorio debe estar ubicado en la carpeta T2 de htdocs
 - Al acceder a cualquier página (ej. localhost:8080/T2/index.php) el usuario será redireccionado a la página de Log In o Sign Up, según el caso.
 
-# 
+# Registración
+Existen dos tipos de cuentas - cuenta Usuario o cuenta Artista. Para elegir el tipo de la cuenta, se debe utilizar el select de menu de registración. El tipo de cuenta es permanenente y no puede ser cambiado más tarde.
+![alt text](/misc/register.png)
