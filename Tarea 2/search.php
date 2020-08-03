@@ -264,7 +264,7 @@ if($item){
 			// y debo poder editarla tambien
 			echo "<div class='item' onclick='editSong(this)'> Editar la canción</div>";
 		}
-		else{
+		else if(!$is_current && $_SESSION['usertype'] == 'user'){
 			// soy usuario, solo puedo dar likes y agregar a playlists
 			echo "<div class='item' id='like'></div>";
 			echo
