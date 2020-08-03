@@ -9,6 +9,18 @@ Universidad Técnica Santa María
 - Anastasiia Fedorova  201873505-1  
 <anastasiia.fedorova@sansano.usm.cl>
 
+- [Dependencias y Stack](#dependencias-y-stack)
+- [Ejecución](#ejecuci-n)
+- [Registración](#registraci-n)
+- [Sesión de usuario](#sesi-n-de-usuario)
+- [Barra de navegación superior](#barra-de-navegaci-n-superior)
+- [Busqueda](#busqueda)
+- [Creación de playlists, albumes y canciones](#creaci-n-de-playlists--albumes-y-canciones)
+- [Canciones favoritas](#canciones-favoritas)
+- [Redacción de playlists, canciones y albumes](#redacci-n-de-playlists--canciones-y-albumes)
+- [Perfíl de usuario y seguimiento](#perf-l-de-usuario-y-seguimiento)
+- [Edición de la cuenta](#edici-n-de-la-cuenta)
+
 # Dependencias y Stack
 - PHP 7.4.8
 - MySQL
