@@ -51,17 +51,17 @@ Permite acceder a vistas de usuarios seguidos, artistas seguidos o playlists seg
 ![alt text](misc/followed_artists.png)
 ![alt text](misc/followed_playlists.png)
 
-# Busqueda
+# Búsqueda
 Permite a cualquier usuario buscar sobre canciones, playlists y otras personas. Si no existe un registro parecido para alguna sección menciona, simplemente no será demostrada - por ejemplo, en este caso no existe ningún playlist con nombre parecido a "a".
 ![alt text](misc/search.png)
 Cualquier canción puede ser editada desde la busqueda - por ejemplo, el usuario puede agregarla a playlist o darle like.
 ![alt text](misc/edit_search.png)
 
-# Creación de playlists, albumes y canciones
+# Creación de playlists, álbumes y canciones
 Los usuarios pueden crear los playlists ilimitados a través de un simple formulario:
 ![alt text](misc/new_play.png)
 
-Los artistas pueden crear las canciones y los albumes desde el Studio - sus opciones permiten a los artistas crear nuevos albumes (inicialmente vacíos) y canciones.
+Los artistas pueden crear las canciones y los álbumes desde el Studio - sus opciones permiten a los artistas crear nuevos álbumes (inicialmente vacíos) y canciones.
 ![alt text](misc/new_song.png)
 ![alt text](misc/new_album.png)
 
@@ -70,7 +70,7 @@ Los usuarios tienen acceso en la barra izquierda a una vista de sus canciones fa
 ![alt text](misc/favsong.png)
 
 
-# Redacción de playlists, canciones y albumes
+# Redacción de playlists, canciones y álbumes
 Si el usuario actual es autor del playlist, tendrá visible el botón de editar - este permite acceder a una vista con un formulario.
 ![alt text](misc/edit_play1.png)
 ![alt text](misc/edit_play2.png)
@@ -79,7 +79,7 @@ Analógicamente, si el usuario es el artista y es autor de canción, tendrá vis
 ![alt text](misc/edit_song1.png)
 ![alt text](misc/edit_song2.png)
 
-Lo mismo para albumes.
+Lo mismo para álbumes.
 ![alt text](misc/edit_album1.png)
 ![alt text](misc/edit_album2.png)
 
