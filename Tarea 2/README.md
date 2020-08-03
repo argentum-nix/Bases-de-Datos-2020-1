@@ -12,6 +12,7 @@ Universidad Técnica Santa María
 
 # Contenido
 - [Dependencias y Stack](#dependencias-y-stack)
+- [Modelo UML](#modelo-uml)
 - [Ejecución](#ejecuci-n)
 - [Registración](#registraci-n)
 - [Sesión de usuario](#sesi-n-de-usuario)
@@ -22,6 +23,9 @@ Universidad Técnica Santa María
 - [Redacción de playlists, canciones y albumes](#redacci-n-de-playlists--canciones-y-albumes)
 - [Perfíl de usuario y seguimiento](#perf-l-de-usuario-y-seguimiento)
 - [Edición de la cuenta](#edici-n-de-la-cuenta)
+
+# Modelo UML
+![Formato PDF](misc/Modelo_201873505-1.pdf)
 
 # Dependencias y Stack
 - PHP 7.4.8
