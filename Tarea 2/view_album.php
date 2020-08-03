@@ -72,8 +72,9 @@ else {
 		$s = $duracion % 60;
 		$min = ($duracion - $s)/60;
 		$year = $fila[3];
-		$album_name = $fila[4];
+		$album_name = $fila[5];
 		$artist = $fila[2];
+		$cancion_id = $fila[7];
 		$fila = mysqli_fetch_row($query);
 
 		echo 
@@ -86,6 +87,7 @@ else {
 
 			</div>
 			<div class='track-options'>
+				<input type='hidden' id='id_cancion' class='cid' value='".$cancion_id."'>
 				<button onclick='showOptionsMenu(this)'><img class='optbutton' src='img/dots.png'></button>
 			</div>
 
@@ -102,21 +104,45 @@ else {
 </div>
 
 <nav class='optMenu'>
-	<input type="hidden" name="songid">
+	<input type="hidden" class="cid">
 	<?php
 	// soy artista de este album y no existen colaboraciones
 		if($is_current){
 			// entonces debo poder sacar la cancion de album
-			echo "<div class='item'> Borrar de álbum </div>";
+			echo "<div class='item' onclick='deleteFromAlbum(this, ".$_GET['id'].")'> Borrar de álbum </div>";
 			// entonces debo poder agregarla a otro album
-			echo "<div class='item'> Agregar a otro álbum</div>";
+			echo
+				"<select class='item' onchange='addToAlbum(this)'>
+					<option value='' style=''>Agregar a otro álbum</option>";
+				$query = mysqli_query($connection, "SELECT * FROM albumes WHERE id_artista=".$_SESSION['id']);
+				$fila = mysqli_fetch_row($query);
+				while($fila){
+					$alid = $fila[0];
+					$nombre = $fila[2];
+					echo "<option value='".$alid."'>".$nombre."</option>";
+					$fila = mysqli_fetch_row($query);
+				}
+				echo "</select>";
 			// y debo poder editarla tambien
-			echo "<div class='item'> Editar la canción</div>";
+			echo "<div class='item' onclick='editSong(this)'> Editar la canción</div>";
 		}
 		else{
 			// soy usuario, solo puedo dar likes y agregar a playlists
-			echo "<div class='item'> Agregar a Tus Me Gusta </div>";
-			echo "<div class='item'> Agregar a playlist </div>";
+			echo "<div class='item' id='like'></div>";
+			echo
+				"<select class='item' onchange='addToPlaylist(this)'>
+					<option value=''>Agregar a playlist</option>";
+				$query = mysqli_query($connection, "SELECT * FROM playlists WHERE id_usuario=".$_SESSION['id']);
+				$fila = mysqli_fetch_row($query);
+				while($fila){
+					$pid = $fila[0];
+					$nombre = $fila[2];
+					echo "
+					<form action='includes/album.inc.php' method='post'>
+					<button name='add_toalbum'><option value='".$pid."'>".$nombre."</option></button>";
+					$fila = mysqli_fetch_row($query);
+				}
+				echo "</select>";
 		}
 	?>
 

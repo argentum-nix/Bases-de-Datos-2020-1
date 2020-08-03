@@ -53,6 +53,39 @@ else if(isset($_POST['change_playname'])){
 	exit();
 }
 
+else if(isset($_POST['add_toplay'])) {
+	require 'bdh.inc.php';
+	$pid = $_POST['pid'];
+	$cid = $_POST['cid'];
+	$sql_query = "INSERT INTO canciones_playlists VALUES (?, ?)";
+	$statement = mysqli_stmt_init($connection);
+	if (!mysqli_stmt_prepare($statement, $sql_query)){
+		return '';
+	}
+	mysqli_stmt_bind_param($statement, "ii", $cid, $pid);
+	$check = mysqli_stmt_execute($statement);
+	if(!$check){
+		echo "OKN'T";
+		return '';
+	}
+	echo "OK";
+	return '';
+}
+else if(isset($_POST['delete_fromplay'])) {
+	require 'bdh.inc.php';
+	$pid = $_POST['pid'];
+	$cid = $_POST['cid'];
+	$sql_query = "DELETE FROM canciones_playlists WHERE id_cancion=? AND id_playlist=?";
+	$statement = mysqli_stmt_init($connection);
+	if (!mysqli_stmt_prepare($statement, $sql_query)) {
+		echo "xd";
+		return '';
+	}
+	mysqli_stmt_bind_param($statement, "ii", $cid, $pid);
+	mysqli_stmt_execute($statement);
+	echo "OK";
+	return '';
+}
 
 else{
 	header("Location: ../index.php");

@@ -11,7 +11,8 @@ CREATE VIEW vista_album as
 							A.debut_year,
 							A.id_album,
 							A.nombre as nombre_album,
-							C.id_artista
+							C.id_artista,
+							C.id_cancion
 							FROM canciones_albumes CA, canciones C, personas P, albumes A
 							WHERE A.id_album = CA.id_album 
 							AND CA.id_cancion = C.id_cancion
@@ -25,11 +26,13 @@ CREATE VIEW vista_playlist AS
 							PL.id_usuario,
 							P.nombre as nombre_artista,
 							PL.id_playlist,
-							PL.nombre as nombre_playlist
+							PL.nombre as nombre_playlist,
+							C.id_cancion
 							FROM canciones_playlists CP, canciones C, personas P, playlists PL
 							WHERE PL.id_playlist = CP.id_playlist 
 							AND CP.id_cancion = C.id_cancion
 							AND C.id_artista = P.id_persona
+
 
 
 Misma idea, para canción:

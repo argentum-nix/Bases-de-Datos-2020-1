@@ -40,6 +40,18 @@ nav.optMenu .item {
 	height: 40px;
 }
 
+nav.optMenu select.item {
+	background-color: #282828;
+	padding: 0;
+	padding-left: 15px;
+	border:none;
+}
+
+nav.optMenu select:hover {
+	background-color:#ffa6c9;
+	opacity: 0.8;
+	color: white;
+}
 nav.optMenu .item:hover {
 	background-color:#ffa6c9;
 	opacity: 0.8;

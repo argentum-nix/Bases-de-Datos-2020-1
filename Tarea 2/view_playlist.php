@@ -117,6 +117,10 @@ else {
 				<span class='trackname' style='color:#b3b3b3; font-weight:400;'>".$artist."</span>
 
 			</div>
+			<div class='track-options'>
+				<input type='hidden' id='id_cancion' class='cid' value='".$cancion_id."'>
+				<button onclick='showOptionsMenu(this)'><img class='optbutton' src='img/dots.png'></button>
+			</div>
 			<div class='track-duration'>
 				<span class='trackdur'>".$min.":".$s."</span>
 			</div>

@@ -71,6 +71,41 @@ else if(isset($_POST['change_albumyear'])){
 	exit();
 }
 
+else if(isset($_POST['add_toalbum'])) {
+	require 'bdh.inc.php';
+	$alid = $_POST['aid'];
+	$cid = $_POST['cid'];
+	$sql_query = "INSERT INTO canciones_albumes VALUES (?, ?)";
+	$statement = mysqli_stmt_init($connection);
+	if (!mysqli_stmt_prepare($statement, $sql_query)){
+		return '';
+	}
+	mysqli_stmt_bind_param($statement, "ii", $cid, $alid);
+	$check = mysqli_stmt_execute($statement);
+	if(!$check){
+		echo "OKN'T";
+		return '';
+	}
+	echo "OK";
+	return '';
+}
+
+else if(isset($_POST['delete_fromalbum'])) {
+	require 'bdh.inc.php';
+	$alid = $_POST['aid'];
+	$cid = $_POST['cid'];
+	$sql_query = "DELETE FROM canciones_albumes WHERE id_cancion=? AND id_album=?";
+	$statement = mysqli_stmt_init($connection);
+	if (!mysqli_stmt_prepare($statement, $sql_query)) {
+		echo "xd";
+		return '';
+	}
+	mysqli_stmt_bind_param($statement, "ii", $cid, $alid);
+	mysqli_stmt_execute($statement);
+	echo "OK";
+	return '';
+}
+
 else{
 	header("Location: ../index.php");
 	exit();
