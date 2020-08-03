@@ -9,6 +9,7 @@ Universidad Técnica Santa María
 - Anastasiia Fedorova  201873505-1  
 <anastasiia.fedorova@sansano.usm.cl>
 
+# Contenido
 - [Dependencias y Stack](#dependencias-y-stack)
 - [Ejecución](#ejecuci-n)
 - [Registración](#registraci-n)
