@@ -49,8 +49,27 @@ Los usuarios pueden crear los playlists ilimitados a través de un simple formul
 
 # Canciones favoritas 
 Los usuarios tienen acceso en la barra izquierda a una vista de sus canciones favoritas. Las canciones son editables como en cualquier otra parte - es decir, se puede quitar el like (la canción al hacer refresh desaparecerá de la vista) o agregar la canción a algún playlist propio.
-![alt text](misc/fav_songs.png)
+![alt text](misc/favsong.png)
+
+Los artistas en la barra izquierda tienen acceso a Studio - sus opciones permiten a los artistas crear nuevos albumes (inicialmente vacíos) y canciones.
+![alt text](misc/new_album.png)
+![alt text](misc/new_song.png)
 
 # Redacción de playlists, canciones y albumes
+Si el usuario actual es autor del playlist, canción o album actual, tendrá visible el botón de editar - este permite acceder a una vista con un formulario.
 
 # Perfíl de usuario y seguimiento
+Existen dos distintas vistas de perfiles - para usuarios, se muestra el número de seguidores, botón de seguir o dejar de seguir (si no es el perfil del usuario actual) y los playlists creados.
+![alt text](misc/profile_user.png)
+Para artistas, se muestra la cantidad de seguidores, botón de seguir o dejar de seguir (si no es el perfil de artista actual), canciones y los albumes creados.
+![alt text](misc/profile_artist.png)
+
+# Edición de la cuenta
+En la barra lateral se presentan tres opciones nuevas. La primera permite ver los datos de usuario, su plan y la opción de log out.
+![alt text](misc/cuenta1.png)
+La segunda permite cambiar el nombre o la dirección de correo del usuario - notar que no pueden existir correos repetidos en la base de datos.
+![alt text](misc/cuenta2.png)
+La tercera permite cambiar la contraseña.
+![alt text](misc/cuenta3.png)
+La cuarta permite eliminar la cuenta - en este caso se pierden todos los datos relacionados con el usuario actual.
+![alt text](misc/cuenta4.png)
