@@ -6,7 +6,8 @@ Universidad Técnica Santa María
 2020-1
 
 # Datos
-- Anastasiia Fedorova  201873505-1  
+- Anastasiia Fedorova  
+201873505-1  
 <anastasiia.fedorova@sansano.usm.cl>
 
 # Contenido
