@@ -56,7 +56,16 @@ Los artistas en la barra izquierda tienen acceso a Studio - sus opciones permite
 ![alt text](misc/new_song.png)
 
 # Redacción de playlists, canciones y albumes
-Si el usuario actual es autor del playlist, canción o album actual, tendrá visible el botón de editar - este permite acceder a una vista con un formulario.
+Si el usuario actual es autor del playlist, tendrá visible el botón de editar - este permite acceder a una vista con un formulario.
+![alt text](misc/edit_play1.png)
+![alt text](misc/edit_play2.png)
+
+Analógicamente, si el usuario es el artista y es autor de canción, tendrá visible el botón de editar - este permite acceder a una vista con un formulario.
+![alt text](misc/edit_song1.png)
+![alt text](misc/edit_song2.png)
+Lo mismo para albumes.
+![alt text](misc/edit_album1.png)
+![alt text](misc/edit_album2.png)
 
 # Perfíl de usuario y seguimiento
 Existen dos distintas vistas de perfiles - para usuarios, se muestra el número de seguidores, botón de seguir o dejar de seguir (si no es el perfil del usuario actual) y los playlists creados.
