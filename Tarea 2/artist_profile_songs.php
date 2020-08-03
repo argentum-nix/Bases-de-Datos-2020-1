@@ -89,7 +89,7 @@ $fila = mysqli_fetch_row($query_canciones);
 			echo "<div class='item' onclick='editSong(this)'> Editar la canción</div>";
 		}
 		// soy usuario, solo puedo dar likes y agregar a playlists
-		else{
+		else if(!$is_current_user && $_SESSION['usertype'] == 'user'){
 			echo "<div class='item' id='like'></div>";
 			echo
 				"<select class='item' onchange='addToPlaylist(this)'>
