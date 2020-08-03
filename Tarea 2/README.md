@@ -1,5 +1,5 @@
 # Poyofy - clon de Spotify, pero rosado
-![](https://lh3.googleusercontent.com/proxy/8KvIySbsGeFdq-mafgJTXPp0P3BTGZsy02EyUpK_E7DFve3lE1KTuyhbF3UO1W5NWDyxKnH5Rg4co3CIzeER8btoGKk2fML2ugfPQoKO-1-DOYzRRIHVPEA4VxLAL70)
+![](https://i.redd.it/numywxxyp2p21.jpg)
 
 Tarea 2 de ramo *Bases de Datos: INF 239*
 Universidad Técnica Santa María <br/>
