@@ -38,10 +38,18 @@ Permite acceder a vistas de usuarios seguidos, artistas seguidos o playlists seg
 ![alt text](misc/followed_playlists.png)
 
 # Busqueda
+Permite a cualquier usuario buscar sobre canciones, playlists y otras personas. Si no existe un registro parecido para alguna sección menciona, simplemente no será demostrada - por ejemplo, en este caso no existe ningún playlist con nombre parecido a "a".
+![alt text](misc/search.png)
+Cualquier canción puede ser editada desde la busqueda - por ejemplo, el usuario puede agregarla a playlist o darle like.
+![alt text](misc/edit_search.png)
 
 # Creación de playlists, albumes y canciones
+Los usuarios pueden crear los playlists ilimitados a través de un simple formulario:
+![alt text](misc/new_play.png)
 
 # Canciones favoritas 
+Los usuarios tienen acceso en la barra izquierda a una vista de sus canciones favoritas. Las canciones son editables como en cualquier otra parte - es decir, se puede quitar el like (la canción al hacer refresh desaparecerá de la vista) o agregar la canción a algún playlist propio.
+![alt text](misc/fav_songs.png)
 
 # Redacción de playlists, canciones y albumes
 
