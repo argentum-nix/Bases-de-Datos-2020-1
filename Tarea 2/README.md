@@ -25,3 +25,4 @@ Universidad Técnica Santa María
 # Registración
 Existen dos tipos de cuentas - cuenta Usuario o cuenta Artista. Para elegir el tipo de la cuenta, se debe utilizar el select de menu de registración. El tipo de cuenta es permanenente y no puede ser cambiado más tarde.
 ![alt text](misc/register.png)
+![alt text](misc/register_usertype.png)
