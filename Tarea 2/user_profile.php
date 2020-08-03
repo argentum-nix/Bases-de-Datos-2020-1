@@ -12,6 +12,10 @@ else {
 $query_nombre = mysqli_query($connection, "SELECT nombre FROM personas WHERE id_persona='$user_id'");
 $fila = mysqli_fetch_row($query_nombre);
 $username = $fila[0];
+
+$query_seguidores = mysqli_query($connection, "SELECT COUNT(id_persona1) FROM follows WHERE id_persona2='$user_id'");
+$fila = mysqli_fetch_row($query_seguidores);
+$seguidores = $fila[0];
 ?>
 
 <div class="entityinfo">
@@ -21,6 +25,7 @@ $username = $fila[0];
 	<div class="rightsection">
 		<p style="color:#b3b3b3; font-weight: 500; margin-bottom: 0px;">Perfil de usuario</p>
 		<h2 class='title mb-3' style="margin-top: 0px"><?php echo $username ?></h2>
+		<p style="color:#b3b3b3; font-weight: 400; margin-top: 90px;"><?php echo $seguidores?> seguidores</p>
 	</div>
 	<?php
 	if(!$is_current_user){
