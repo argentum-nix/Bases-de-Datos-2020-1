@@ -1,5 +1,5 @@
 # Poyofy - clon de Spotify, pero rosado
-
+![](https://images.wikidexcdn.net/mwuploads/esssbwiki/thumb/a/a5/latest/20140110163651/Kirby_en_Kirby_Triple_Deluxe.png/180px-Kirby_en_Kirby_Triple_Deluxe.png)
 Tarea 2 de ramo *Bases de Datos: INF 239*
 Universidad Técnica Santa María <br/>
 2020-1
