@@ -1,5 +1,5 @@
 # Poyofy - clon de Spotify, pero rosado
-![](https://vignette.wikia.nocookie.net/death-battle-en-espanol/images/a/a1/Kirby_1.png/revision/latest/scale-to-width-down/340?cb=20151017005457&path-prefix=es)
+![](https://vignette.wikia.nocookie.net/death-battle-en-espanol/images/a/a1/Kirby_1.png/revision/latest/scale-to-width-down/340?cb=20151017005457&path-prefix=es=250x250)
 Tarea 2 de ramo *Bases de Datos: INF 239*
 Universidad Técnica Santa María <br/>
 2020-1
