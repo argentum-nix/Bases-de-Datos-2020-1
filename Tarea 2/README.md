@@ -1,5 +1,5 @@
 # Poyofy - clon de Spotify, pero rosado
-![](https://www.pngkit.com/png/full/314-3147789_kirby-cute-and-ribbon-image-kirby-heart.png)
+![](https://buffy.mlpforums.com/monthly_2017_04/kirby-super-star_banner26-54797-full.jpeg.8f00601f94d91745324882cb810e6d97.jpeg)
 
 Tarea 2 de ramo *Bases de Datos: INF 239*
 Universidad Técnica Santa María <br/>
