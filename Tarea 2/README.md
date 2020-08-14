@@ -26,7 +26,7 @@ Universidad Técnica Santa María
 - [Edición de la cuenta](#edici-n-de-la-cuenta)
 
 # Enunciado
-[Formato PDF](https://github.com/argentumx/BD-2020-1/blob/master/Tarea%202/misc/Tarea_2.pdf)
+[Formato PDF](https://github.com/argentumx/BD-2020-1/blob/master/Tarea%202/misc/Tarea 2.pdf)
 
 # Modelo UML
 [Formato PDF](https://github.com/argentumx/BD-2020-1/blob/master/Tarea%202/misc/Modelo_201873505_1.pdf)
