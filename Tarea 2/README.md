@@ -14,6 +14,7 @@ Universidad Técnica Santa María
 - [Dependencias y Stack](#dependencias-y-stack)
 - [Enunciado](#enunciado)
 - [Modelo UML](#modelo-uml)
+- [Base de datos](#base-de-datos)
 - [Ejecución](#ejecuci-n)
 - [Registración](#registraci-n)
 - [Sesión de usuario](#sesi-n-de-usuario)
@@ -30,6 +31,9 @@ Universidad Técnica Santa María
 
 # Modelo UML
 [Formato PDF](https://github.com/argentumx/BD-2020-1/blob/master/Tarea%202/misc/Modelo_201873505_1.pdf)
+
+# Base de datos
+[.sql](https://github.com/argentumx/BD-2020-1/blob/master/Tarea%202/misc/poyofy.sql)
 
 # Dependencias y Stack
 - PHP 7.4.8
