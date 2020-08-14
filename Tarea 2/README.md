@@ -12,6 +12,7 @@ Universidad Técnica Santa María
 
 # Contenido
 - [Dependencias y Stack](#dependencias-y-stack)
+- [Enunciado](#enunciado)
 - [Modelo UML](#modelo-uml)
 - [Ejecución](#ejecuci-n)
 - [Registración](#registraci-n)
@@ -23,6 +24,9 @@ Universidad Técnica Santa María
 - [Redacción de playlists, canciones y albumes](#redacci-n-de-playlists--canciones-y-albumes)
 - [Perfíl de usuario y seguimiento](#perf-l-de-usuario-y-seguimiento)
 - [Edición de la cuenta](#edici-n-de-la-cuenta)
+
+# Enunciado
+[Formato PDF](https://github.com/argentumx/BD-2020-1/blob/master/Tarea%202/misc/Tarea_2.pdf)
 
 # Modelo UML
 [Formato PDF](https://github.com/argentumx/BD-2020-1/blob/master/Tarea%202/misc/Modelo_201873505_1.pdf)
